@@ -1,0 +1,10 @@
+FROM microsoft/aspnetcore-build:2.0.2
+WORKDIR /app
+
+COPY Com.Efrata.Service.Purchasing.Lib/*.csproj ./Com.Efrata.Service.Purchasing.Lib/
+COPY Com.Efrata.Service.Purchasing.WebApi/*.csproj ./Com.Efrata.Service.Purchasing.WebApi/
+RUN dotnet restore ./Com.Efrata.Service.Purchasing.WebApi/
+
+COPY Com.Efrata.Service.Purchasing.Lib/. ./Com.Efrata.Service.Purchasing.Lib/
+COPY Com.Efrata.Service.Purchasing.WebApi/. ./Com.Efrata.Service.Purchasing.WebApi/
+RUN dotnet publish ./Com.Efrata.Service.Purchasing.WebApi/ --output /out/ --configuration Release
