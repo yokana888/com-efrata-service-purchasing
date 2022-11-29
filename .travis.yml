@@ -1,0 +1,39 @@
+sudo: false
+dist: xenial
+language: csharp
+mono: none
+dotnet: 2.0.0
+solution: Com.Efrata.Service.Purchasing.sln
+services:
+    - docker
+env:
+    - ASPNETCORE_ENVIRONMENT=Test
+
+before_install:
+    - bash Dockerfile.test.build.sh
+    
+install: true
+
+before_script:
+    - docker-compose -f docker-compose.test.yml up -d
+    - sudo apt-get install libgdiplus
+    - sleep 60
+
+script:
+    - dotnet restore Com.Efrata.Service.Purchasing.Test/Com.Efrata.Service.Purchasing.Test.csproj
+    - dotnet build Com.Efrata.Service.Purchasing.Test/Com.Efrata.Service.Purchasing.Test.csproj
+    - dotnet test Com.Efrata.Service.Purchasing.Test/Com.Efrata.Service.Purchasing.Test.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=lcov --verbosity=normal
+
+after_success:
+    - curl -s https://codecov.io/bash > codecov
+    - chmod +x codecov
+    - ./codecov -f "/home/travis/build/danliris/com-danliris-service-purchasing/Com.Efrata.Service.Purchasing.Test/coverage.info"
+    - if [ "$TRAVIS_PULL_REQUEST" == false ]; then
+      docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+
+      docker tag com-DanLiris-service-Purchasing-webapi:test efrataretailindo/com-DanLiris-service-Purchasing-webapi:v1.0.0.$TRAVIS_BUILD_NUMBER;
+      docker push efrataretailindo/com-DanLiris-service-Purchasing-webapi:v1.0.0.$TRAVIS_BUILD_NUMBER;
+
+      docker tag com-DanLiris-service-Purchasing-webapi:test efrataretailindo/com-DanLiris-service-Purchasing-webapi:v1.0.0.latest;
+      docker push efrataretailindo/com-DanLiris-service-Purchasing-webapi:v1.0.0.latest;
+      fi

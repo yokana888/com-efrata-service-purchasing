@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  danliris.test.data:
+    image: efrataretailindo/danliris-test-data:latest
+    environment:
+      - DB_CONNECTIONSTRING=mongodb://mongodb:27017
+  dl.auth.webapi:
+    image: efrataretailindo/dl-auth-webapi:latest
+    environment:
+      - DB_CONNECTIONSTRING=mongodb://mongodb:27017
+      - AUTH_SECRET=DANLIRISTESTENVIRONMENT
+      - PORT=5000
+      - IP=0.0.0.0
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongodb
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+  mssql:
+    image: microsoft/mssql-server-linux:latest
+    environment:
+      - "ACCEPT_EULA=Y"
+      - "SA_PASSWORD=Standar123."
+      - "MSSQL_PID=Developer"
+    ports:
+      - "1401:1433"

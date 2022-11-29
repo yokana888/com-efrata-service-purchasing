@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20210721040342_add_GLWExpenditure_Type_GarmentURN.cs" />
+    <Compile Remove="Migrations\20210721095753_add_GLWExpenditure_Type_GarmentURN.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Com.Moonlay.Data.EntityFrameworkCore" Version="1.0.2" />
+    <PackageReference Include="Com.Moonlay.NetCore.Lib" Version="1.0.0-alpha-20171102-001" />
+    <PackageReference Include="Dapper" Version="2.0.30" />
+    <PackageReference Include="EPPlus" Version="4.5.3.1" />
+    <PackageReference Include="iTextSharp.LGPLv2.Core" Version="1.6.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="3.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.3" />
+    <PackageReference Include="MlkPwgen" Version="0.3.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.9.2" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.0.10" />
+  </ItemGroup>
+</Project>

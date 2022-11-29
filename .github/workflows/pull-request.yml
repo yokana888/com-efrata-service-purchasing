@@ -1,0 +1,27 @@
+name: Pull Request
+
+on: pull_request
+
+jobs:
+  build_and_test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 2.2
+    - uses: actions/checkout@v2
+    - name: Install libgdiplus
+      run: sudo apt-get install libgdiplus
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore
+    - name: Test
+      run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov --verbosity=normal
+      env:
+          ASPNETCORE_ENVIRONMENT: Test
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1

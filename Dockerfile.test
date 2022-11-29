@@ -1,0 +1,5 @@
+FROM microsoft/aspnetcore:2.0.0
+WORKDIR App
+EXPOSE 80
+COPY ./bin/publish/. .
+ENTRYPOINT ["dotnet", "Com.Efrata.Service.Purchasing.WebApi.dll"]
