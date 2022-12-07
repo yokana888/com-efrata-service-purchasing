@@ -25,21 +25,27 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
 
             #region Header
 
-            string titleString = "BON PENERIMAAN BARANG";
-            Paragraph title = new Paragraph(titleString, bold_font) { Alignment = Element.ALIGN_CENTER };
-            document.Add(title);
-
             string companyNameString = "PT Efrata GARMINDO";
-            Paragraph companyName = new Paragraph(companyNameString, header_font) { Alignment = Element.ALIGN_LEFT };
+            Paragraph companyName = new Paragraph(companyNameString, bold_font) { Alignment = Element.ALIGN_LEFT };
             document.Add(companyName);
 
             PdfPTable tableHeader = new PdfPTable(2);
             tableHeader.SetWidths(new float[] { 4f, 4f });
             PdfPCell cellHeaderContentLeft = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
+            PdfPCell cellHeaderContentCenter = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
             PdfPCell cellHeaderContentRight = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT };
 
             cellHeaderContentLeft.Phrase = new Phrase("Banaran, Grogol, Sukoharjo, Jawa Tengah" + "\n" + "57552" + "\n" + "Telp (0271) 732888, 7652913", bold_font);
             tableHeader.AddCell(cellHeaderContentLeft);
+            cellHeaderContentLeft.Phrase = new Phrase(" ", bold_font);
+            tableHeader.AddCell(cellHeaderContentLeft);
+            cellHeaderContentCenter.Phrase = new Phrase(" ", bold_font);
+            tableHeader.AddCell(cellHeaderContentCenter);
+            cellHeaderContentCenter.Phrase = new Phrase(" ", bold_font);
+            tableHeader.AddCell(cellHeaderContentCenter);
+            cellHeaderContentCenter.Colspan = 2;
+            cellHeaderContentCenter.Phrase = new Phrase("BON PENERIMAAN BARANG", bold_font);
+            tableHeader.AddCell(cellHeaderContentCenter);
 
             //cellHeaderContentRight.Phrase = new Phrase("FM-PB-00-06-010/R2", bold_font);
             cellHeaderContentRight.Phrase = new Phrase("  ", bold_font);
