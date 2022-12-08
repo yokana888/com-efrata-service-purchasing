@@ -93,7 +93,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
             result.Columns.Add(new DataColumn() { ColumnName = "Nomor RO", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "Kode Buyer", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "Nama Buyer", DataType = typeof(string) });
-            result.Columns.Add(new DataColumn() { ColumnName = "Tipe Buyer", DataType = typeof(string) });
+            //result.Columns.Add(new DataColumn() { ColumnName = "Tipe Buyer", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "Artikel", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "Tgl Shipment", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "Kode Barang", DataType = typeof(string) });
@@ -118,7 +118,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
                     string BgtPrc = string.Format("{0:N2}", item.Price);
                     string BgtAmt = string.Format("{0:N2}", item.Quantity * item.Price);
 
-                    result.Rows.Add(index, item.RO_Number, item.BuyerCode, item.BuyerName, item.Type, item.Article, ShipDate, item.ProductCode, item.Remark, QtyBgt, item.Uom, BgtPrc, BgtAmt, item.POSerialNumber);
+                    result.Rows.Add(index, item.RO_Number, item.BuyerCode, item.BuyerName, item.Article, ShipDate, item.ProductCode, item.Remark, QtyBgt, item.Uom, BgtPrc, BgtAmt, item.POSerialNumber);
                 }
             //}
             return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(result, "Display RO Master") }, true);

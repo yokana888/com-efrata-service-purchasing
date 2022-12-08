@@ -83,7 +83,7 @@ namespace Com.Efrata.Service.Purchasing.WebApi.Controllers.v1.GarmentReports
                 MemoryStream xls = _facade.GenerateExcelStockReport(category, categoryname, unitname, unitcode, dateFrom, dateTo, offset);
 
 
-                string filename = String.IsNullOrWhiteSpace(unitcode) ? String.Format("Laporan Stock Gudang All Unit - {0}.xlsx", DateTime.UtcNow.ToString("ddMMyyyy")) : unitcode == "AG1" ? String.Format("Laporan Stock Gudang KONFEKSI AG1 - {0}.xlsx", DateTime.UtcNow.ToString("ddMMyyyy")) : String.Format("Laporan Stock Gudang KONFEKSI AG2 - {0}.xlsx", DateTime.UtcNow.ToString("ddMMyyyy"));
+                string filename =   String.Format("Laporan Stock Gudang  - {0}.xlsx", DateTime.UtcNow.ToString("ddMMyyyy"));
 
                 xlsInBytes = xls.ToArray();
                 var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);

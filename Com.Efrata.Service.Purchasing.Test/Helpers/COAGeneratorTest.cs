@@ -145,7 +145,7 @@ namespace Com.Efrata.Service.Purchasing.Test.Helpers
         [Fact]
         public void Should_Success_Get_COA_IncomeTaxGarmentC2A()
         {
-            var result = COAGenerator.GetIncomeTaxCOA("PASAL23", "GARMENT", "AG1");
+            var result = COAGenerator.GetIncomeTaxCOA("PASAL23", "GARMENT", "EFR");
             Assert.NotNull(result);
         }
 
