@@ -35,7 +35,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             PdfPCell cellHeaderContentLeft = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
             PdfPCell cellHeaderContentRight = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT };
 
-            cellHeaderContentLeft.Phrase = new Phrase("PT. Efrata GARMINDO", bold_font4);
+            cellHeaderContentLeft.Phrase = new Phrase("PT. EFRATA RENTAILINDO", bold_font4);
             tableHeader.AddCell(cellHeaderContentLeft);
             //cellHeaderContentRight.Phrase = new Phrase("FM-PB-00-06-009/R2", bold_font);
             cellHeaderContentRight.Phrase = new Phrase("", bold_font);
@@ -49,7 +49,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             //cellHeaderContentRight.Phrase = new Phrase("FM-PB-00-06-009/R1", bold_font2);
             //tableHeader.AddCell(cellHeaderContentRight);
 
-            cellHeaderContentLeft.Phrase = new Phrase("Banaran, Grogol, Sukoharjo, Jawa Tengah" + "\n" + "57552" + "\n" + "Telp (0271) 732888, 7652913", bold_font);
+            cellHeaderContentLeft.Phrase = new Phrase("Kel. Banaran, Kec. Grogol, Kab.Sukoharjo, Jawa Tengah" + "\n" + "57552" + "\n" + "Telp :(+62 271)719911, (+62 21)2900977", bold_font);
             tableHeader.AddCell(cellHeaderContentLeft);
 
             cellHeaderContentRight.Phrase = new Phrase("Nomor PO: " + viewModel.no, bold_font2);
