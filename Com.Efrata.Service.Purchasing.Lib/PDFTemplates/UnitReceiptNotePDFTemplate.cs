@@ -25,8 +25,12 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
 
             #region Header
 
-            string companyNameString = "PT Efrata GARMINDO";
-            Paragraph companyName = new Paragraph(companyNameString, bold_font) { Alignment = Element.ALIGN_LEFT };
+            string titleString = "BON PENERIMAAN BARANG";
+            Paragraph title = new Paragraph(titleString, bold_font) { Alignment = Element.ALIGN_CENTER };
+            document.Add(title);
+
+            string companyNameString = "PT EFRATA RENTAILINDO";
+            Paragraph companyName = new Paragraph(companyNameString, header_font) { Alignment = Element.ALIGN_LEFT };
             document.Add(companyName);
 
             PdfPTable tableHeader = new PdfPTable(2);
@@ -35,7 +39,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             PdfPCell cellHeaderContentCenter = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
             PdfPCell cellHeaderContentRight = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT };
 
-            cellHeaderContentLeft.Phrase = new Phrase("Banaran, Grogol, Sukoharjo, Jawa Tengah" + "\n" + "57552" + "\n" + "Telp (0271) 732888, 7652913", bold_font);
+            cellHeaderContentLeft.Phrase = new Phrase("Kel. Banaran, Kec. Grogol, Kab.Sukoharjo, Jawa Tengah" + "\n" + "57552" + "\n" + "Telp (+62 271)719911, (+62 21)2900977", bold_font);
             tableHeader.AddCell(cellHeaderContentLeft);
             cellHeaderContentLeft.Phrase = new Phrase(" ", bold_font);
             tableHeader.AddCell(cellHeaderContentLeft);

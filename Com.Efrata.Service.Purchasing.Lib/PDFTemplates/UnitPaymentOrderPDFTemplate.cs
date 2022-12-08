@@ -47,8 +47,8 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             tableHeader.SetWidths(new float[] { 1f, 1f, 1f });
 
             PdfPCell cellHeaderContentLeft = new PdfPCell() { Border = Rectangle.NO_BORDER };
-            cellHeaderContentLeft.AddElement(new Phrase("PT. Efrata GARMINDO", header_font));
-            cellHeaderContentLeft.AddElement(new Phrase("Banaran, Grogol, Sukoharjo, Jawa Tengah" + "\n" + "57552" + "\n" + "Telp (0271) 732888, 7652913", normal_font));
+            cellHeaderContentLeft.AddElement(new Phrase("PT. EFRATA RENTAILINDO", header_font));
+            cellHeaderContentLeft.AddElement(new Phrase("Kel. Banaran, Kec. Grogol, Kab.Sukoharjo, Jawa Tengah" + "\n" + "57552" + "\n" + "Telp (+62 271)719911, (+62 21)2900977", normal_font));
             tableHeader.AddCell(cellHeaderContentLeft);
 
             PdfPCell cellHeaderContentCenter = new PdfPCell() { Border = Rectangle.NO_BORDER };
