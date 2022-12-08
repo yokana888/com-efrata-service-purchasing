@@ -244,13 +244,13 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentPurchaseRequestFacade
             DateTimeOffset now = m.Date.ToOffset(new TimeSpan(timeZone, 0, 0));
             string y = now.ToString("yy");
 
-            var unitCode = new List<string> { null, "AG1", "AG2" }.IndexOf(m.UnitCode);
+            var unitCode = new List<string> { null, "EFR" }.IndexOf(m.UnitCode);
             if (unitCode < 1)
             {
                 throw new Exception("UnitCode format is invalid when Generate RONo");
             }
 
-            var prefix = string.Concat("AG", y, unitCode);
+            var prefix = string.Concat("EFR", y, unitCode);
             var padding = 5;
             var suffix = string.Empty;
 
@@ -282,7 +282,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentPurchaseRequestFacade
             DateTimeOffset now = m.Date.ToOffset(new TimeSpan(timeZone, 0, 0));
             string y = now.ToString("yy");
 
-            var unitCode = new List<string> { null, "AG1", "AG2" }.IndexOf(m.UnitCode);
+            var unitCode = new List<string> { null, "EFR" }.IndexOf(m.UnitCode);
             if (unitCode < 1)
             {
                 throw new Exception("UnitCode format is invalid when Generate POSerialnumber");

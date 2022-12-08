@@ -2320,7 +2320,7 @@ namespace Com.Efrata.Service.Purchasing.Test.Facades.GarmentUnitReceiptNoteFacad
             DateTimeOffset now = DateTimeOffset.Now;
             long nowTicks = now.Ticks;
             var dataUrn1 = await dataUtilUrn.GetNewData3(null, dataDO);
-            dataUrn1.UnitCode = "AG1";
+            dataUrn1.UnitCode = "EFR";
             dataUrn1.IsStorage = true;
             dataUrn1.StorageId = nowTicks;
             dataUrn1.StorageCode = string.Concat("StorageCode", nowTicks);
@@ -2329,7 +2329,7 @@ namespace Com.Efrata.Service.Purchasing.Test.Facades.GarmentUnitReceiptNoteFacad
             dataUrn1.ReceiptDate = new DateTime(2019, 12, 25);
             dataUrn1.CreatedUtc = new DateTime(2019, 12, 25);
             var dataUrn2 = await dataUtilUrn.GetNewData2(nowTicks);
-            dataUrn2.UnitCode = "AG1";
+            dataUrn2.UnitCode = "EFR";
             dataUrn2.IsStorage = true;
             dataUrn2.StorageId = nowTicks;
             dataUrn2.StorageCode = string.Concat("StorageCode", nowTicks);
@@ -2361,7 +2361,7 @@ namespace Com.Efrata.Service.Purchasing.Test.Facades.GarmentUnitReceiptNoteFacad
             await facadeRC.Create(dataRC.GarmentReceiptCorrection, USERNAME);
             var stockreport = new AccountingStockReportFacade(serviceProvider, dbContext);
             //var Response = stockreport.GenerateExcelAStockReport(null, dataUrn1.UnitCode, new DateTime(2019, 12, 26), new DateTime(2019, 12, 27), 7);
-            var Response = stockreport.GenerateExcelAStockReport("BB", "BAHAN BAKU", "AG1", "KONFEKSI 2A", new DateTime(2010, 12, 26), DateTime.Now, 7);
+            var Response = stockreport.GenerateExcelAStockReport("BB", "BAHAN BAKU", "EFR", "KONFEKSI 2A", new DateTime(2010, 12, 26), DateTime.Now, 7);
             Assert.IsType<System.IO.MemoryStream>(Response);
         }
         [Fact]
