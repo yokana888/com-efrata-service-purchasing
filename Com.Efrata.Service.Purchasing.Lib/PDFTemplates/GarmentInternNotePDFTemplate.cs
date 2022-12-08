@@ -147,8 +147,8 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             double maxtotal = 0;
             decimal totalcorrection = 0;
             Dictionary<string, double> units = new Dictionary<string, double>();
-            units.Add("AG1", 0);
-            units.Add("AG2", 0);
+            units.Add("EFR", 0);
+            //units.Add("AG2", 0);
             
             Dictionary<long, decimal> koreksi = new Dictionary<long, decimal>();
             Dictionary<long, double> kurs = new Dictionary<long, double>();

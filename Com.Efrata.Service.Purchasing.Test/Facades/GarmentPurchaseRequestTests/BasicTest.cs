@@ -98,7 +98,7 @@ namespace Com.Efrata.Service.Purchasing.Test.Facades.GarmentPurchaseRequestTests
             GarmentPurchaseRequestFacade facade = new GarmentPurchaseRequestFacade(mockServiceProvider.Object, _dbContext(GetCurrentMethod()));
             var model = dataUtil(facade, GetCurrentMethod()).GetNewData();
             model.PRType = "MASTER";
-            model.UnitCode = "AG1";
+            model.UnitCode = "EFR";
             model.RONo = null;
             foreach (var item in model.Items)
             {
@@ -124,7 +124,7 @@ namespace Com.Efrata.Service.Purchasing.Test.Facades.GarmentPurchaseRequestTests
             GarmentPurchaseRequestFacade facade = new GarmentPurchaseRequestFacade(mockServiceProvider.Object, _dbContext(GetCurrentMethod()));
             var model = dataUtil(facade, GetCurrentMethod()).GetNewData();
             model.PRType = "SAMPLE";
-            model.UnitCode = "AG1";
+            model.UnitCode = "EFR";
             model.RONo = null;
             foreach (var item in model.Items)
             {
@@ -170,7 +170,7 @@ namespace Com.Efrata.Service.Purchasing.Test.Facades.GarmentPurchaseRequestTests
             GarmentPurchaseRequestFacade facade = new GarmentPurchaseRequestFacade(mockServiceProvider.Object, _dbContext(GetCurrentMethod()));
             var model = dataUtil(facade, GetCurrentMethod()).GetNewData();
             //model.PRType = "MASTER";
-            model.UnitCode = "AG1";
+            model.UnitCode = "EFR";
             model.RONo = null;
             foreach (var item in model.Items)
             {
@@ -224,7 +224,7 @@ namespace Com.Efrata.Service.Purchasing.Test.Facades.GarmentPurchaseRequestTests
             GarmentPurchaseRequestFacade facade = new GarmentPurchaseRequestFacade(mockServiceProvider.Object, _dbContext(GetCurrentMethod()));
             var model = dataUtil(facade, GetCurrentMethod()).GetNewData();
             //model.PRType = "MASTER";
-            model.UnitCode = "AG1";
+            model.UnitCode = "EFR";
             //model.RONo = null;
             foreach (var item in model.Items)
             {
@@ -278,7 +278,7 @@ namespace Com.Efrata.Service.Purchasing.Test.Facades.GarmentPurchaseRequestTests
             GarmentPurchaseRequestFacade facade = new GarmentPurchaseRequestFacade(mockServiceProvider.Object, _dbContext(GetCurrentMethod()));
             var model = dataUtil(facade, GetCurrentMethod()).GetNewData();
             model.PRType = "SAMPLE";
-            model.UnitCode = "AG1";
+            model.UnitCode = "EFR";
             model.RONo = null;
             foreach (var item in model.Items)
             {
@@ -335,7 +335,7 @@ namespace Com.Efrata.Service.Purchasing.Test.Facades.GarmentPurchaseRequestTests
                 newModel.Items.Add(dataUtil.CopyDataItem(item));
             }
             newModel.PRType = "SAMPLE";
-            newModel.UnitCode = "AG1";
+            newModel.UnitCode = "EFR";
             var firstItem = newModel.Items.First();
             firstItem.Id = 0;
             firstItem.PO_SerialNumber = null;
