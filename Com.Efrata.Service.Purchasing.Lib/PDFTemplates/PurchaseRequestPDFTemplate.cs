@@ -26,11 +26,11 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
 
             #region Header
 
-            string companyNameString = "PT. Efrata GARMINDO";
+            string companyNameString = "PT. EFRATA RENTAILINDO";
             Paragraph companyName = new Paragraph(companyNameString, header_font) { Alignment = Element.ALIGN_CENTER };
             document.Add(companyName);
 
-            string companyAddressString = "Banaran, Grogol, Sukoharjo, Jawa Tengah";
+            string companyAddressString = "Kel. Banaran, Kec. Grogol, Kab.Sukoharjo, Jawa Tengah";
             Paragraph companyAddress = new Paragraph(companyAddressString, normal_font) { Alignment = Element.ALIGN_CENTER };
             companyAddress.SpacingAfter = 10f;
             document.Add(companyAddress);

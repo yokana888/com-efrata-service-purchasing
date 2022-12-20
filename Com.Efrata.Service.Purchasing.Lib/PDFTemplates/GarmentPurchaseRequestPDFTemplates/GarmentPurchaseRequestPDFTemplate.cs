@@ -16,7 +16,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates.GarmentPurchaseRequestP
     {
         public static MemoryStream Generate(IServiceProvider serviceProvider, GarmentPurchaseRequestViewModel viewModel)
         {
-            Font header_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 12);
+            Font header_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 10);
             Font normal_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 6);
             Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 6);
 
@@ -31,7 +31,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates.GarmentPurchaseRequestP
 
             #region Header
 
-            Paragraph title = new Paragraph("PT Efrata GARMINDO", normal_font) { Alignment = Element.ALIGN_LEFT };
+            Paragraph title = new Paragraph("PT EFRATA RETAILINDO", normal_font) { Alignment = Element.ALIGN_LEFT };
             document.Add(title);
 
             Paragraph companyName = new Paragraph("BUDGET MASTER GARMENT", header_font) { Alignment = Element.ALIGN_LEFT };
