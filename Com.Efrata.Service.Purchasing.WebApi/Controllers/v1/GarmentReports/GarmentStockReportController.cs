@@ -32,7 +32,7 @@ namespace Com.Efrata.Service.Purchasing.WebApi.Controllers.v1.GarmentReports
         }
 
         [HttpGet]
-        public IActionResult GetReportGarmentStock(DateTime? dateFrom, DateTime? dateTo, string category, string unitcode, int page = 1, int size = 25, string Order = "{}")
+        public IActionResult GetReportGarmentStock(DateTime? dateFrom, DateTime? dateTo, string category, string unitcode, string planPo, int page = 1, int size = 25, string Order = "{}")
         {
             try
             {
@@ -43,7 +43,7 @@ namespace Com.Efrata.Service.Purchasing.WebApi.Controllers.v1.GarmentReports
                 int offset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
                 string accept = Request.Headers["Accept"];
 
-                var data = _facade.GetStockReport(offset, unitcode, category, page, size, Order, dateFrom, dateTo);
+                var data = _facade.GetStockReport(offset, unitcode, category, planPo, page, size, Order, dateFrom, dateTo);
 
 
 
@@ -66,7 +66,7 @@ namespace Com.Efrata.Service.Purchasing.WebApi.Controllers.v1.GarmentReports
             }
 
         [HttpGet("download")]
-        public IActionResult GetXls(DateTime? dateFrom, DateTime? dateTo, string category, string categoryname, string unitname, string unitcode)
+        public IActionResult GetXls(DateTime? dateFrom, DateTime? dateTo, string category, string categoryname, string unitname, string unitcode, string planPo)
         {
 
             try
@@ -80,7 +80,7 @@ namespace Com.Efrata.Service.Purchasing.WebApi.Controllers.v1.GarmentReports
                 //DateTime DateFrom = dateFrom == null ? new DateTime(1970, 1, 1) : Convert.ToDateTime(dateFrom);
                 //DateTime DateTo = dateTo == null ? DateTime.Now : Convert.ToDateTime(dateTo);
 
-                MemoryStream xls = _facade.GenerateExcelStockReport(category, categoryname, unitname, unitcode, dateFrom, dateTo, offset);
+                MemoryStream xls = _facade.GenerateExcelStockReport(category, categoryname, unitname, planPo, unitcode, dateFrom, dateTo, offset);
 
 
                 string filename =   String.Format("Laporan Stock Gudang  - {0}.xlsx", DateTime.UtcNow.ToString("ddMMyyyy"));

@@ -482,7 +482,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
                 Paragraph pembeliBkp = new Paragraph("Pembeli PKB", smaller_bold_font) { Alignment = Element.ALIGN_LEFT };
                 document.Add(pembeliBkp);
 
-                Paragraph companyName = new Paragraph("Nama     :  PT Efrata GARMINDO", smaller_font) { Alignment = Element.ALIGN_LEFT };
+                Paragraph companyName = new Paragraph("Nama     :  PT EFRATA RETAILINDO", smaller_font) { Alignment = Element.ALIGN_LEFT };
                 document.Add(companyName);
 
                 Paragraph companyAddress = new Paragraph("Alamat     : Banaran, Grogol, Sukoharjo, Jawa Tengah 57552", smaller_font) { Alignment = Element.ALIGN_LEFT };
