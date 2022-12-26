@@ -44,7 +44,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
 			//PdfPCell cellHeaderContentRight = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT };
 
 			//cellHeaderContentLeft.Phrase = new Phrase("PT DAN LIRIS" + "\n" + "JL. Merapi No.23" + "\n" + "Banaran, Grogol, Kab. Sukoharjo" + "\n" + "Jawa Tengah 57552 - INDONESIA" + "\n" + "PO.BOX 166 Solo 57100" + "\n" + "Telp. (0271) 740888, 714400" + "\n" + "Fax. (0271) 735222, 740777", bold_font);
-			cellHeaderContentLeft.Phrase = new Phrase("PT Efrata GARMINDO" + "\n" + "Banaran, Grogol, Sukoharjo" + "\n" + "Jawa Tengah 57552 - INDONESIA" + "\n" + "Telp. (0271) 732888, 7652913", bold_font);
+			cellHeaderContentLeft.Phrase = new Phrase("PT EFRATA RETAILINDO" + "\n" + "Banaran, Grogol, Sukoharjo" + "\n" + "Jawa Tengah 57552 - INDONESIA" + "\n" + "Telp (+62 271)719911, (+62 21)2900977", bold_font);
 			tableHeader.AddCell(cellHeaderContentLeft);
 
 			//string noPO = viewModel.Supplier.Import ? "FM-PB-00-06-009/R1" + "\n" + "PO: " + EPONo  : "PO: " + EPONo;

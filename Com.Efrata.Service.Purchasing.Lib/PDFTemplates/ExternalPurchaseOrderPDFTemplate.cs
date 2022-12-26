@@ -106,7 +106,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             #endregion
 
             document.Add(new Paragraph("Dengan Hormat,", normal_font) { Alignment = Element.ALIGN_LEFT });
-            string firstParagraphString = "Yang bertanda tangan di bawah ini, PT. Efrata Garmindo, Solo (selanjutnya disebut sebagai pihak Pembeli) dan " + viewModel.supplier.name + "(selanjutnya disebut sebagai pihak Penjual) saling menyetujui untuk mengadaan kontrak jual beli dengan ketentuan sebagai berikut : ";
+            string firstParagraphString = "Yang bertanda tangan di bawah ini, PT. EFRATA RETAILINDO, Solo (selanjutnya disebut sebagai pihak Pembeli) dan " + viewModel.supplier.name + "(selanjutnya disebut sebagai pihak Penjual) saling menyetujui untuk mengadaan kontrak jual beli dengan ketentuan sebagai berikut : ";
             Paragraph firstParagraph = new Paragraph(firstParagraphString, small_font) { Alignment = Element.ALIGN_LEFT };
             
             firstParagraph.SpacingAfter = 10f;

@@ -32,7 +32,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
             this.dbSet = dbContext.Set<GarmentDeliveryOrder>();
         }
 
-        public List<GarmentStockReportViewModel> GetStockQuery(string ctg, string unitcode, DateTime? datefrom, DateTime? dateto, int offset)
+        public List<GarmentStockReportViewModel> GetStockQuery(string ctg, string unitcode, string planPo, DateTime? datefrom, DateTime? dateto, int offset)
         {
             DateTime DateFrom = datefrom == null ? new DateTime(1970, 1, 1) : (DateTime)datefrom;
             DateTime DateTo = dateto == null ? DateTime.Now : (DateTime)dateto;
@@ -60,6 +60,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
                                 && a.IsDeleted == false && b.IsDeleted == false
                                 && a.UnitCode == (string.IsNullOrWhiteSpace(unitcode) ? a.UnitCode : unitcode)
                                 && categories1.Contains(b.ProductName)
+                                && b.POSerialNumber== (string.IsNullOrWhiteSpace(planPo) ? b.POSerialNumber : planPo)
                                 select new GarmentStockReportViewModelTemp
                                 {
                                     BeginningBalanceQty = Math.Round(b.Quantity, 2),
@@ -113,6 +114,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
                               && b.CreatedUtc.AddHours(offset).Date < DateFrom.Date
                               && b.UnitCode == (string.IsNullOrWhiteSpace(unitcode) ? b.UnitCode : unitcode)
                               && categories1.Contains(a.ProductName)
+                              && a.POSerialNumber == (string.IsNullOrWhiteSpace(planPo) ? a.POSerialNumber : planPo)
                             select new GarmentStockReportViewModelTemp
                             {
                                 BeginningBalanceQty = Math.Round(a.ReceiptQuantity * a.Conversion, 2, MidpointRounding.AwayFromZero),
@@ -161,11 +163,11 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
                             from urnitem in urnitems.DefaultIfEmpty()
                             where
                             a.IsDeleted == false && b.IsDeleted == false
-                               &&
-                               b.CreatedUtc.AddHours(offset).Date >= lastdate.Date
+                               && b.CreatedUtc.AddHours(offset).Date >= lastdate.Date
                                && b.CreatedUtc.AddHours(offset).Date < DateFrom.Date
                                && b.UnitSenderCode == (string.IsNullOrWhiteSpace(unitcode) ? b.UnitSenderCode : unitcode)
                                && categories1.Contains(a.ProductName)
+                               && a.POSerialNumber == (string.IsNullOrWhiteSpace(planPo) ? a.POSerialNumber : planPo)
                             select new GarmentStockReportViewModelTemp
                             {
                                 //BeginningBalanceQty = Convert.ToDecimal(a.UomUnit == "YARD" && ctg == "BB" ? a.Quantity * -1 * 0.9144 : b.ExpenditureType == "EXTERNAL" ? Convert.ToDouble(urnitem == null ? 0 : urnitem.SmallQuantity) * -1 : -1 * a.Quantity),
@@ -219,6 +221,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
                              && g.CreatedUtc.AddHours(offset).Date < DateFrom.Date
                              && a.UnitCode == (string.IsNullOrWhiteSpace(unitcode) ? a.UnitCode : unitcode)
                              && categories1.Contains(b.ProductName)
+                             && b.POSerialNumber == (string.IsNullOrWhiteSpace(planPo) ? b.POSerialNumber : planPo)
                              select new GarmentStockReportViewModelTemp
                              {
                                  BeginningBalanceQty = Math.Round((decimal)e.SmallQuantity, 2, MidpointRounding.AwayFromZero),
@@ -289,6 +292,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
                               && b.CreatedUtc.AddHours(offset).Date <= DateTo.Date
                               && b.UnitCode == (string.IsNullOrWhiteSpace(unitcode) ? b.UnitCode : unitcode)
                               && categories1.Contains(a.ProductName)
+                             && a.POSerialNumber == (string.IsNullOrWhiteSpace(planPo) ? a.POSerialNumber : planPo)
                           select new GarmentStockReportViewModelTemp
                           {
                               BeginningBalanceQty = 0,
@@ -340,6 +344,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
                                && b.CreatedUtc.AddHours(offset).Date <= DateTo.Date
                                && b.UnitSenderCode == (string.IsNullOrWhiteSpace(unitcode) ? b.UnitSenderCode : unitcode)
                                && categories1.Contains(a.ProductName)
+                               && a.POSerialNumber == (string.IsNullOrWhiteSpace(planPo) ? a.POSerialNumber : planPo)
                           select new GarmentStockReportViewModelTemp
                           {
                               BeginningBalanceQty = 0,
@@ -392,6 +397,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
                              && g.CreatedUtc.AddHours(offset).Date <= DateTo.Date
                              && a.UnitCode == (string.IsNullOrWhiteSpace(unitcode) ? a.UnitCode : unitcode)
                              && categories1.Contains(b.ProductName)
+                             && b.POSerialNumber == (string.IsNullOrWhiteSpace(planPo) ? b.POSerialNumber : planPo)
                            select new GarmentStockReportViewModelTemp
                            {
                                BeginningBalanceQty = 0,
@@ -595,11 +601,11 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
 
         }
 
-        public Tuple<List<GarmentStockReportViewModel>, int> GetStockReport(int offset, string unitcode, string tipebarang, int page, int size, string Order, DateTime? dateFrom, DateTime? dateTo)
+        public Tuple<List<GarmentStockReportViewModel>, int> GetStockReport(int offset, string unitcode, string tipebarang, string planPo, int page, int size, string Order, DateTime? dateFrom, DateTime? dateTo)
         {
             //var Query = GetStockQuery(tipebarang, unitcode, dateFrom, dateTo, offset);
             //Query = Query.OrderByDescending(x => x.SupplierName).ThenBy(x => x.Dono);
-            List<GarmentStockReportViewModel> Query = GetStockQuery(tipebarang, unitcode, dateFrom, dateTo, offset).ToList();
+            List<GarmentStockReportViewModel> Query = GetStockQuery(tipebarang, unitcode, planPo, dateFrom, dateTo, offset).ToList();
             //Data = Data.Where(x => (x.BeginningBalanceQty > 0) || (x.EndingBalanceQty > 0) || (x.ReceiptCorrectionQty > 0) || (x.ReceiptQty > 0) || (x.ExpendQty > 0)).ToList();
             //Data = Data.OrderBy(x => x.ProductCode).ThenBy(x => x.PlanPo).ToList();
 
@@ -610,9 +616,9 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
             return Tuple.Create(Data, TotalData);
         }
 
-        public MemoryStream GenerateExcelStockReport(string ctg, string categoryname, string unitname, string unitcode, DateTime? datefrom, DateTime? dateto, int offset)
+        public MemoryStream GenerateExcelStockReport(string ctg, string categoryname, string unitname, string unitcode,string planPo, DateTime? datefrom, DateTime? dateto, int offset)
         {
-            var Query = GetStockQuery(ctg, unitcode, datefrom, dateto, offset);
+            var Query = GetStockQuery(ctg, unitcode, planPo, datefrom, dateto, offset);
             Query.RemoveAt(Query.Count() - 1);
             //data = data.Where(x => (x.BeginningBalanceQty != 0) || (x.EndingBalanceQty != 0) || (x.ReceiptCorrectionQty > 0) || (x.ReceiptQty > 0) || (x.ExpendQty > 0)).ToList();
             //var Query = data.OrderBy(x => x.ProductCode).ThenBy(x => x.PlanPo).ToList();

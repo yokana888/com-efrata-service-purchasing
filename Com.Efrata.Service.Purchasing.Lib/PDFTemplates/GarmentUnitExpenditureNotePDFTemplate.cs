@@ -41,7 +41,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             Paragraph title = new Paragraph(titleString, header_font) { Alignment = Element.ALIGN_CENTER };
             document.Add(title);
 
-            string companyNameString = "PT Efrata GARMINDO";
+            string companyNameString = "PT EFRATA RETAILINDO";
             Paragraph companyName = new Paragraph(companyNameString, bold_font) { Alignment = Element.ALIGN_LEFT };
             document.Add(companyName);
 
@@ -164,11 +164,11 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             PdfPCell cellSignatureContentLeft = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
             PdfPCell cellSignatureContent = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
 
-            cellSignatureContent.Phrase = new Phrase("Yang Menerima\n\n\n\n\n\n\n(  _____________________  )", normal_font);
+            cellSignatureContent.Phrase = new Phrase("Penerima\n\n\n\n\n\n\n(  _____________________  )", normal_font);
             tableSignature.AddCell(cellSignatureContent);
             cellSignatureContent.Phrase = new Phrase("Mengetahui\n\n\n\n\n\n\n(  _____________________  )", normal_font);
             tableSignature.AddCell(cellSignatureContent);
-            cellSignatureContent.Phrase = new Phrase("Diserahkan Oleh\n\n\n\n\n\n\n(  _____________________  )", normal_font);
+            cellSignatureContent.Phrase = new Phrase("Dubuat Oleh\n\n\n\n\n\n\n(  _____________________  )", normal_font);
             tableSignature.AddCell(cellSignatureContent);
 
             cellSignatureContentLeft.Phrase = new Phrase($"\n\nDicetak Tanggal {DateTimeOffset.Now.ToOffset(new TimeSpan(identityService.TimezoneOffset, 0, 0)).ToString("dd MMMM yyyy", new CultureInfo("id-ID"))}", normal_font);
