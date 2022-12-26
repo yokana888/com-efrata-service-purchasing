@@ -168,7 +168,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             tableSignature.AddCell(cellSignatureContent);
             cellSignatureContent.Phrase = new Phrase("Mengetahui\n\n\n\n\n\n\n(  _____________________  )", normal_font);
             tableSignature.AddCell(cellSignatureContent);
-            cellSignatureContent.Phrase = new Phrase("Dubuat Oleh\n\n\n\n\n\n\n(  _____________________  )", normal_font);
+            cellSignatureContent.Phrase = new Phrase("Dibuat Oleh\n\n\n\n\n\n\n(  _____________________  )", normal_font);
             tableSignature.AddCell(cellSignatureContent);
 
             cellSignatureContentLeft.Phrase = new Phrase($"\n\nDicetak Tanggal {DateTimeOffset.Now.ToOffset(new TimeSpan(identityService.TimezoneOffset, 0, 0)).ToString("dd MMMM yyyy", new CultureInfo("id-ID"))}", normal_font);
