@@ -36,10 +36,20 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             PdfPTable tableHeader = new PdfPTable(2);
             tableHeader.SetWidths(new float[] { 4f, 4f });
             PdfPCell cellHeaderContentLeft = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
+            PdfPCell cellHeaderContentCenter = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
             PdfPCell cellHeaderContentRight = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT };
 
             cellHeaderContentLeft.Phrase = new Phrase("Kel. Banaran, Kec. Grogol, Kab.Sukoharjo, Jawa Tengah" + "\n" + "57552" + "\n" + "Telp (+62 271)719911, (+62 21)2900977", bold_font);
             tableHeader.AddCell(cellHeaderContentLeft);
+            cellHeaderContentLeft.Phrase = new Phrase(" ", bold_font);
+            tableHeader.AddCell(cellHeaderContentLeft);
+            cellHeaderContentCenter.Phrase = new Phrase(" ", bold_font);
+            tableHeader.AddCell(cellHeaderContentCenter);
+            cellHeaderContentCenter.Phrase = new Phrase(" ", bold_font);
+            tableHeader.AddCell(cellHeaderContentCenter);
+            cellHeaderContentCenter.Colspan = 2;
+            cellHeaderContentCenter.Phrase = new Phrase("BON PENERIMAAN BARANG", bold_font);
+            tableHeader.AddCell(cellHeaderContentCenter);
 
             //cellHeaderContentRight.Phrase = new Phrase("FM-PB-00-06-010/R2", bold_font);
             cellHeaderContentRight.Phrase = new Phrase("  ", bold_font);
