@@ -45,13 +45,10 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             Paragraph companyName = new Paragraph(companyNameString, bold_font) { Alignment = Element.ALIGN_LEFT };
             document.Add(companyName);
 
-            string companyAddressString = "BANARAN, GROGOL, SUKOHARJO";
-            Paragraph companyAddress = new Paragraph(companyAddressString, bold_font) { Alignment = Element.ALIGN_LEFT };
+            string companyAddressString = "Banaran, Grogol, Sukoharjo, Jawa Tengah" + "\n" + "57552" + "\n" + "Telp (0271) 732888, 7652913";
+            Paragraph companyAddress = new Paragraph(companyAddressString, normal_font) { Alignment = Element.ALIGN_LEFT };
+            companyAddress.SpacingAfter = 10f;
             document.Add(companyAddress);
-
-            string companyPostalCodeString = "PO. Box. 166 Solo - 57100 Indonesia";
-            Paragraph companyPostalCode = new Paragraph(companyPostalCodeString, bold_font) { Alignment = Element.ALIGN_LEFT };
-            document.Add(companyPostalCode);
 
             #endregion
 
