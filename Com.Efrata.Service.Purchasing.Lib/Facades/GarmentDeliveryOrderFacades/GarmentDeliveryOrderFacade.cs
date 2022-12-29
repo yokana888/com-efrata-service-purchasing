@@ -2,6 +2,7 @@
 using Com.Efrata.Service.Purchasing.Lib.Helpers;
 using Com.Efrata.Service.Purchasing.Lib.Helpers.ReadResponse;
 using Com.Efrata.Service.Purchasing.Lib.Interfaces;
+using Com.Efrata.Service.Purchasing.Lib.Models.GarmentBeacukaiModel;
 using Com.Efrata.Service.Purchasing.Lib.Models.GarmentDeliveryOrderModel;
 using Com.Efrata.Service.Purchasing.Lib.Models.GarmentExternalPurchaseOrderModel;
 using Com.Efrata.Service.Purchasing.Lib.Models.GarmentInternalPurchaseOrderModel;
@@ -33,6 +34,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentDeliveryOrderFacades
         private readonly PurchasingDbContext dbContext;
         public readonly IServiceProvider serviceProvider;
         private readonly DbSet<GarmentDeliveryOrder> dbSet;
+        private readonly DbSet<GarmentBeacukai> dbSetBC;
         //private readonly DbSet<GarmentDeliveryOrderItem> dbSetItem;
 
         private readonly IMapper mapper;
@@ -42,6 +44,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentDeliveryOrderFacades
             this.dbContext = dbContext;
             dbSet = dbContext.Set<GarmentDeliveryOrder>();
             this.serviceProvider = serviceProvider;
+            this.dbSetBC = dbContext.Set<GarmentBeacukai>();
 
             mapper = serviceProvider == null ? null : (IMapper)serviceProvider.GetService(typeof(IMapper));
         }
@@ -201,7 +204,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentDeliveryOrderFacades
                     m.IsCorrection = false;
                     m.IsCustoms = false;
                     m.PaymentBill = string.Concat(lastPaymentBill.format, (lastPaymentBill.counterId++).ToString("D3"));
-
+                    m.CustomsCategory = "Non Fasilitas";
                     foreach (var item in m.Items)
                     {
                         EntityExtension.FlagForCreate(item, user, USER_AGENT);
@@ -250,6 +253,40 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentDeliveryOrderFacades
                     this.dbSet.Add(m);
 
                     Created = await dbContext.SaveChangesAsync();
+
+                    #region BC
+                    List<GarmentBeacukaiItem> garmentBeacukaiItems = new List<GarmentBeacukaiItem>();
+                    var garmentBeacukaiItem = new GarmentBeacukaiItem
+                                                {
+                                                    DODate = m.DODate,
+                                                    GarmentDOId = m.Id,
+                                                    GarmentDONo = m.DONo,
+                                                    ArrivalDate = DateTimeOffset.Now,
+                                                    TotalAmount = (decimal)m.TotalAmount,
+                                                    TotalQty = m.Items.Sum(a => a.Details.Sum(b => b.DOQuantity))
+                                                };
+                    EntityExtension.FlagForCreate(garmentBeacukaiItem, user, USER_AGENT);
+                    garmentBeacukaiItems.Add(garmentBeacukaiItem);
+                    GarmentBeacukai garmentBeacukai = new GarmentBeacukai
+                    {
+                        SupplierCode = m.SupplierCode,
+                        SupplierId = m.SupplierId,
+                        SupplierName = m.SupplierName,
+                        Netto = 0,
+                        PackagingQty = 0,
+                        BeacukaiDate = DateTimeOffset.Now,
+                        ArrivalDate = DateTimeOffset.Now,
+                        Bruto = 0,
+                        CurrencyCode = m.DOCurrencyCode,
+                        CurrencyId = m.DOCurrencyId.GetValueOrDefault(),
+                        BeacukaiNo = "BC." + m.DONo,
+                        Items = garmentBeacukaiItems
+
+                    };
+                    EntityExtension.FlagForCreate(garmentBeacukai, user, USER_AGENT);
+                    dbSetBC.Add(garmentBeacukai);
+                    Created += await dbContext.SaveChangesAsync();
+                    #endregion
                     transaction.Commit();
                 }
                 catch (Exception e)
@@ -261,6 +298,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentDeliveryOrderFacades
 
             return Created;
         }
+
 
         public (string format, int counterId) GeneratePaymentBillNo()
         {
