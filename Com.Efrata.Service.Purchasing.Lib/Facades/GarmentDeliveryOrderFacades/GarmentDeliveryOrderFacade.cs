@@ -468,6 +468,13 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentDeliveryOrderFacades
                                     }
                                 }
                             }
+
+                            GarmentBeacukaiItem garmentBeacukaiItem = dbContext.GarmentBeacukaiItems.Where(a => a.GarmentDOId == (long)m.Id).FirstOrDefault();
+                            //GarmentBeacukai garmentBeacukai = dbSetBC.Where(a => a.Id == garmentBeacukaiItem.BeacukaiId).FirstOrDefault();
+                            garmentBeacukaiItem.TotalAmount =(decimal)m.TotalAmount;
+                            garmentBeacukaiItem.TotalQty = m.Items.Sum(a => a.Details.Sum(b => b.DOQuantity));
+                            EntityExtension.FlagForUpdate(garmentBeacukaiItem, user, USER_AGENT);
+                            
                         }
 
                         dbSet.Update(m);
@@ -555,6 +562,11 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentDeliveryOrderFacades
                             EntityExtension.FlagForDelete(detail, user, USER_AGENT);
                         }
                     }
+                    GarmentBeacukaiItem garmentBeacukaiItem = dbContext.GarmentBeacukaiItems.Where(a => a.GarmentDOId == (long)id).FirstOrDefault();
+                    GarmentBeacukai garmentBeacukai = dbSetBC.Where(a => a.Id == garmentBeacukaiItem.BeacukaiId).FirstOrDefault();
+
+                    EntityExtension.FlagForUpdate(garmentBeacukai, user, USER_AGENT);
+                    EntityExtension.FlagForUpdate(garmentBeacukaiItem, user, USER_AGENT);
                     Deleted = await dbContext.SaveChangesAsync();
 
                     await dbContext.SaveChangesAsync();

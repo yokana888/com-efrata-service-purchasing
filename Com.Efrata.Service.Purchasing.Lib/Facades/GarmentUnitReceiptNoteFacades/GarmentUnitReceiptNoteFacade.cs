@@ -248,6 +248,12 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentUnitReceiptNoteFacade
                         garmentUnitReceiptNote.DOCurrencyRate = garmentDeliveryOrder.DOCurrencyRate;
                     }
 
+                    if (garmentUnitReceiptNote.DOId>0)
+                    {
+                        var garmentDeliveryOrderUpdate = dbsetGarmentDeliveryOrder.First(d => d.Id == garmentUnitReceiptNote.DOId);
+                        garmentDeliveryOrderUpdate.IsCustoms = true;
+                        EntityExtension.FlagForUpdate(garmentDeliveryOrderUpdate, identityService.Username, USER_AGENT);
+                    }
 
                     foreach (var garmentUnitReceiptNoteItem in garmentUnitReceiptNote.Items)
                     {
@@ -927,6 +933,13 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentUnitReceiptNoteFacade
 
                     garmentUnitReceiptNote.DeletedReason = deletedReason;
                     EntityExtension.FlagForDelete(garmentUnitReceiptNote, identityService.Username, USER_AGENT);
+                    if (garmentUnitReceiptNote.DOId > 0)
+                    {
+                        var garmentDeliveryOrderUpdate = dbsetGarmentDeliveryOrder.First(d => d.Id == garmentUnitReceiptNote.DOId);
+                        garmentDeliveryOrderUpdate.IsCustoms = false;
+                        EntityExtension.FlagForUpdate(garmentDeliveryOrderUpdate, identityService.Username, USER_AGENT);
+
+                    }
 
                     foreach (var garmentUnitReceiptNoteItem in garmentUnitReceiptNote.Items)
                     {
