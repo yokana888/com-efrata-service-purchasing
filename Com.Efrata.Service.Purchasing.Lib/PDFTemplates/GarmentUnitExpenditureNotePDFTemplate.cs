@@ -41,17 +41,14 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             Paragraph title = new Paragraph(titleString, header_font) { Alignment = Element.ALIGN_CENTER };
             document.Add(title);
 
-            string companyNameString = "PT Efrata GARMINDO";
+            string companyNameString = "PT EFRATA RETAILINDO";
             Paragraph companyName = new Paragraph(companyNameString, bold_font) { Alignment = Element.ALIGN_LEFT };
             document.Add(companyName);
 
-            string companyAddressString = "BANARAN, GROGOL, SUKOHARJO";
-            Paragraph companyAddress = new Paragraph(companyAddressString, bold_font) { Alignment = Element.ALIGN_LEFT };
+            string companyAddressString = "Banaran, Grogol, Sukoharjo, Jawa Tengah" + "\n" + "57552" + "\n" + "Telp (0271) 732888, 7652913";
+            Paragraph companyAddress = new Paragraph(companyAddressString, normal_font) { Alignment = Element.ALIGN_LEFT };
+            companyAddress.SpacingAfter = 10f;
             document.Add(companyAddress);
-
-            string companyPostalCodeString = "PO. Box. 166 Solo - 57100 Indonesia";
-            Paragraph companyPostalCode = new Paragraph(companyPostalCodeString, bold_font) { Alignment = Element.ALIGN_LEFT };
-            document.Add(companyPostalCode);
 
             #endregion
 
@@ -164,11 +161,11 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             PdfPCell cellSignatureContentLeft = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
             PdfPCell cellSignatureContent = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
 
-            cellSignatureContent.Phrase = new Phrase("Yang Menerima\n\n\n\n\n\n\n(  _____________________  )", normal_font);
+            cellSignatureContent.Phrase = new Phrase("Penerima\n\n\n\n\n\n\n(  _____________________  )", normal_font);
             tableSignature.AddCell(cellSignatureContent);
             cellSignatureContent.Phrase = new Phrase("Mengetahui\n\n\n\n\n\n\n(  _____________________  )", normal_font);
             tableSignature.AddCell(cellSignatureContent);
-            cellSignatureContent.Phrase = new Phrase("Diserahkan Oleh\n\n\n\n\n\n\n(  _____________________  )", normal_font);
+            cellSignatureContent.Phrase = new Phrase("Dibuat Oleh\n\n\n\n\n\n\n(  _____________________  )", normal_font);
             tableSignature.AddCell(cellSignatureContent);
 
             cellSignatureContentLeft.Phrase = new Phrase($"\n\nDicetak Tanggal {DateTimeOffset.Now.ToOffset(new TimeSpan(identityService.TimezoneOffset, 0, 0)).ToString("dd MMMM yyyy", new CultureInfo("id-ID"))}", normal_font);

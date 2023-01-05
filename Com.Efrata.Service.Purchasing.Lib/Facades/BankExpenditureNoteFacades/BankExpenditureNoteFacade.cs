@@ -1508,7 +1508,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
             cellHeaderCS2.HorizontalAlignment = Element.ALIGN_CENTER;
             headerTable.AddCell(cellHeaderCS2);
 
-            cellHeaderBody.Phrase = new Phrase("PT. Efrata GARMINDO", normal_font);
+            cellHeaderBody.Phrase = new Phrase("PT. EFRATA RETAILINDO", normal_font);
             headerTable1.AddCell(cellHeaderBody);
             cellHeaderBody.Phrase = new Phrase("Banaran, Grogol, Sukoharjo, Jawa Tengah", normal_font);
             headerTable1.AddCell(cellHeaderBody);

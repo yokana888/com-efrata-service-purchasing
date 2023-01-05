@@ -50,7 +50,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates.GarmentCorrectionNotePD
             //    "Telp. (0271) 740888, 714400\n" +
             //    "Fax. (0271) 735222, 740777";
 
-            string addressString = "PT Efrata GARMINDO" + "\n" + "Banaran, Grogol, Sukoharjo" + "\n" + "Jawa Tengah 57552 - INDONESIA" + "\n" + "Telp. (0271) 732888, 7652913";
+            string addressString = "PT EFRATA RETAILINDO" + "\n" + "Banaran, Grogol, Sukoharjo" + "\n" + "Jawa Tengah 57552 - INDONESIA" + "\n" + "Telp (+62 271)719911, (+62 21)2900977";
             Paragraph addressParagraph = new Paragraph(8f, addressString, bold_font) { Alignment = Element.ALIGN_LEFT };
             document.Add(addressParagraph);
             Paragraph headerParagraph = new Paragraph("NOTA KOREKSI PAJAK", header_font) { Alignment = Element.ALIGN_CENTER, SpacingAfter = 15f };
