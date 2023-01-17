@@ -263,7 +263,8 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentDeliveryOrderFacades
                                                     GarmentDONo = m.DONo,
                                                     ArrivalDate = DateTimeOffset.Now,
                                                     TotalAmount = (decimal)m.TotalAmount,
-                                                    TotalQty = m.Items.Sum(a => a.Details.Sum(b => b.DOQuantity))
+                                                    TotalQty = m.Items.Sum(a => a.Details.Sum(b => b.DOQuantity)),
+                                                    
                                                 };
                     EntityExtension.FlagForCreate(garmentBeacukaiItem, user, USER_AGENT);
                     garmentBeacukaiItems.Add(garmentBeacukaiItem);
@@ -280,7 +281,8 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentDeliveryOrderFacades
                         CurrencyCode = m.DOCurrencyCode,
                         CurrencyId = m.DOCurrencyId.GetValueOrDefault(),
                         BeacukaiNo = "BC." + m.DONo,
-                        Items = garmentBeacukaiItems
+                        Items = garmentBeacukaiItems,
+                        CustomsType= "BC." + m.DONo,
 
                     };
                     EntityExtension.FlagForCreate(garmentBeacukai, user, USER_AGENT);
