@@ -40,7 +40,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates.GarmentUnitReceiptNoteP
             Paragraph companyName = new Paragraph(companyNameString, bold_font) { Alignment = Element.ALIGN_LEFT };
             document.Add(companyName);
 
-            string companyAddressString = "Banaran, Grogol, Sukoharjo, Jawa Tengah" + "\n"+ "57552" + "\n" + "Telp (0271) 732888, 7652913";
+            string companyAddressString = "Banaran, Grogol, Sukoharjo, Jawa Tengah" + "\n"+ "57552" + "\n" + "Telp (+62 271)719911, (+62 21)2900977";
             Paragraph companyAddress = new Paragraph(companyAddressString, normal_font) { Alignment = Element.ALIGN_LEFT };
             companyAddress.SpacingAfter = 10f;
             document.Add(companyAddress);
@@ -137,6 +137,9 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates.GarmentUnitReceiptNoteP
             tableContent.ExtendLastRow = false;
             tableContent.SpacingAfter = 20f;
             document.Add(tableContent);
+
+            Paragraph remark = new Paragraph("Keterangan : " + viewModel.Remark, normal_font);
+            document.Add(remark);
 
             #endregion
 
