@@ -51,7 +51,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             headerTable1.AddCell(cellHeaderBody);
             cellHeaderBody.Phrase = new Phrase("Banaran, Grogol, Sukoharjo, Jawa Tengah", normal_font);
             headerTable1.AddCell(cellHeaderBody);
-            cellHeaderBody.Phrase = new Phrase("57552" + "Telp (0271) 732888, 7652913", normal_font);
+            cellHeaderBody.Phrase = new Phrase("57552" + "Telp (+62 271)719911, (+62 21)2900977", normal_font);
             headerTable1.AddCell(cellHeaderBody);
 
             cellHeader1.AddElement(headerTable1);
