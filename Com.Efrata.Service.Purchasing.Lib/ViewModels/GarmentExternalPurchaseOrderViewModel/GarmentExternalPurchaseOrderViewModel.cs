@@ -70,7 +70,10 @@ namespace Com.Efrata.Service.Purchasing.Lib.ViewModels.GarmentExternalPurchaseOr
             {
                 yield return new ValidationResult("Vat is required", new List<string> { "Vat" });
             }
-
+            if (this.IsIncomeTax == true && this.IncomeTax.Id == 0)
+            {
+                yield return new ValidationResult("IncomeTax is required", new List<string> { "incomeTax" });
+            }
             if (this.DeliveryDate.Equals(DateTimeOffset.MinValue) || this.DeliveryDate == null)
             {
                 yield return new ValidationResult("DeliveryDate is required", new List<string> { "DeliveryDate" });
