@@ -30,7 +30,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             document.Add(title);
 
             string companyNameString = "PT EFRATA RENTAILINDO";
-            Paragraph companyName = new Paragraph(companyNameString, header_font) { Alignment = Element.ALIGN_LEFT };
+            Paragraph companyName = new Paragraph(companyNameString, bold_font) { Alignment = Element.ALIGN_LEFT };
             document.Add(companyName);
 
             PdfPTable tableHeader = new PdfPTable(2);
@@ -48,17 +48,16 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             cellHeaderContentCenter.Phrase = new Phrase(" ", bold_font);
             tableHeader.AddCell(cellHeaderContentCenter);
             cellHeaderContentCenter.Colspan = 2;
-            cellHeaderContentCenter.Phrase = new Phrase("BON PENERIMAAN BARANG", bold_font);
-            tableHeader.AddCell(cellHeaderContentCenter);
+            //cellHeaderContentCenter.Phrase = new Phrase("BON PENERIMAAN BARANG", bold_font);
+            //tableHeader.AddCell(cellHeaderContentCenter);
 
             //cellHeaderContentRight.Phrase = new Phrase("FM-PB-00-06-010/R2", bold_font);
-            cellHeaderContentRight.Phrase = new Phrase("  ", bold_font);
-
-            tableHeader.AddCell(cellHeaderContentRight);
+            //cellHeaderContentRight.Phrase = new Phrase("  ", bold_font);
+            //tableHeader.AddCell(cellHeaderContentRight);
 
             PdfPCell cellHeader = new PdfPCell(tableHeader);
             tableHeader.ExtendLastRow = false;
-            tableHeader.SpacingAfter = 10f;
+            tableHeader.SpacingAfter = 5f;
             document.Add(tableHeader);
 
             LineSeparator lineSeparator = new LineSeparator(1f, 100f, BaseColor.Black, Element.ALIGN_CENTER, 1);
@@ -114,8 +113,8 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
 
             PdfPCell cellIdentity = new PdfPCell(tableIdentity);
             tableIdentity.ExtendLastRow = false;
-            tableIdentity.SpacingAfter = 10f;
-            tableIdentity.SpacingBefore = 10f;
+            tableIdentity.SpacingAfter = 5f;
+            tableIdentity.SpacingBefore = 5f;
             document.Add(tableIdentity);
 
             #endregion
@@ -164,7 +163,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
 
             PdfPCell cellContent = new PdfPCell(tableContent);
             tableContent.ExtendLastRow = false;
-            tableContent.SpacingAfter = 10f;
+            tableContent.SpacingAfter = 5f;
             document.Add(tableContent);
 
             #endregion
