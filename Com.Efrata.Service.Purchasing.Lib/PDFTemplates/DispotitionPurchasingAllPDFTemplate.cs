@@ -568,7 +568,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             cellSignatureContent.Phrase = new Phrase("Hormat Kami,", bold_font3);
             tableSignature.AddCell(cellSignatureContent);
 
-            cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n(    Johanes Tjahjadi    )\n  Direktur Keuangan", bold_font3);
+            cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n(  Direktur Keuangan   )", bold_font3);
             tableSignature.AddCell(cellSignatureContent);
             cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n(      Verifikasi      )", bold_font3);
             tableSignature.AddCell(cellSignatureContent);
