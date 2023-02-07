@@ -531,7 +531,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             {
                 var sumPerUnit = perUnit.Value.Sum(t =>
                 (t.PaidPrice) +
-                (viewModel.Items.Where(a => a.Id == t.GarmentDispositionPurchaseItemId).FirstOrDefault().IsPayVat ? t.PaidPrice * 0.1 : 0) -
+                (viewModel.Items.Where(a => a.Id == t.GarmentDispositionPurchaseItemId).FirstOrDefault().IsPayVat ? t.PaidPrice * Convert.ToDouble(viewModel.Items.Where(a => a.Id == t.GarmentDispositionPurchaseItemId).First().VatRate) / 100 : 0) -
                 (t.PaidPrice * (viewModel.Items.Where(a => a.Id == t.GarmentDispositionPurchaseItemId).FirstOrDefault()?.IncomeTaxRate / 100)))?.ToString("N", new CultureInfo("id-ID"));
                 cellLeftNoBorder.Phrase = new Phrase($"- {perUnit.Key.UnitName} = {sumPerUnit}", bold_font3);
                 tableBeban.AddCell(cellLeftNoBorder);
