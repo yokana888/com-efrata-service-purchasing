@@ -31,7 +31,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates.GarmentPurchaseRequestP
 
             #region Header
 
-            Paragraph title = new Paragraph("PT EFRATA RETAILINDO", normal_font) { Alignment = Element.ALIGN_LEFT };
+            Paragraph title = new Paragraph("PT EFRATA GARMINDO UTAMA", normal_font) { Alignment = Element.ALIGN_LEFT };
             document.Add(title);
 
             Paragraph companyName = new Paragraph("BUDGET MASTER GARMENT", header_font) { Alignment = Element.ALIGN_LEFT };
