@@ -35,7 +35,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             PdfPCell cellHeaderContentLeft = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
             PdfPCell cellHeaderContentRight = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT };
 
-            cellHeaderContentLeft.Phrase = new Phrase("PT. EFRATA RENTAILINDO", bold_font4);
+            cellHeaderContentLeft.Phrase = new Phrase("PT. EFRATA GARMINDO UTAMA", bold_font4);
             tableHeader.AddCell(cellHeaderContentLeft);
             //cellHeaderContentRight.Phrase = new Phrase("FM-PB-00-06-009/R2", bold_font);
             cellHeaderContentRight.Phrase = new Phrase("", bold_font);
@@ -106,7 +106,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             #endregion
 
             document.Add(new Paragraph("Dengan Hormat,", normal_font) { Alignment = Element.ALIGN_LEFT });
-            string firstParagraphString = "Yang bertanda tangan di bawah ini, PT. EFRATA RETAILINDO, Solo (selanjutnya disebut sebagai pihak Pembeli) dan " + viewModel.supplier.name + "(selanjutnya disebut sebagai pihak Penjual) saling menyetujui untuk mengadaan kontrak jual beli dengan ketentuan sebagai berikut : ";
+            string firstParagraphString = "Yang bertanda tangan di bawah ini, PT. EFRATA GARMINDO UTAMA, Solo (selanjutnya disebut sebagai pihak Pembeli) dan " + viewModel.supplier.name + "(selanjutnya disebut sebagai pihak Penjual) saling menyetujui untuk mengadaan kontrak jual beli dengan ketentuan sebagai berikut : ";
             Paragraph firstParagraph = new Paragraph(firstParagraphString, small_font) { Alignment = Element.ALIGN_LEFT };
             
             firstParagraph.SpacingAfter = 10f;
