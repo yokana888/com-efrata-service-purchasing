@@ -199,7 +199,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates.GarmentUnitDeliveryOrde
 
             cellSignatureContent.Phrase = new Phrase("Bagian yang Membutuhkan\n\n\n\n\n\n\n(  _____________________  )", normal_font);
             tableSignature.AddCell(cellSignatureContent);
-            cellSignatureContent.Phrase = new Phrase("Kabag Produksi\n\n\n\n\n\n\n(  _____________________  )", normal_font);
+            cellSignatureContent.Phrase = new Phrase("Manager Produksi\n\n\n\n\n\n\n(  _____________________  )", normal_font);
             tableSignature.AddCell(cellSignatureContent);
             cellSignatureContent.Phrase = new Phrase("Gudang\n\n\n\n\n\n\n(  _____________________  )", normal_font);
             tableSignature.AddCell(cellSignatureContent);
