@@ -246,8 +246,8 @@ namespace Com.Efrata.Service.Purchasing.WebApi.Controllers.v1.GarmentInternalPur
                 int offset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
                 identityService.Username = User.Claims.Single(p => p.Type.Equals("username")).Value;
 
-                DateTimeOffset shipmentFrom;
-                DateTimeOffset shipmentTo;
+                DateTimeOffset shipmentFrom = DateTimeOffset.MinValue;
+                DateTimeOffset shipmentTo = DateTimeOffset.MinValue;
                 if (!string.IsNullOrWhiteSpace(shipmentDateFrom) && !string.IsNullOrWhiteSpace(shipmentDateTo))
                 {
                     if (!DateTimeOffset.TryParseExact(shipmentDateFrom, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out shipmentFrom) ||
