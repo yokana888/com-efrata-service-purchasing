@@ -99,7 +99,7 @@ namespace Com.Efrata.Service.Purchasing.Test.Controllers.GarmentReport
 		public void Should_Success_Get_Report()
 		{
 			var mockFacade = new Mock<IGarmentStockReportFacade>();
-			mockFacade.Setup(x => x.GetStockReport(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
+			mockFacade.Setup(x => x.GetStockReport(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
 				.Returns(Tuple.Create(new List<GarmentStockReportViewModel> { viewModel }, 25));
 
 			var mockMapper = new Mock<IMapper>();
@@ -159,7 +159,7 @@ namespace Com.Efrata.Service.Purchasing.Test.Controllers.GarmentReport
         public void Should_Error_Get_Report_Data()
         {
             var mockFacade = new Mock<IGarmentStockReportFacade>();
-            mockFacade.Setup(x => x.GetStockReport(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
+            mockFacade.Setup(x => x.GetStockReport(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
                 .Returns(Tuple.Create(new List<GarmentStockReportViewModel> { viewModel }, 25));
 
             var mockMapper = new Mock<IMapper>();
@@ -181,7 +181,7 @@ namespace Com.Efrata.Service.Purchasing.Test.Controllers.GarmentReport
                 }
             };
             //controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = "0";
-            var response = controller.GetReportGarmentStock(null, null, null, null, 0, 0, null);
+            var response = controller.GetReportGarmentStock(null, null, null, null, "", 0, 0);
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
 
@@ -189,7 +189,7 @@ namespace Com.Efrata.Service.Purchasing.Test.Controllers.GarmentReport
         public void Should_Error_Get_Report_Xls_Data()
         {
             var mockFacade = new Mock<IGarmentStockReportFacade>();
-            mockFacade.Setup(x => x.GetStockReport(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
+            mockFacade.Setup(x => x.GetStockReport(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
                 .Returns(Tuple.Create(new List<GarmentStockReportViewModel> { viewModel }, 25));
 
             var mockMapper = new Mock<IMapper>();
@@ -211,7 +211,7 @@ namespace Com.Efrata.Service.Purchasing.Test.Controllers.GarmentReport
                 }
             };
             //controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = "0";
-            var response = controller.GetXls(It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>());
+            var response = controller.GetXls(It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>());
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
     }
