@@ -388,15 +388,17 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
 
             #region TableSignature
 
-            PdfPTable tableSignature = new PdfPTable(4);
+            PdfPTable tableSignature = new PdfPTable(5);
 
-            cellCenterTopNoBorder.Phrase = new Paragraph("Diperiksa,\nVerifkasi\n\n\n\n\n\n\n\n(                                   )", normal_font);
+            cellCenterTopNoBorder.Phrase = new Paragraph("Staff Pembelian\n\n\n\n\n\n\n\n(                                   )", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph("Mengetahui,\nPimpinan Bagian\n\n\n\n\n\n\n\n(                                   )", normal_font);
+            cellCenterTopNoBorder.Phrase = new Paragraph("Manager Pembelian\n\n\n\n\n\n\n\n(                                   )", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph("Tanda Terima,\nBagian Pembelian\n\n\n\n\n\n\n\n(                                   )", normal_font);
+            cellCenterTopNoBorder.Phrase = new Paragraph("Verifikasi\n\n\n\n\n\n\n\n(                                   )", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph($"Dibuat Oleh,\n\n\n\n\n\n\n\n\n( {userName ?? "                                 "} )", normal_font);
+            cellCenterTopNoBorder.Phrase = new Paragraph("Manager Keuangan\n\n\n\n\n\n\n\n(                                   )", normal_font);
+            tableSignature.AddCell(cellCenterTopNoBorder);
+            cellCenterTopNoBorder.Phrase = new Paragraph("Anggaran\n\n\n\n\n\n\n\n(                                   )", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);
 
             PdfPCell cellSignature = new PdfPCell(tableSignature);
