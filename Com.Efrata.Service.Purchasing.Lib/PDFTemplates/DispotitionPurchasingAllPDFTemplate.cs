@@ -571,7 +571,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             if (AmountPDF > 3000000)
             {
                 cellSignatureContent.Colspan = 2;
-                cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n(   Yohanes Tjahjadi    )", bold_font3);
+                cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n(   Johanes Tjahjadi    )", bold_font3);
                 tableSignature.AddCell(cellSignatureContent);
                 cellSignatureContent.Colspan = 0;
                 cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n(   General Manager    )", bold_font3);
