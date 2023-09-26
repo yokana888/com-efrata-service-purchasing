@@ -543,7 +543,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
 
             #region signature
             PdfPTable tableSignature = new PdfPTable(5);
-            tableSignature.SetWidths(new float[] { 4f, 4f, 4f, 4f,4.5f });
+            tableSignature.SetWidths(new float[] { 4f, 4f, 4f, 4.5f, 4.5f });
 
             PdfPCell cellSignatureContent = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
 
@@ -568,16 +568,31 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             cellSignatureContent.Phrase = new Phrase("Hormat Kami,", bold_font3);
             tableSignature.AddCell(cellSignatureContent);
 
-            cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n(   Johanes Tjahjadi    )\n Direktur Keuangan", bold_font3);
-            tableSignature.AddCell(cellSignatureContent);
-            cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n(      Verifikasi      )", bold_font3);
-            tableSignature.AddCell(cellSignatureContent);
-            cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n(   Kabag Pembelian    )", bold_font3);
-            tableSignature.AddCell(cellSignatureContent);
-            cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n(   Kasie Pembelian    )", bold_font3);
-            tableSignature.AddCell(cellSignatureContent);
-            cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n(     "+userName+"     )", bold_font3);
-            tableSignature.AddCell(cellSignatureContent);
+            if (AmountPDF > 3000000)
+            {
+                cellSignatureContent.Colspan = 2;
+                cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n(   Johanes Tjahjadi    )", bold_font3);
+                tableSignature.AddCell(cellSignatureContent);
+                cellSignatureContent.Colspan = 0;
+                cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n(   General Manager    )", bold_font3);
+                tableSignature.AddCell(cellSignatureContent);
+                cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n(   Manager Pembelian    )", bold_font3);
+                tableSignature.AddCell(cellSignatureContent);
+                cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n(     Staff     )", bold_font3);
+                tableSignature.AddCell(cellSignatureContent);
+            }
+            else
+            {
+                cellSignatureContent.Colspan = 2;
+                cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n(   General Manager    )", bold_font3);
+                tableSignature.AddCell(cellSignatureContent);
+                cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n(   Manager Pembelian    )", bold_font3);
+                tableSignature.AddCell(cellSignatureContent);
+                cellSignatureContent.Colspan = 0;
+                cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n(     Staff     )", bold_font3);
+                tableSignature.AddCell(cellSignatureContent);
+            }
+            
 
             //PdfPCell cellSignatureContentDir = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER,VerticalAlignment=Element.ALIGN_TOP };
 
