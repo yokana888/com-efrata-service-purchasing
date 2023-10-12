@@ -381,28 +381,99 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
 
             PdfPCell taxFooter = new PdfPCell(tableFooter);
             tableFooter.ExtendLastRow = false;
-            tableFooter.SpacingAfter = 30f;
+            tableFooter.SpacingAfter = 20f;
             document.Add(tableFooter);
 
             #endregion
 
             #region TableSignature
 
-            PdfPTable tableSignature = new PdfPTable(4);
+            //PdfPTable tableSignature = new PdfPTable(5);
 
-            cellCenterTopNoBorder.Phrase = new Paragraph("Diperiksa,\nVerifkasi\n\n\n\n\n\n\n\n(                                   )", normal_font);
-            tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph("Mengetahui,\nPimpinan Bagian\n\n\n\n\n\n\n\n(                                   )", normal_font);
-            tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph("Tanda Terima,\nBagian Pembelian\n\n\n\n\n\n\n\n(                                   )", normal_font);
-            tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph($"Dibuat Oleh,\n\n\n\n\n\n\n\n\n( {userName ?? "                                 "} )", normal_font);
-            tableSignature.AddCell(cellCenterTopNoBorder);
+            //cellCenterTopNoBorder.Phrase = new Paragraph("Staff Pembelian\n\n\n\n\n\n\n\n(                                   )", normal_font);
+            //tableSignature.AddCell(cellCenterTopNoBorder);
+            //cellCenterTopNoBorder.Phrase = new Paragraph("Manager Pembelian\n\n\n\n\n\n\n\n(                                   )", normal_font);
+            //tableSignature.AddCell(cellCenterTopNoBorder);
+            //cellCenterTopNoBorder.Phrase = new Paragraph("Verifikasi\n\n\n\n\n\n\n\n(                                   )", normal_font);
+            //tableSignature.AddCell(cellCenterTopNoBorder);
+            //cellCenterTopNoBorder.Phrase = new Paragraph("Manager Keuangan\n\n\n\n\n\n\n\n(                                   )", normal_font);
+            //tableSignature.AddCell(cellCenterTopNoBorder);
+            //cellCenterTopNoBorder.Phrase = new Paragraph("Anggaran\n\n\n\n\n\n\n\n(                                   )", normal_font);
+            //tableSignature.AddCell(cellCenterTopNoBorder);
 
-            PdfPCell cellSignature = new PdfPCell(tableSignature);
+            //PdfPCell cellSignature = new PdfPCell(tableSignature);
+            //tableSignature.ExtendLastRow = false;
+            //document.Add(tableSignature);
+
+            #endregion
+
+            #region signature
+            PdfPTable tableSignature = new PdfPTable(5);
+            tableSignature.SetWidths(new float[] { 5f, 5f, 4f, 4f, 3.5f });
+
+            PdfPCell cellSignatureContent = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
+
+            cellSignatureContent.Phrase = new Phrase("", normal_font);
+            tableSignature.AddCell(cellSignatureContent);
+            cellSignatureContent.Phrase = new Phrase("", normal_font);
+            cellSignatureContent.Colspan = 3;
+            tableSignature.AddCell(cellSignatureContent);
+
+            cellSignatureContent.Colspan = 0;
+            cellSignatureContent.Phrase = new Phrase(" ", normal_font);
+            tableSignature.AddCell(cellSignatureContent);
+
+            cellSignatureContent.Colspan = 2;
+            cellSignatureContent.Phrase = new Phrase("Disetujui,", normal_font);
+            tableSignature.AddCell(cellSignatureContent);
+            cellSignatureContent.Phrase = new Phrase("Mengetahui,", normal_font);
+            cellSignatureContent.Colspan = 2;
+            tableSignature.AddCell(cellSignatureContent);
+
+            cellSignatureContent.Colspan = 0;
+            cellSignatureContent.Phrase = new Phrase("Dibuat,", normal_font);
+            tableSignature.AddCell(cellSignatureContent);
+
+            if (total > 3000000)
+            {
+                cellSignatureContent.Colspan = 0;
+                cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n(Manager Akuntansi & Keu)", normal_font);
+                tableSignature.AddCell(cellSignatureContent);
+                cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n(Direktur Akuntansi & Keu)", normal_font);
+                tableSignature.AddCell(cellSignatureContent);
+                cellSignatureContent.Colspan = 2;
+                cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n(Manager Pembelian)", normal_font);
+                tableSignature.AddCell(cellSignatureContent);
+                cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n(     Staff     )", normal_font);
+                tableSignature.AddCell(cellSignatureContent);
+            }
+            else
+            {
+                cellSignatureContent.Colspan = 2;
+                cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n(Manager Akuntansi & Keu)", normal_font);
+                tableSignature.AddCell(cellSignatureContent);
+                cellSignatureContent.Colspan = 2;
+                cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n(   Manager Pembelian    )", normal_font);
+                tableSignature.AddCell(cellSignatureContent);
+                cellSignatureContent.Colspan = 0;
+                cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n(     Staff     )", normal_font);
+                tableSignature.AddCell(cellSignatureContent);
+            }
+
+
+            //PdfPCell cellSignatureContentDir = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER,VerticalAlignment=Element.ALIGN_TOP };
+
+            //cellSignatureContentDir.Phrase = new Phrase("\n\n\n\n\n\n\n    Direktur Keuangan   ", bold_font3);
+            //tableSignature.AddCell(cellSignatureContentDir);
+            //cellSignatureContentDir.Colspan = 4;
+            //cellSignatureContentDir.Phrase = new Phrase("", bold_font3);
+            //tableSignature.AddCell(cellSignatureContentDir);
+
+            PdfPCell cellSignature = new PdfPCell(tableSignature); // dont remove
             tableSignature.ExtendLastRow = false;
+            //tableSignature.SpacingBefore = 10f;
+            //tableSignature.SpacingAfter = 20f;
             document.Add(tableSignature);
-
             #endregion
 
             document.Close();

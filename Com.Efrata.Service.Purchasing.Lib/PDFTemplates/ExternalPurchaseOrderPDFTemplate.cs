@@ -273,9 +273,9 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             PdfPTable tableSignature = new PdfPTable(2);
 
             PdfPCell cellSignatureContent = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
-            cellSignatureContent.Phrase = new Phrase("Pembeli\n\n\n\n\n\n\n(  "+ viewModel.CreatedBy + "  )", bold_font);
+            cellSignatureContent.Phrase = new Phrase("Staff Pembelian\n\n\n\n\n\n\n(  "+ viewModel.CreatedBy + "  )", bold_font);
             tableSignature.AddCell(cellSignatureContent);
-            cellSignatureContent.Phrase = new Phrase("Penjual\n\n\n\n\n\n\n(  " + viewModel.supplier.name + "  )", bold_font);
+            cellSignatureContent.Phrase = new Phrase("Manager Pembelian\n\n\n\n\n\n\n(  " + viewModel.supplier.name + "  )", bold_font);
             tableSignature.AddCell(cellSignatureContent);
 
 
