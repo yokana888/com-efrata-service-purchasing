@@ -240,7 +240,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.Expedition
             string dateFromXls = dateFrom == DateTimeOffset.MinValue ? "-" : dateFrom.Date.ToString("dd MMMM yyyy"),
                 dateToXls = dateFrom == DateTimeOffset.MinValue && dateTo.Date == DateTimeOffset.UtcNow.Date ? "-" : dateTo.Date.ToString("dd MMMM yyyy");
 
-            sheet.Cells["A1"].Value = "PT.Dan Liris";
+            sheet.Cells["A1"].Value = "PT.Efrata Garmindo Utama";
             sheet.Cells["A1:D1"].Merge = true;
 
             sheet.Cells["A2"].Value = "Laporan Expedisi Surat Perintah Bayar";

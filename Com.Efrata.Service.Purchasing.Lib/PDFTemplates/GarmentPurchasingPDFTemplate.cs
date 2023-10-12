@@ -105,14 +105,14 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
 
             //Jumlah dibayar ke Supplier
             double paidToSupp = dpp + ppn - pphRate;
-            //if (viewModel.IncomeTaxBy == "Dan Liris")
+            //if (viewModel.IncomeTaxBy == "Efrata Garmindo Utama")
             //{
             //    paidToSupp = dpp + ppn;
             //}
 
             double amount = dpp + ppn;
 
-            //if (viewModel.IncomeTaxBy == "Dan Liris")
+            //if (viewModel.IncomeTaxBy == "Efrata Garmindo Utama")
             //{
             //    amount = dpp + ppn + pphRate;
             //}
@@ -230,7 +230,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             tableIdentity.AddCell(cellLeftNoBorder);
 
             var pphDanliris = pphRate;
-            //if (viewModel.IncomeTaxBy == "Dan Liris")
+            //if (viewModel.IncomeTaxBy == "Efrata Garmindo Utama")
             //{
             //    pphDanliris = 0;
             //}
@@ -516,29 +516,29 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             #endregion
 
             #region beban
-            PdfPTable tableBeban = new PdfPTable(1);
-            tableBeban.SetWidths(new float[] { 5f });
-            cellLeftNoBorder.Phrase = new Phrase("Beban Unit :", bold_font3); ;
-            tableBeban.AddCell(cellLeftNoBorder);
+            //PdfPTable tableBeban = new PdfPTable(1);
+            //tableBeban.SetWidths(new float[] { 5f });
+            //cellLeftNoBorder.Phrase = new Phrase("Beban Unit :", bold_font3); ;
+            //tableBeban.AddCell(cellLeftNoBorder);
 
-            var AmountPerUnit = viewModel.Items.SelectMany(s => s.Details)
-                .GroupBy(
-                key => new { key.UnitId, key.UnitName, key.UnitCode },
-                val => val,
-                (key, val) => new { Key = key, Value = val}
-                ).ToList();
-            foreach(var perUnit in AmountPerUnit)
-            {
-                var sumPerUnit = perUnit.Value.Sum(t =>
-                (t.PaidPrice) +
-                (viewModel.Items.Where(a => a.Id == t.GarmentDispositionPurchaseItemId).FirstOrDefault().IsPayVat? t.PaidPrice * Convert.ToDouble(viewModel.Items.Where(a => a.Id == t.GarmentDispositionPurchaseItemId).First().VatRate) / 100 : 0) -
-                (t.PaidPrice * (viewModel.Items.Where(a => a.Id == t.GarmentDispositionPurchaseItemId).FirstOrDefault()?.IncomeTaxRate / 100)))?.ToString("N", new CultureInfo("id-ID"));
-                cellLeftNoBorder.Phrase = new Phrase($"- {perUnit.Key.UnitName} = {sumPerUnit}", bold_font3);
-                tableBeban.AddCell(cellLeftNoBorder);
-            }
-            PdfPCell cellBeban = new PdfPCell(tableBeban); // dont remove
-            tableBeban.ExtendLastRow = false;
-            document.Add(tableBeban);
+            //var AmountPerUnit = viewModel.Items.SelectMany(s => s.Details)
+            //    .GroupBy(
+            //    key => new { key.UnitId, key.UnitName, key.UnitCode },
+            //    val => val,
+            //    (key, val) => new { Key = key, Value = val}
+            //    ).ToList();
+            //foreach(var perUnit in AmountPerUnit)
+            //{
+            //    var sumPerUnit = perUnit.Value.Sum(t =>
+            //    (t.PaidPrice) +
+            //    (viewModel.Items.Where(a => a.Id == t.GarmentDispositionPurchaseItemId).FirstOrDefault().IsPayVat? t.PaidPrice * Convert.ToDouble(viewModel.Items.Where(a => a.Id == t.GarmentDispositionPurchaseItemId).First().VatRate) / 100 : 0) -
+            //    (t.PaidPrice * (viewModel.Items.Where(a => a.Id == t.GarmentDispositionPurchaseItemId).FirstOrDefault()?.IncomeTaxRate / 100)))?.ToString("N", new CultureInfo("id-ID"));
+            //    cellLeftNoBorder.Phrase = new Phrase($"- {perUnit.Key.UnitName} = {sumPerUnit}", bold_font3);
+            //    tableBeban.AddCell(cellLeftNoBorder);
+            //}
+            //PdfPCell cellBeban = new PdfPCell(tableBeban); // dont remove
+            //tableBeban.ExtendLastRow = false;
+            //document.Add(tableBeban);
             #endregion
 
             #region signature

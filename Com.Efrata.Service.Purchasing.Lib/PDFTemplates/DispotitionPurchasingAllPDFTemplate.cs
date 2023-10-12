@@ -105,14 +105,14 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
 
             //Jumlah dibayar ke Supplier
             double paidToSupp = dpp + ppn - pphRate;
-            //if (viewModel.IncomeTaxBy == "Dan Liris")
+            //if (viewModel.IncomeTaxBy == "Efrata Garmindo Utama")
             //{
             //    paidToSupp = dpp + ppn;
             //}
 
             double amount = dpp + ppn;
 
-            //if (viewModel.IncomeTaxBy == "Dan Liris")
+            //if (viewModel.IncomeTaxBy == "Efrata Garmindo Utama")
             //{
             //    amount = dpp + ppn + pphRate;
             //}
@@ -230,7 +230,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             tableIdentity.AddCell(cellLeftNoBorder);
 
             var pphDanliris = pphRate;
-            //if (viewModel.IncomeTaxBy == "Dan Liris")
+            //if (viewModel.IncomeTaxBy == "Efrata Garmindo Utama")
             //{
             //    pphDanliris = 0;
             //}

@@ -42,7 +42,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates.GarmentCorrectionNotePD
             var invoice = garmentInvoiceFacade.ReadByDOId((int)model.DOId);
 
             #region Header
-            //string addressString = "PT. DAN LIRIS\n" +
+            //string addressString = "PT. EFRATA GARMINDO UTAMA\n" +
             //    "JL. Merapi No.23\n" +
             //    "Banaran, Grogol, Kab. Sukoharjo\n" +
             //    "Jawa Tengah 57552 - INDONESIA\n" +

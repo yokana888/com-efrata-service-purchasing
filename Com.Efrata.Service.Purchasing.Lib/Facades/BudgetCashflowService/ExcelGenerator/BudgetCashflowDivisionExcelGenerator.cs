@@ -1965,7 +1965,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BudgetCashflowService.ExcelG
 
         private void SetTitle(ExcelWorksheet worksheet, int divisionId, DateTimeOffset dueDate, int lastColumn)
         {
-            var company = "PT DAN LIRIS";
+            var company = "PT EFRATA GARMINDO UTAMA";
             var title = "LAPORAN BUDGET CASH FLOW";
             var divisionName = "SEMUA DIVISI";
 

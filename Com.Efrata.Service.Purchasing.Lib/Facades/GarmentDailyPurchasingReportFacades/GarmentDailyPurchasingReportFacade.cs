@@ -44,7 +44,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentDailyPurchasingReport
                                                                  where c.DOQuantity != 0
                                                                  && c.UnitId == (string.IsNullOrWhiteSpace(unitName) ? c.UnitId : unitName)
                                                                  && e.SupplierImport == supplierType
-                                                                 && (string.IsNullOrWhiteSpace(supplierName) ? true : (supplierName == "DAN LIRIS" ? a.SupplierCode.Substring(0, 2) == "DL" : a.SupplierCode.Substring(0, 2) != "DL"))
+                                                                 && (string.IsNullOrWhiteSpace(supplierName) ? true : (supplierName == "EFRATA GARMINDO UTAMA" ? a.SupplierCode.Substring(0, 2) == "DL" : a.SupplierCode.Substring(0, 2) != "DL"))
                                                                  && d.ArrivalDate >= DateFrom.Date && d.ArrivalDate <= DateTo.Date
                                                                  && (string.IsNullOrWhiteSpace(jnsbc) ? true : (jnsbc == "BCDL" ? d.BeacukaiNo.Substring(0, 4) == "BCDL" : d.BeacukaiNo.Substring(0, 4) != "BCDL"))
                                                                  && a.SupplierCode != "GDG"
@@ -79,7 +79,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentDailyPurchasingReport
                                                                  where gci.Quantity != 0
                                                                  && ipo.UnitId == (string.IsNullOrWhiteSpace(unitName) ? ipo.UnitId : unitName)
                                                                  && epo.SupplierImport == supplierType
-                                                                 && (string.IsNullOrWhiteSpace(supplierName) ? true : (supplierName == "DAN LIRIS" ? gc.SupplierCode.Substring(0, 2) == "DL" : gc.SupplierCode.Substring(0, 2) != "DL"))
+                                                                 && (string.IsNullOrWhiteSpace(supplierName) ? true : (supplierName == "EFRATA GARMINDO UTAMA" ? gc.SupplierCode.Substring(0, 2) == "DL" : gc.SupplierCode.Substring(0, 2) != "DL"))
                                                                  && gc.CorrectionDate.AddHours(offset).Date >= DateFrom.Date && gc.CorrectionDate.AddHours(offset).Date <= DateTo.Date
                                                                  && gc.SupplierCode != "GDG"
 
@@ -115,7 +115,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentDailyPurchasingReport
                                                                  && epo.SupplierImport == supplierType
                                                                  && gc.UseVat == true
                                                                  && gc.NKPN != null
-                                                                 && (string.IsNullOrWhiteSpace(supplierName) ? true : (supplierName == "DAN LIRIS" ? gc.SupplierCode.Substring(0, 2) == "DL" : gc.SupplierCode.Substring(0, 2) != "DL"))
+                                                                 && (string.IsNullOrWhiteSpace(supplierName) ? true : (supplierName == "EFRATA GARMINDO UTAMA" ? gc.SupplierCode.Substring(0, 2) == "DL" : gc.SupplierCode.Substring(0, 2) != "DL"))
                                                                  && gc.CorrectionDate.AddHours(offset).Date >= DateFrom.Date && gc.CorrectionDate.AddHours(offset).Date <= DateTo.Date
                                                                  && gc.SupplierCode != "GDG"
 
@@ -151,7 +151,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentDailyPurchasingReport
                                                                  && epo.SupplierImport == supplierType
                                                                  && gc.UseIncomeTax == true
                                                                  && gc.NKPH != null
-                                                                 && (string.IsNullOrWhiteSpace(supplierName) ? true : (supplierName == "DAN LIRIS" ? gc.SupplierCode.Substring(0, 2) == "DL" : gc.SupplierCode.Substring(0, 2) != "DL"))
+                                                                 && (string.IsNullOrWhiteSpace(supplierName) ? true : (supplierName == "EFRATA GARMINDO UTAMA" ? gc.SupplierCode.Substring(0, 2) == "DL" : gc.SupplierCode.Substring(0, 2) != "DL"))
                                                                  && gc.CorrectionDate.AddHours(offset).Date >= DateFrom.Date && gc.CorrectionDate.AddHours(offset).Date <= DateTo.Date
                                                                  && gc.SupplierCode != "GDG"
 
@@ -189,7 +189,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentDailyPurchasingReport
                                                                  && inv.IsPayTax == true
                                                                  && inv.UseVat == true
                                                                  && inv.NPN != null
-                                                                 && (string.IsNullOrWhiteSpace(supplierName) ? true : (supplierName == "DAN LIRIS" ? inv.SupplierCode.Substring(0, 2) == "DL" : inv.SupplierCode.Substring(0, 2) != "DL"))
+                                                                 && (string.IsNullOrWhiteSpace(supplierName) ? true : (supplierName == "EFRATA GARMINDO UTAMA" ? inv.SupplierCode.Substring(0, 2) == "DL" : inv.SupplierCode.Substring(0, 2) != "DL"))
                                                                  && inv.InvoiceDate.AddHours(offset).Date >= DateFrom.Date && inv.InvoiceDate.AddHours(offset).Date <= DateTo.Date
                                                                  && inv.SupplierCode != "GDG"
 
@@ -226,7 +226,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentDailyPurchasingReport
                                                                  && inv.IsPayTax == true
                                                                  && inv.UseIncomeTax == true
                                                                  && inv.NPH != null
-                                                                 && (string.IsNullOrWhiteSpace(supplierName) ? true : (supplierName == "DAN LIRIS" ? inv.SupplierCode.Substring(0, 2) == "DL" : inv.SupplierCode.Substring(0, 2) != "DL"))
+                                                                 && (string.IsNullOrWhiteSpace(supplierName) ? true : (supplierName == "EFRATA GARMINDO UTAMA" ? inv.SupplierCode.Substring(0, 2) == "DL" : inv.SupplierCode.Substring(0, 2) != "DL"))
                                                                  && inv.InvoiceDate.AddHours(offset).Date >= DateFrom.Date && inv.InvoiceDate.AddHours(offset).Date <= DateTo.Date
                                                                  && inv.SupplierCode != "GDG"
                                                                  select new GarmentDailyPurchasingTempViewModel
@@ -554,7 +554,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentDailyPurchasingReport
 
             #region Kop Table
             var col = (char)('A' + result.Columns.Count);
-            sheet.Cells[$"A1:{col}1"].Value = "PT. DAN LIRIS";
+            sheet.Cells[$"A1:{col}1"].Value = "PT. EFRATA GARMINDO UTAMA";
             sheet.Cells[$"A1:{col}1"].Merge = true;
             sheet.Cells[$"A1:{col}1"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
             sheet.Cells[$"A1:{col}1"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;

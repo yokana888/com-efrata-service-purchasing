@@ -699,7 +699,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.Report
 
         //    using (var package = new ExcelPackage())
         //    {
-        //        var company = "PT DAN LIRIS";
+        //        var company = "PT EFRATA GARMINDO UTAMA";
         //        var title = "BUKU PEMBELIAN LOKAL";
         //        if (isValas)
         //            title = "BUKU PEMBELIAN LOKAL VALAS";
@@ -773,7 +773,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.Report
 
             using (var package = new ExcelPackage())
             {
-                var company = "PT DAN LIRIS";
+                var company = "PT EFRATA GARMINDO UTAMA";
                 var title = "BUKU PEMBELIAN LOKAL";
                 if (isValas)
                     title = "BUKU PEMBELIAN LOKAL VALAS";

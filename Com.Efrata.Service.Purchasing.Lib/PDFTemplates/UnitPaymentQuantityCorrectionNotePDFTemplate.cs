@@ -49,7 +49,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
                 //Paragraph title = new Paragraph(titleString, bold_font) { Alignment = Element.ALIGN_CENTER };
                 //document.Add(title);
 
-                //string companyNameString = "PT DAN LIRIS";
+                //string companyNameString = "PT EFRATA GARMINDO UTAMA";
                 //Paragraph companyName = new Paragraph(companyNameString, header_font) { Alignment = Element.ALIGN_LEFT };
                 //document.Add(companyName);
 

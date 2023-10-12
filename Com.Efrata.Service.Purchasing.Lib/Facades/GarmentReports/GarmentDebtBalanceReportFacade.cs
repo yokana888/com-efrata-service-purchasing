@@ -217,7 +217,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
             Tuple<List<GarmentDebtBalanceViewModel>, int> Data = this.GetDebtBookReport(month, year, suppliertype, category);
             DataTable result = new DataTable();
             ExcelPackage package = new ExcelPackage();
-            string kop1 = "PT. DAN LIRIS";
+            string kop1 = "PT. EFRATA GARMINDO UTAMA";
             string kop2 = "LAPORAN SALDO HUTANG";
             string kop3 = string.Format("Periode Bulan {0} {1}", Month, year);
             var headers = new string[] { "Kode Supplier", "Nama Supplier", "Mata Uang", "Saldo Awal Total", "No BP", "No BP Kecil", "Tipe", "Saldo Awal", "Hutang", "Bayar", "No Bayar", "Tgl Bayar", "Saldo Akhir" };

@@ -106,7 +106,7 @@ namespace Com.Efrata.Service.Purchasing.WebApi.Controllers.v1.Reports
             if (dueDate == DateTimeOffset.MaxValue)
                 dueDateString = "-";
 
-            var company = "PT DAN LIRIS";
+            var company = "PT EFRATA GARMINDO UTAMA";
             var title = "LAPORAN REKAP DATA HUTANG & DISPOSISI LOKAL";
             var unitName = "SEMUA UNIT";
             var date = $"JATUH TEMPO S.D. {dueDateString}";
@@ -499,7 +499,7 @@ namespace Com.Efrata.Service.Purchasing.WebApi.Controllers.v1.Reports
                 }
             }
 
-            var company = "PT DAN LIRIS";
+            var company = "PT EFRATA GARMINDO UTAMA";
             var title = "LAPORAN SALDO HUTANG USAHA (REKAP) LOKAL";
             var unitDivisionName = unitName + separator + divisionName;
             var date = $"JATUH TEMPO S.D. {dueDateString}";
@@ -978,7 +978,7 @@ namespace Com.Efrata.Service.Purchasing.WebApi.Controllers.v1.Reports
             if (dueDate == DateTimeOffset.MaxValue)
                 dueDateString = "-";
 
-            var company = "PT DAN LIRIS";
+            var company = "PT EFRATA GARMINDO UTAMA";
             var title = "LAPORAN REKAP DATA DISPOSISI LOKAL";
             var unitName = "SEMUA UNIT";
             var date = $"JATUH TEMPO S.D. {dueDateString}";

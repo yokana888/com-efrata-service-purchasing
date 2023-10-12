@@ -56,7 +56,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             {
                 Border = Rectangle.NO_BORDER,
                 HorizontalAlignment = Element.ALIGN_LEFT,
-                Phrase = new Phrase("PT DAN LIRIS", _headerFont)
+                Phrase = new Phrase("PT EFRATA GARMINDO UTAMA", _headerFont)
             };
             table.AddCell(cell);
 

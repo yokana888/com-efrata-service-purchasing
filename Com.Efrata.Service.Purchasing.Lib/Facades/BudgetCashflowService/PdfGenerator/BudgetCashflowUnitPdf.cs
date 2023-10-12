@@ -308,7 +308,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BudgetCashflowService.PdfGen
 
         private void SetTitle(Document document, UnitDto unit, DateTimeOffset dueDate)
         {
-            var company = "PT DAN LIRIS";
+            var company = "PT EFRATA GARMINDO UTAMA";
             var title = "LAPORAN BUDGET CASHFLOW";
             var unitName = "UNIT: ";
             if (unit != null)

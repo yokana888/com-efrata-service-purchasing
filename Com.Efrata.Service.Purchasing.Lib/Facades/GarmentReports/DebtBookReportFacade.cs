@@ -35,7 +35,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
                            a.ArrivalDate.Date >= date.Date
                            && a.ArrivalDate.Date <= endDate.Date
                            && c.SupplierImport == (suppliertype.HasValue ? suppliertype : c.SupplierImport)
-                           && (string.IsNullOrWhiteSpace(suppliername) ? true : (suppliername == "DAN LIRIS" ? a.SupplierCode.Substring(0, 2) == "DL" : a.SupplierCode.Substring(0, 2) != "DL"))
+                           && (string.IsNullOrWhiteSpace(suppliername) ? true : (suppliername == "EFRATA GARMINDO UTAMA" ? a.SupplierCode.Substring(0, 2) == "DL" : a.SupplierCode.Substring(0, 2) != "DL"))
                            && a.IsDeleted == false
                            && b.IsDeleted == false
                            && c.IsDeleted == false
@@ -50,7 +50,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
                             join c in dbContext.GarmentSupplierBalanceDebtItems on b.Id equals c.GarmentDebtId
                             join d in dbContext.GarmentDeliveryOrders on c.DOId equals d.Id
                             where b.Import == (suppliertype.HasValue ? suppliertype : b.Import)
-                            && (string.IsNullOrWhiteSpace(suppliername) ? true : (suppliername == "DAN LIRIS" ? b.SupplierCode.Substring(0, 2) == "DL" : b.SupplierCode.Substring(0, 2) != "DL"))
+                            && (string.IsNullOrWhiteSpace(suppliername) ? true : (suppliername == "EFRATA GARMINDO UTAMA" ? b.SupplierCode.Substring(0, 2) == "DL" : b.SupplierCode.Substring(0, 2) != "DL"))
                             select new DebtBookReportViewModel
                             {
                                 SupplierCode = b.SupplierCode,
@@ -84,7 +84,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
                                        where a.ArrivalDate >= new DateTime(year - 1, 1, 1)
                                        && a.ArrivalDate < date.Date
                                        && c.SupplierImport == (suppliertype.HasValue ? suppliertype : c.SupplierImport)
-                                       && (string.IsNullOrWhiteSpace(suppliername) ? true : (suppliername == "DAN LIRIS" ? a.SupplierCode.Substring(0, 2) == "DL" : a.SupplierCode.Substring(0, 2) != "DL"))
+                                       && (string.IsNullOrWhiteSpace(suppliername) ? true : (suppliername == "EFRATA GARMINDO UTAMA" ? a.SupplierCode.Substring(0, 2) == "DL" : a.SupplierCode.Substring(0, 2) != "DL"))
                                        && a.IsDeleted == false
                                        && b.IsDeleted == false
                                        && c.IsDeleted == false
@@ -122,7 +122,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
                                   a.ArrivalDate.Date >= date.Date
                                   && a.ArrivalDate.Date <= endDate.Date
                                   && c.SupplierImport == (suppliertype.HasValue ? suppliertype : c.SupplierImport)
-                                  && (string.IsNullOrWhiteSpace(suppliername) ? true : (suppliername == "DAN LIRIS" ? a.SupplierCode.Substring(0, 2) == "DL" : a.SupplierCode.Substring(0, 2) != "DL"))
+                                  && (string.IsNullOrWhiteSpace(suppliername) ? true : (suppliername == "EFRATA GARMINDO UTAMA" ? a.SupplierCode.Substring(0, 2) == "DL" : a.SupplierCode.Substring(0, 2) != "DL"))
                                   select new DebtBookReportViewModel
                                   {
                                       SupplierCode = a.SupplierCode,
@@ -297,7 +297,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
             Tuple<List<DebtBookReportViewModel>, int> Data = this.GetDebtBookReport(month, year, suppliertype, suppliername);
             DataTable result = new DataTable();
             ExcelPackage package = new ExcelPackage();
-            string kop1 = "PT. DAN LIRIS";
+            string kop1 = "PT. EFRATA GARMINDO UTAMA";
             string kop2 = "DETAIL REKAP SALDO HUTANG";
             string kop3 = string.Format("Periode Bulan {0} {1}", Month, year);
             var headers = new string[] { "Nama Supplier", "Mata Uang", "Saldo Awal Total", "Saldo Awal Total1", "Saldo Awal Total2", "No BP", "No BP Kecil", "Umur Hutang (Hari)", "Nota Intern", "Saldo Awal", "Saldo Awal1", "Saldo Awal2", "Debit", "Debit1", "Debit2", "Debit3", "Debit4", "Kredit", "Kredit1", "Kredit2", "Selisih Kurs", "Saldo Akhir", "Saldo Akhir1", "Saldo Akhir2" };

@@ -101,7 +101,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
 
             //Jumlah dibayar ke Supplier
             double paidToSupp = dpp + ppn - pphRate;
-            if (viewModel.IncomeTaxBy.ToUpper() == "DAN LIRIS")
+            if (viewModel.IncomeTaxBy.ToUpper() == "EFRATA GARMINDO UTAMA")
             {
                 paidToSupp = dpp + ppn;
             }
@@ -195,7 +195,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             tableIdentity.AddCell(cellLeftNoBorder);
 
             var pphDanliris = pphRate;
-            if (viewModel.IncomeTaxBy == "Dan Liris")
+            if (viewModel.IncomeTaxBy == "Efrata Garmindo Utama")
             {
                 pphDanliris = 0;
             }

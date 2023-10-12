@@ -240,7 +240,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentPurchasingBookReport
 
             using (var package = new ExcelPackage())
             {
-                var company = "PT DAN LIRIS";
+                var company = "PT EFRATA GARMINDO UTAMA";
                 var title = "BUKU PEMBELIAN Lokal";
                 if (isForeignCurrency)
                     title = "BUKU PEMBELIAN Lokal Valas";

@@ -1477,7 +1477,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.Report
 
         //    using (var package = new ExcelPackage())
         //    {
-        //        var company = "PT DAN LIRIS";
+        //        var company = "PT EFRATA GARMINDO UTAMA";
         //        var title = "BUKU PEMBELIAN Import";
         //        var period = $"Dari {dateFrom.GetValueOrDefault().AddHours(_identityService.TimezoneOffset):dd/MM/yyyy} Sampai {dateTo.GetValueOrDefault().AddHours(_identityService.TimezoneOffset):dd/MM/yyyy}";
 
@@ -1554,7 +1554,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.Report
 
             using (var package = new ExcelPackage())
             {
-                var company = "PT DAN LIRIS";
+                var company = "PT EFRATA GARMINDO UTAMA";
                 var title = "BUKU PEMBELIAN Import";
                 var period = $"Dari {dateFrom.GetValueOrDefault().AddHours(_identityService.TimezoneOffset):dd/MM/yyyy} Sampai {dateTo.GetValueOrDefault().AddHours(_identityService.TimezoneOffset):dd/MM/yyyy}";
 
