@@ -1576,10 +1576,10 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
             {
                 #region BodyNonIdr
 
-                PdfPTable bodyTable = new PdfPTable(8);
+                PdfPTable bodyTable = new PdfPTable(7);
                 PdfPCell bodyCell = new PdfPCell();
 
-                float[] widthsBody = new float[] { 5f, 10f, 10f, 10f, 8f, 7f, 15f, 7f };
+                float[] widthsBody = new float[] { 5f, 10f, 10f, 10f,  7f, 15f, 7f };
                 bodyTable.SetWidths(widthsBody);
                 bodyTable.WidthPercentage = 100;
 
@@ -1596,8 +1596,8 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
                 bodyCell.Phrase = new Phrase("Divisi", bold_font);
                 bodyTable.AddCell(bodyCell);
 
-                bodyCell.Phrase = new Phrase("Unit", bold_font);
-                bodyTable.AddCell(bodyCell);
+                //bodyCell.Phrase = new Phrase("Unit", bold_font);
+                //bodyTable.AddCell(bodyCell);
 
                 bodyCell.Phrase = new Phrase("Mata Uang", bold_font);
                 bodyTable.AddCell(bodyCell);
@@ -1677,9 +1677,9 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
                             bodyCell.Phrase = new Phrase(detail.DivisionName, normal_font);
                             bodyTable.AddCell(bodyCell);
 
-                            bodyCell.HorizontalAlignment = Element.ALIGN_CENTER;
-                            bodyCell.Phrase = new Phrase(item.UnitCode, normal_font);
-                            bodyTable.AddCell(bodyCell);
+                            //bodyCell.HorizontalAlignment = Element.ALIGN_CENTER;
+                            //bodyCell.Phrase = new Phrase(item.UnitCode, normal_font);
+                            //bodyTable.AddCell(bodyCell);
 
                             bodyCell.Phrase = new Phrase(detail.Currency, normal_font);
                             bodyTable.AddCell(bodyCell);
@@ -1746,9 +1746,9 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
                             bodyCell.Phrase = new Phrase(detail.DivisionName, normal_font);
                             bodyTable.AddCell(bodyCell);
 
-                            bodyCell.HorizontalAlignment = Element.ALIGN_CENTER;
-                            bodyCell.Phrase = new Phrase(unitSummary.UnitCode, normal_font);
-                            bodyTable.AddCell(bodyCell);
+                            //bodyCell.HorizontalAlignment = Element.ALIGN_CENTER;
+                            //bodyCell.Phrase = new Phrase(unitSummary.UnitCode, normal_font);
+                            //bodyTable.AddCell(bodyCell);
 
                             bodyCell.Phrase = new Phrase(detail.Currency, normal_font);
                             bodyTable.AddCell(bodyCell);
@@ -1776,7 +1776,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
 
                 }
 
-                bodyCell.Colspan = 4;
+                bodyCell.Colspan = 3;
                 bodyCell.Border = Rectangle.NO_BORDER;
                 bodyCell.Phrase = new Phrase("", normal_font);
                 bodyTable.AddCell(bodyCell);
@@ -1804,10 +1804,10 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
             {
                 sameCurrency = false;
                 #region BodyIdr
-                PdfPTable bodyTable = new PdfPTable(9);
+                PdfPTable bodyTable = new PdfPTable(8);
                 PdfPCell bodyCell = new PdfPCell();
 
-                float[] widthsBody = new float[] { 5f, 10f, 10f, 10f, 8f, 7f, 10f, 10f, 7f };
+                float[] widthsBody = new float[] { 5f, 10f, 10f, 10f,  7f, 10f, 10f, 7f };
                 bodyTable.SetWidths(widthsBody);
                 bodyTable.WidthPercentage = 100;
 
@@ -1824,8 +1824,8 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
                 bodyCell.Phrase = new Phrase("Divisi", bold_font);
                 bodyTable.AddCell(bodyCell);
 
-                bodyCell.Phrase = new Phrase("Unit", bold_font);
-                bodyTable.AddCell(bodyCell);
+                //bodyCell.Phrase = new Phrase("Unit", bold_font);
+                //bodyTable.AddCell(bodyCell);
 
                 bodyCell.Phrase = new Phrase("Mata Uang", bold_font);
                 bodyTable.AddCell(bodyCell);
@@ -1908,9 +1908,9 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
                             bodyCell.Phrase = new Phrase(detail.DivisionName, normal_font);
                             bodyTable.AddCell(bodyCell);
 
-                            bodyCell.HorizontalAlignment = Element.ALIGN_CENTER;
-                            bodyCell.Phrase = new Phrase(item.UnitCode, normal_font);
-                            bodyTable.AddCell(bodyCell);
+                            //bodyCell.HorizontalAlignment = Element.ALIGN_CENTER;
+                            //bodyCell.Phrase = new Phrase(item.UnitCode, normal_font);
+                            //bodyTable.AddCell(bodyCell);
 
                             bodyCell.Phrase = new Phrase(detail.Currency, normal_font);
                             bodyTable.AddCell(bodyCell);
@@ -1985,9 +1985,9 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
                             bodyCell.Phrase = new Phrase(detail.DivisionName, normal_font);
                             bodyTable.AddCell(bodyCell);
 
-                            bodyCell.HorizontalAlignment = Element.ALIGN_CENTER;
-                            bodyCell.Phrase = new Phrase(unitSummary.UnitCode, normal_font);
-                            bodyTable.AddCell(bodyCell);
+                            //bodyCell.HorizontalAlignment = Element.ALIGN_CENTER;
+                            //bodyCell.Phrase = new Phrase(unitSummary.UnitCode, normal_font);
+                            //bodyTable.AddCell(bodyCell);
 
                             bodyCell.Phrase = new Phrase(detail.Currency, normal_font);
                             bodyTable.AddCell(bodyCell);
@@ -2018,7 +2018,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
                     }
                 }
 
-                bodyCell.Colspan = 4;
+                bodyCell.Colspan = 3;
                 bodyCell.Border = Rectangle.NO_BORDER;
                 bodyCell.Phrase = new Phrase("", normal_font);
                 bodyTable.AddCell(bodyCell);
