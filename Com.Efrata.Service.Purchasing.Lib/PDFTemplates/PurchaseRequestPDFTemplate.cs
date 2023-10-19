@@ -17,6 +17,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             Font header_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 11);
             Font normal_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 9);
             Font normal_font2 = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 7);
+            Font normal_font1 = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
             Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 7);
 
             Document document = new Document(PageSize.A5, 15, 15, 15, 15);
@@ -30,8 +31,8 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             Paragraph companyName = new Paragraph(companyNameString, header_font) { Alignment = Element.ALIGN_CENTER };
             document.Add(companyName);
 
-            string companyAddressString = "Kel. Banaran, Kec. Grogol, Kab.Sukoharjo, Jawa Tengah";
-            Paragraph companyAddress = new Paragraph(companyAddressString, normal_font) { Alignment = Element.ALIGN_CENTER };
+            string companyAddressString = "Jl. Merapi No.23 Blok E1, Desa/Kelurahan Banaran," +" Kec. Grogol, Kab. Sukoharjo, Provinsi Jawa Tengah\n" +" Kode Pos: 57552, Telp: 02711740888";
+            Paragraph companyAddress = new Paragraph(companyAddressString, normal_font2) { Alignment = Element.ALIGN_CENTER };
             companyAddress.SpacingAfter = 10f;
             document.Add(companyAddress);
 

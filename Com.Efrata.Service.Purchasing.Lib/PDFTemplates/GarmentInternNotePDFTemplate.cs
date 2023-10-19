@@ -59,7 +59,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             #region Header
 
             //string addressString = "PT EFRATA GARMINDO UTAMA" + "\n" + "JL. Merapi No.23" + "\n" + "Banaran, Grogol, Kab. Sukoharjo" + "\n" + "Jawa Tengah 57552 - INDONESIA" + "\n" + "PO.BOX 166 Solo 57100" + "\n" + "Telp. (0271) 740888, 714400" + "\n" + "Fax. (0271) 735222, 740777";
-            string addressString = "PT EFRATA GARMINDO UTAMA" + "\n" + "Banaran, Grogol, Sukoharjo" + "\n" + "Jawa Tengah 57552 - INDONESIA" + "\n" + "Telp (+62 271)719911, (+62 21)2900977";
+            string addressString = "PT EFRATA GARMINDO UTAMA" + "\n" + "Jl. Merapi No.23 Blok E1, Desa/Kelurahan Banaran," + "\n" + "Kec. Grogol, Kab. Sukoharjo, Provinsi Jawa Tengah" + "\n" + "Kode Pos: 57552, Telp: 02711740888";
             Paragraph address = new Paragraph(addressString, bold_font) { Alignment = Element.ALIGN_LEFT };
             document.Add(address);
             bold_font.SetStyle(Font.NORMAL);

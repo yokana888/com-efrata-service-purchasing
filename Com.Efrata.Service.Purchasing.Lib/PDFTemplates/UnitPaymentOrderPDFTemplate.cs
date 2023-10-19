@@ -18,7 +18,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
     {
         public MemoryStream Generate(UnitPaymentOrder model, IUnitPaymentOrderFacade facade, SupplierViewModel supplier, int clientTimeZoneOffset = 7, string userName = null)
         {
-            Font header_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 12);
+            Font header_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 10);
             Font normal_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 7);
             Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 7);
 
@@ -48,7 +48,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
 
             PdfPCell cellHeaderContentLeft = new PdfPCell() { Border = Rectangle.NO_BORDER };
             cellHeaderContentLeft.AddElement(new Phrase("PT. EFRATA GARMINDO UTAMA", header_font));
-            cellHeaderContentLeft.AddElement(new Phrase("Kel. Banaran, Kec. Grogol, Kab.Sukoharjo, Jawa Tengah" + "\n" + "57552" + "\n" + "Telp (+62 271)719911, (+62 21)2900977", normal_font));
+            cellHeaderContentLeft.AddElement(new Phrase("Jl. Merapi No.23 Blok E1, Desa/Kelurahan Banaran," + "\n" + "Kec. Grogol, Kab. Sukoharjo, Provinsi Jawa Tengah" + "\n" + "Kode Pos: 57552, Telp: 02711740888", normal_font));
             tableHeader.AddCell(cellHeaderContentLeft);
 
             PdfPCell cellHeaderContentCenter = new PdfPCell() { Border = Rectangle.NO_BORDER };

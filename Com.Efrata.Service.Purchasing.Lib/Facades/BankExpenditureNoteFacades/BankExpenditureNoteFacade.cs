@@ -1510,9 +1510,11 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
 
             cellHeaderBody.Phrase = new Phrase("PT. EFRATA RETAILINDO", normal_font);
             headerTable1.AddCell(cellHeaderBody);
-            cellHeaderBody.Phrase = new Phrase("Banaran, Grogol, Sukoharjo, Jawa Tengah", normal_font);
+            cellHeaderBody.Phrase = new Phrase("Jl. Merapi No.23 Blok E1, Desa/Kelurahan Banaran,", normal_font);
             headerTable1.AddCell(cellHeaderBody);
-            cellHeaderBody.Phrase = new Phrase("57552" + "Telp (+62 271)719911, (+62 21)2900977", normal_font);
+            cellHeaderBody.Phrase = new Phrase("Kec. Grogol, Kab. Sukoharjo, Provinsi Jawa Tengah", normal_font);
+            headerTable1.AddCell(cellHeaderBody);
+            cellHeaderBody.Phrase = new Phrase("Kode Pos: 57552, Telp: 02711740888", normal_font);
             headerTable1.AddCell(cellHeaderBody);
 
             cellHeader1.AddElement(headerTable1);
@@ -2123,7 +2125,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
             footerTable.SetWidths(widthsFooter);
             footerTable.WidthPercentage = 100;
 
-            cellFooter.Phrase = new Phrase("Dikeluarkan dengan cek/BG No. : " + model.BGCheckNumber, normal_font);
+            cellFooter.Phrase = new Phrase("Dikeluarkan dengan Check : " + model.BGCheckNumber, normal_font);
             footerTable.AddCell(cellFooter);
 
             cellFooter.Phrase = new Phrase("", normal_font);

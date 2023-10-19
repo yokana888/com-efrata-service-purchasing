@@ -40,7 +40,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates.GarmentUnitReceiptNoteP
             Paragraph companyName = new Paragraph(companyNameString, bold_font) { Alignment = Element.ALIGN_LEFT };
             document.Add(companyName);
 
-            string companyAddressString = "Banaran, Grogol, Sukoharjo, Jawa Tengah" + "\n"+ "57552" + "\n" + "Telp (+62 271)719911, (+62 21)2900977";
+            string companyAddressString = "Jl. Merapi No.23 Blok E1, Desa/Kelurahan Banaran," + "\n" + "Kec. Grogol, Kab. Sukoharjo, Provinsi Jawa Tengah" + "\n" + "Kode Pos: 57552, Telp: 02711740888";
             Paragraph companyAddress = new Paragraph(companyAddressString, normal_font) { Alignment = Element.ALIGN_LEFT };
             companyAddress.SpacingAfter = 10f;
             document.Add(companyAddress);

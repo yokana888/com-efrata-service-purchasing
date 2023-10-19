@@ -46,7 +46,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             PdfPCell cellHeaderContentRight = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT };
 
             //cellHeaderContentLeft.Phrase = new Phrase("PT EFRATA GARMINDO UTAMA" + "\n" + "JL. Merapi No.23" + "\n" + "Banaran, Grogol, Kab. Sukoharjo" + "\n" + "Jawa Tengah 57552 - INDONESIA" + "\n" + "PO.BOX 166 Solo 57100" + "\n" + "Telp. (0271) 740888, 714400" + "\n" + "Fax. (0271) 735222, 740777", bold_font);
-            cellHeaderContentLeft.Phrase = new Phrase("PT EFRATA GARMINDO UTAMA" +  "\n" + "Banaran, Grogol, Sukoharjo" + "\n" + "Jawa Tengah 57552 - INDONESIA" + "\n" + "Telp (+62 271)719911, (+62 21)2900977", bold_font);
+            cellHeaderContentLeft.Phrase = new Phrase("PT EFRATA GARMINDO UTAMA" +  "\n" + "Jl. Merapi No.23 Blok E1, Desa/Kelurahan Banaran," + "\n" + "Kec. Grogol, Kab. Sukoharjo, Provinsi Jawa Tengah" + "\n" + "Kode Pos: 57552, Telp: 02711740888", bold_font);
             tableHeader.AddCell(cellHeaderContentLeft);
 
             string noPO = EPONo;

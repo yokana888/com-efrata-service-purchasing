@@ -49,7 +49,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             //cellHeaderContentRight.Phrase = new Phrase("FM-PB-00-06-009/R1", bold_font2);
             //tableHeader.AddCell(cellHeaderContentRight);
 
-            cellHeaderContentLeft.Phrase = new Phrase("Kel. Banaran, Kec. Grogol, Kab.Sukoharjo, Jawa Tengah" + "\n" + "57552" + "\n" + "Telp :(+62 271)719911, (+62 21)2900977", bold_font);
+            cellHeaderContentLeft.Phrase = new Phrase("Jl. Merapi No.23 Blok E1, Desa/Kelurahan Banaran, Kec. Grogol, Kab. Sukoharjo, Provinsi Jawa Tengah" + "\n" + "Kode Pos: 57552" + "\n" + "Telp: 02711740888", bold_font);
             tableHeader.AddCell(cellHeaderContentLeft);
 
             cellHeaderContentRight.Phrase = new Phrase("Nomor PO: " + viewModel.no, bold_font2);
