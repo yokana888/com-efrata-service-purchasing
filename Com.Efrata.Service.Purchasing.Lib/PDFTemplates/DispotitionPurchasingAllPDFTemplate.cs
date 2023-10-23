@@ -571,9 +571,9 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             if (AmountPDF > 3000000)
             {
                 cellSignatureContent.Colspan = 0;
-                cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n( Manager Akuntansi & Keu )", bold_font3);
+                cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n( Direktur Akt & Keu )", bold_font3);
                 tableSignature.AddCell(cellSignatureContent);
-                cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n( Direktur Akuntansi & Keu )", bold_font3);
+                cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n( Manager Akt & Keu )", bold_font3);
                 tableSignature.AddCell(cellSignatureContent);
                 cellSignatureContent.Colspan = 0;
                 cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n(   General Manager    )", bold_font3);

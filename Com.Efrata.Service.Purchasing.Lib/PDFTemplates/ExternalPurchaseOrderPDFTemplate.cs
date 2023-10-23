@@ -208,13 +208,30 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             tableContent.AddCell(cellRightMerge);
 
             cellRight.Colspan = 4;
+            cellRight.Phrase = new Phrase("PPH " + $"{viewModel.incomeTax.name} - "  + $"{viewModel.incomeTax.rate}" + "%", bold_font);
+            tableContent.AddCell(cellRight);
+
+            cellLeftMerge.Phrase = new Phrase($"{viewModel.currency.code}", smaller_font);
+            tableContent.AddCell(cellLeftMerge);
+
+            string pph = "0.00";
+            double pphNominal = 0;
+            if (viewModel.useIncomeTax)
+            {
+                pphNominal = total * (Convert.ToDouble(viewModel.incomeTax.rate) / 100);
+                pph = $"{pphNominal.ToString("N", new CultureInfo("id-ID"))}";
+            }
+            cellRightMerge.Phrase = new Phrase(pph, smaller_font);
+            tableContent.AddCell(cellRightMerge);
+
+            cellRight.Colspan = 4;
             cellRight.Phrase = new Phrase("Grand Total", bold_font);
             tableContent.AddCell(cellRight);
 
             cellLeftMerge.Phrase = new Phrase($"{viewModel.currency.code}", smaller_font);
             tableContent.AddCell(cellLeftMerge);
 
-            cellRightMerge.Phrase = new Phrase($"{(total+ ppnNominal).ToString("N", new CultureInfo("id-ID"))}", smaller_font);
+            cellRightMerge.Phrase = new Phrase($"{(total+ ppnNominal- pphNominal).ToString("N", new CultureInfo("id-ID"))}", smaller_font);
             tableContent.AddCell(cellRightMerge);
 
             PdfPCell cellContent = new PdfPCell(tableContent); // dont remove
@@ -270,12 +287,14 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
 
             #region TableSignature
 
-            PdfPTable tableSignature = new PdfPTable(2);
+            PdfPTable tableSignature = new PdfPTable(3);
 
             PdfPCell cellSignatureContent = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
-            cellSignatureContent.Phrase = new Phrase("Staff Pembelian\n\n\n\n\n\n\n(  "+ viewModel.CreatedBy + "  )", bold_font);
+            cellSignatureContent.Phrase = new Phrase("Pembeli\n\n\n\n\n\n(  "+ viewModel.CreatedBy + "  )", bold_font);
             tableSignature.AddCell(cellSignatureContent);
-            cellSignatureContent.Phrase = new Phrase("Manager Pembelian\n\n\n\n\n\n\n(  " + viewModel.supplier.name + "  )", bold_font);
+            cellSignatureContent.Phrase = new Phrase("Menyetujui\n\n\n\n\n\n(  Manager Pembelian  )", bold_font);
+            tableSignature.AddCell(cellSignatureContent);
+            cellSignatureContent.Phrase = new Phrase("Penjual\n\n\n\n\n\n(  " + viewModel.supplier.name + "  )", bold_font);
             tableSignature.AddCell(cellSignatureContent);
 
 
