@@ -437,9 +437,9 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             if (total > 3000000)
             {
                 cellSignatureContent.Colspan = 0;
-                cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n(Manager Akuntansi & Keu)", normal_font);
+                cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n(Direktur Akt & Keu)", normal_font);
                 tableSignature.AddCell(cellSignatureContent);
-                cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n(Direktur Akuntansi & Keu)", normal_font);
+                cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n(Manager Akt & Keu)", normal_font);
                 tableSignature.AddCell(cellSignatureContent);
                 cellSignatureContent.Colspan = 2;
                 cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n(Manager Pembelian)", normal_font);
@@ -450,7 +450,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             else
             {
                 cellSignatureContent.Colspan = 2;
-                cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n(Manager Akuntansi & Keu)", normal_font);
+                cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n(Manager Akt & Keu)", normal_font);
                 tableSignature.AddCell(cellSignatureContent);
                 cellSignatureContent.Colspan = 2;
                 cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n(   Manager Pembelian    )", normal_font);
