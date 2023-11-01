@@ -196,6 +196,8 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
                                 dbContext.PurchasingDocumentExpeditions.Update(pdeExisting);
                             }
 
+                            
+
                             //PurchasingDocumentExpedition pde = new PurchasingDocumentExpedition
                             //{
                             //    Id = (int)detail.UnitPaymentOrderId,
@@ -278,8 +280,25 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
                             //    dbContext.Entry(pde).Property(x => x.LastModifiedBy).IsModified = true;
                             //    dbContext.Entry(pde).Property(x => x.LastModifiedUtc).IsModified = true;
                         }
-                    }
 
+                        var pdeExist = dbContext.PurchasingDocumentExpeditions.Where(entity => entity.UnitPaymentOrderNo == detail.UnitPaymentOrderNo && entity.BankExpenditureNoteNo!=model.DocumentNo);
+                        var amountpaid = pdeExist.Sum(a => a.SupplierPayment);
+                        if (detail.TotalPaid == amountpaid+ detail.SupplierPayment)
+                        {
+                            var delPDE = dbContext.PurchasingDocumentExpeditions.Include(a=>a.Items).FirstOrDefault(a => a.BankExpenditureNoteNo == null);
+                            if (delPDE != null)
+                            {
+                                foreach(var i in delPDE.Items)
+                                {
+                                    EntityExtension.FlagForDelete(i, username, USER_AGENT);
+                                    dbContext.PurchasingDocumentExpeditionItems.Update(i);
+                                }
+                                EntityExtension.FlagForDelete(delPDE, username, USER_AGENT);
+                                dbContext.PurchasingDocumentExpeditions.Update(delPDE);
+                            }
+                        }
+                    }
+                    Updated = await dbContext.SaveChangesAsync();
                     foreach (var detail in dbContext.BankExpenditureNoteDetails.AsNoTracking().Where(p => p.BankExpenditureNoteId == model.Id))
                     {
                         BankExpenditureNoteDetailModel detailModel = model.Details.FirstOrDefault(prop => prop.Id.Equals(detail.Id));
@@ -398,19 +417,19 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
                         EntityExtension.FlagForCreate(detail, username, USER_AGENT);
 
                         var pdeSPB = dbContext.PurchasingDocumentExpeditions.Include(item => item.Items).LastOrDefault(entity => entity.UnitPaymentOrderNo == detail.UnitPaymentOrderNo);
-                        
-                        if (pdeSPB != null && string.IsNullOrWhiteSpace(pdeSPB.BankExpenditureNoteNo))
+                        var pdeNull = dbContext.PurchasingDocumentExpeditions.Include(item => item.Items).LastOrDefault(entity => entity.UnitPaymentOrderNo == detail.UnitPaymentOrderNo && entity.BankExpenditureNoteNo==null);
+                        if (pdeNull!=null)
                         {
                             // update pde
-                            pdeSPB.IsPaid = paidFlag;
-                            pdeSPB.BankExpenditureNoteNo = model.DocumentNo;
-                            pdeSPB.BankExpenditureNoteDate = model.Date;
-                            pdeSPB.AmountPaid = detail.AmountPaid;
-                            pdeSPB.SupplierPayment = detail.SupplierPayment;
+                            pdeNull.IsPaid = paidFlag;
+                            pdeNull.BankExpenditureNoteNo = model.DocumentNo;
+                            pdeNull.BankExpenditureNoteDate = model.Date;
+                            pdeNull.AmountPaid = detail.AmountPaid;
+                            pdeNull.SupplierPayment = detail.SupplierPayment;
 
-                            EntityExtension.FlagForUpdate(pdeSPB, username, USER_AGENT);
+                            EntityExtension.FlagForUpdate(pdeNull, username, USER_AGENT);
 
-                            dbContext.PurchasingDocumentExpeditions.Update(pdeSPB);
+                            dbContext.PurchasingDocumentExpeditions.Update(pdeNull);
                         }
                         else
                         {
@@ -850,22 +869,72 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
                         EntityExtension.FlagForDelete(detail, username, USER_AGENT);
                         dbContext.BankExpenditureNoteDetails.Update(detail);
 
-                        PurchasingDocumentExpedition pde = new PurchasingDocumentExpedition
+                        var expedition = dbContext.PurchasingDocumentExpeditions.Where(a => a.UnitPaymentOrderNo == detail.UnitPaymentOrderNo);
+                        if (expedition.Count() > 1)
                         {
-                            Id = (int)detail.UnitPaymentOrderId,
-                            IsPaid = false,
-                            BankExpenditureNoteNo = null,
-                            BankExpenditureNoteDate = null
-                        };
+                            var amount = expedition.Sum(a => a.SupplierPayment);
+                            var delExpedition = dbContext.PurchasingDocumentExpeditions.Where(a => a.UnitPaymentOrderNo == detail.UnitPaymentOrderNo && a.BankExpenditureNoteNo== bankExpenditureNote.DocumentNo).FirstOrDefault();
+                            var total = delExpedition.TotalPaid + delExpedition.Vat - delExpedition.IncomeTax;
+                            if (total > amount)
+                            {
+                                EntityExtension.FlagForDelete(delExpedition, username, USER_AGENT);
+                                dbContext.PurchasingDocumentExpeditions.Update(delExpedition);
+                            }
+                            else
+                            {
+                                var updateexp = dbContext.PurchasingDocumentExpeditions.LastOrDefault(a => a.UnitPaymentOrderNo == detail.UnitPaymentOrderNo);
+                                updateexp.IsPaid = false;
 
-                        EntityExtension.FlagForUpdate(pde, username, USER_AGENT);
-                        //dbContext.Attach(pde);
-                        dbContext.Entry(pde).Property(x => x.IsPaid).IsModified = true;
-                        dbContext.Entry(pde).Property(x => x.BankExpenditureNoteNo).IsModified = true;
-                        dbContext.Entry(pde).Property(x => x.BankExpenditureNoteDate).IsModified = true;
-                        dbContext.Entry(pde).Property(x => x.LastModifiedAgent).IsModified = true;
-                        dbContext.Entry(pde).Property(x => x.LastModifiedBy).IsModified = true;
-                        dbContext.Entry(pde).Property(x => x.LastModifiedUtc).IsModified = true;
+                                EntityExtension.FlagForUpdate(updateexp, username, USER_AGENT);
+                                dbContext.PurchasingDocumentExpeditions.Update(updateexp);
+
+                                EntityExtension.FlagForDelete(delExpedition, username, USER_AGENT);
+                                dbContext.PurchasingDocumentExpeditions.Update(delExpedition);
+
+                                //PurchasingDocumentExpedition pde = new PurchasingDocumentExpedition
+                                //{
+                                //    Id = (int)detail.UnitPaymentOrderId,
+                                //    IsPaid = false,
+                                //    BankExpenditureNoteNo = null,
+                                //    BankExpenditureNoteDate = null,
+                                //    SupplierPayment=0
+                                //};
+
+                                //EntityExtension.FlagForUpdate(pde, username, USER_AGENT);
+                                ////dbContext.Attach(pde);
+                                //dbContext.Entry(pde).Property(x => x.IsPaid).IsModified = true;
+                                //dbContext.Entry(pde).Property(x => x.BankExpenditureNoteNo).IsModified = true;
+                                //dbContext.Entry(pde).Property(x => x.BankExpenditureNoteDate).IsModified = true;
+                                //dbContext.Entry(pde).Property(x => x.LastModifiedAgent).IsModified = true;
+                                //dbContext.Entry(pde).Property(x => x.LastModifiedBy).IsModified = true;
+                                //dbContext.Entry(pde).Property(x => x.LastModifiedUtc).IsModified = true;
+                                //dbContext.Entry(pde).Property(x => x.SupplierPayment).IsModified = true;
+                            }
+                        }
+                        else
+                        {
+                            PurchasingDocumentExpedition pde = new PurchasingDocumentExpedition
+                            {
+                                Id = (int)detail.UnitPaymentOrderId,
+                                IsPaid = false,
+                                BankExpenditureNoteNo = null,
+                                BankExpenditureNoteDate = null,
+                                SupplierPayment = 0,
+                                AmountPaid = 0
+                            };
+
+                            EntityExtension.FlagForUpdate(pde, username, USER_AGENT);
+                            //dbContext.Attach(pde);
+                            dbContext.Entry(pde).Property(x => x.IsPaid).IsModified = true;
+                            dbContext.Entry(pde).Property(x => x.BankExpenditureNoteNo).IsModified = true;
+                            dbContext.Entry(pde).Property(x => x.BankExpenditureNoteDate).IsModified = true;
+                            dbContext.Entry(pde).Property(x => x.LastModifiedAgent).IsModified = true;
+                            dbContext.Entry(pde).Property(x => x.LastModifiedBy).IsModified = true;
+                            dbContext.Entry(pde).Property(x => x.LastModifiedUtc).IsModified = true;
+                            dbContext.Entry(pde).Property(x => x.SupplierPayment).IsModified = true;
+                            dbContext.Entry(pde).Property(x => x.AmountPaid).IsModified = true;
+                        }
+                        
                     }
 
                     EntityExtension.FlagForDelete(bankExpenditureNote, username, USER_AGENT);
