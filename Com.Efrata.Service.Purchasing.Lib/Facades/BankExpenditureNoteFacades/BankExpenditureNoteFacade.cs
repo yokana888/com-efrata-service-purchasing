@@ -882,7 +882,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
                             }
                             else
                             {
-                                var updateexp = dbContext.PurchasingDocumentExpeditions.LastOrDefault(a => a.UnitPaymentOrderNo == detail.UnitPaymentOrderNo);
+                                var updateexp = dbContext.PurchasingDocumentExpeditions.LastOrDefault(a => a.UnitPaymentOrderNo == detail.UnitPaymentOrderNo );
                                 updateexp.IsPaid = false;
 
                                 EntityExtension.FlagForUpdate(updateexp, username, USER_AGENT);
@@ -1080,9 +1080,10 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
                          DivisionCode = b.DivisionCode,
                          TotalDPP = b.TotalPaid - b.Vat,
                          TotalPPN = b.Vat,
+                         //AmountPaid= (dbContext.BankExpenditureNoteDetails.Where(x => x.UnitPaymentOrderNo == b.UnitPaymentOrderNo).ToList().Count == 0 ? 0 : dbContext.BankExpenditureNoteDetails.Where(x => x.UnitPaymentOrderNo == b.UnitPaymentOrderNo).Sum(x => x.SupplierPayment)),
                          DifferenceNominal = (b.TotalPaid) - (b.AmountPaid + b.SupplierPayment)
                      });
-
+            #region comment
             //if (DateFrom == null || DateTo == null)
             //{
             //    Query = (from a in dbContext.BankExpenditureNotes
@@ -1157,11 +1158,12 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
             //             }
             //          );
             //}
-
+            #endregion
+            List<BankExpenditureNoteReportViewModel> datas = new List<BankExpenditureNoteReportViewModel>();
             Query = Query.Where(entity => entity.Date.AddHours(Offset) >= DateFrom.GetValueOrDefault() && entity.Date.AddHours(Offset) <= DateTo.GetValueOrDefault().AddDays(1).AddSeconds(-1));
             // override duplicate 
             Query = Query.GroupBy(
-                key => new { key.Id, key.BankName, key.CategoryName, key.Currency, key.Date, key.DivisionCode, key.DivisionName, key.DocumentNo, key.DPP, key.InvoiceNumber, key.PaymentMethod, key.SupplierCode, key.SupplierName, key.TotalDPP, key.TotalPaid, key.TotalPPN, key.VAT, key.UnitPaymentOrderNo, key.DifferenceNominal },
+                key => new { key.Id, key.BankName, key.CategoryName, key.Currency, key.Date, key.DivisionCode, key.DivisionName, key.DocumentNo, key.DPP, key.InvoiceNumber, key.PaymentMethod, key.SupplierCode, key.SupplierName, key.TotalDPP, key.TotalPaid, key.TotalPPN, key.VAT, key.UnitPaymentOrderNo, key.DifferenceNominal, key.AmountPaid },
                 value => value,
                 (key, value) => new BankExpenditureNoteReportViewModel
                 {
@@ -1183,8 +1185,10 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
                     DivisionCode = key.DivisionCode,
                     TotalDPP = key.TotalDPP,
                     TotalPPN = key.TotalPPN,
-                    DifferenceNominal = key.DifferenceNominal
+                    DifferenceNominal = key.DifferenceNominal,
+                    AmountPaid= key.AmountPaid
                 });
+
             if (!string.IsNullOrWhiteSpace(DocumentNo))
                 Query = Query.Where(entity => entity.DocumentNo == DocumentNo);
 
@@ -1203,7 +1207,35 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
             if (!string.IsNullOrWhiteSpace(DivisionCode))
                 Query = Query.Where(entity => entity.DivisionCode == DivisionCode);
 
-            Pageable<BankExpenditureNoteReportViewModel> pageable = new Pageable<BankExpenditureNoteReportViewModel>(Query, Page - 1, Size);
+            double paid = 0;
+            List<string> no = new List<string>();
+            foreach (var d in Query)
+            {
+                if (no.Count == 0)
+                {
+                    paid = d.TotalPaid;
+                    no.Add(d.UnitPaymentOrderNo);
+                    d.DifferenceNominal = d.DPP + d.TotalPPN- paid;
+                }
+                else
+                {
+                    var exist = no.Where(a => a == d.UnitPaymentOrderNo).FirstOrDefault();
+                    if (exist == null)
+                    {
+                        paid = d.TotalPaid;
+                        d.DifferenceNominal = d.DPP + d.TotalPPN - paid;
+                        no.Add(d.UnitPaymentOrderNo);
+                    }
+                    else
+                    {
+                        paid += d.TotalPaid;
+                        d.DifferenceNominal = d.DPP + d.TotalPPN - paid;
+                    }
+                }
+                datas.Add(d);
+            }
+
+            Pageable<BankExpenditureNoteReportViewModel> pageable = new Pageable<BankExpenditureNoteReportViewModel>(datas, Page - 1, Size);
             List<object> data = pageable.Data.ToList<object>();
 
             return new ReadResponse<object>(data, pageable.TotalCount, new Dictionary<string, string>());

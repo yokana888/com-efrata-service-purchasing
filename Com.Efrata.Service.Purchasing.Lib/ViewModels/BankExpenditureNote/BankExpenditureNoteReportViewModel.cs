@@ -24,5 +24,6 @@ namespace Com.Efrata.Service.Purchasing.Lib.ViewModels.BankExpenditureNote
         public double TotalPPN { get; internal set; }
         public long Id { get; internal set; }
         public double DifferenceNominal { get; set; }
+        public double AmountPaid { get; set; }
     }
 }
