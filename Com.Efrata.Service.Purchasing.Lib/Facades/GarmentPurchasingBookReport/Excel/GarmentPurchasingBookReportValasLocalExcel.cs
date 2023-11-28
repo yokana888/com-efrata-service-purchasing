@@ -85,7 +85,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentPurchasingBookReport.
 
             using (var package = new ExcelPackage())
             {
-                var company = "PT DAN LIRIS";
+                var company = "PT EFRATA GARMINDO UTAMA";
                 var title = "LAPORAN BUKU PEMBELIAN LOKAL VALAS";
 
                 var startDateStr = startDate == DateTimeOffset.MinValue ? "-" : startDate.AddHours(timeZone).ToString("dd/MM/yyyy");

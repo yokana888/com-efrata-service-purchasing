@@ -441,7 +441,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.UnpaidDispositionReportFacad
 
             using (var package = new ExcelPackage())
             {
-                var company = "PT DAN LIRIS";
+                var company = "PT EFRATA GARMINDO UTAMA";
                 var title = "LAPORAN DISPOSISI BELUM DIBAYAR (DETAIL) LOKAL";
                 if (isForeignCurrency)
                     title = "LAPORAN DISPOSISI BELUM DIBAYAR (DETAIL) LOKAL VALAS";

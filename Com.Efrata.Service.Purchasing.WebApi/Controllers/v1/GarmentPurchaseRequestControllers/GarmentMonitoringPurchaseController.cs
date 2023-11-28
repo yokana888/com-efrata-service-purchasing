@@ -30,7 +30,7 @@ namespace Com.Efrata.Service.Purchasing.WebApi.Controllers.v1.GarmentPurchaseReq
 			this.identityService = (IdentityService)serviceProvider.GetService(typeof(IdentityService));
 		}
 		[HttpGet]
-		public IActionResult GetReport(string epono, string unit,string roNo, string article,string poSerialNumber,string username,string doNo,string ipoStatus,string supplier, string status, DateTime? dateFrom, DateTime? dateTo, DateTime? dateFromEx, DateTime? dateToEx, int page, int size, string Order = "{}")
+		public async Task<IActionResult> GetReport(string epono, string unit,string roNo, string article,string poSerialNumber,string username,string doNo,string ipoStatus,string supplier, string status, DateTime? dateFrom, DateTime? dateTo, DateTime? dateFromEx, DateTime? dateToEx, int page, int size, string Order = "{}")
 		{
 			int offset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
 			string accept = Request.Headers["Accept"];
@@ -38,7 +38,7 @@ namespace Com.Efrata.Service.Purchasing.WebApi.Controllers.v1.GarmentPurchaseReq
 			try
 			{
 
-				var data = facade.GetMonitoringPurchaseReport(epono, unit, roNo, article, poSerialNumber, username, doNo, ipoStatus, supplier, status, dateFrom, dateTo, dateFromEx, dateToEx, page, size, Order, offset);
+				var data = await facade.GetMonitoringPurchaseReport(epono, unit, roNo, article, poSerialNumber, username, doNo, ipoStatus, supplier, status, dateFrom, dateTo, dateFromEx, dateToEx, page, size, Order, offset);
 
 				return Ok(new
 				{

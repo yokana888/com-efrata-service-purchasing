@@ -196,6 +196,8 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
                                 dbContext.PurchasingDocumentExpeditions.Update(pdeExisting);
                             }
 
+                            
+
                             //PurchasingDocumentExpedition pde = new PurchasingDocumentExpedition
                             //{
                             //    Id = (int)detail.UnitPaymentOrderId,
@@ -278,8 +280,25 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
                             //    dbContext.Entry(pde).Property(x => x.LastModifiedBy).IsModified = true;
                             //    dbContext.Entry(pde).Property(x => x.LastModifiedUtc).IsModified = true;
                         }
-                    }
 
+                        var pdeExist = dbContext.PurchasingDocumentExpeditions.Where(entity => entity.UnitPaymentOrderNo == detail.UnitPaymentOrderNo && entity.BankExpenditureNoteNo!=model.DocumentNo);
+                        var amountpaid = pdeExist.Sum(a => a.SupplierPayment);
+                        if (detail.TotalPaid == amountpaid+ detail.SupplierPayment)
+                        {
+                            var delPDE = dbContext.PurchasingDocumentExpeditions.Include(a=>a.Items).FirstOrDefault(a => a.BankExpenditureNoteNo == null);
+                            if (delPDE != null)
+                            {
+                                foreach(var i in delPDE.Items)
+                                {
+                                    EntityExtension.FlagForDelete(i, username, USER_AGENT);
+                                    dbContext.PurchasingDocumentExpeditionItems.Update(i);
+                                }
+                                EntityExtension.FlagForDelete(delPDE, username, USER_AGENT);
+                                dbContext.PurchasingDocumentExpeditions.Update(delPDE);
+                            }
+                        }
+                    }
+                    Updated = await dbContext.SaveChangesAsync();
                     foreach (var detail in dbContext.BankExpenditureNoteDetails.AsNoTracking().Where(p => p.BankExpenditureNoteId == model.Id))
                     {
                         BankExpenditureNoteDetailModel detailModel = model.Details.FirstOrDefault(prop => prop.Id.Equals(detail.Id));
@@ -398,19 +417,19 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
                         EntityExtension.FlagForCreate(detail, username, USER_AGENT);
 
                         var pdeSPB = dbContext.PurchasingDocumentExpeditions.Include(item => item.Items).LastOrDefault(entity => entity.UnitPaymentOrderNo == detail.UnitPaymentOrderNo);
-                        
-                        if (pdeSPB != null && string.IsNullOrWhiteSpace(pdeSPB.BankExpenditureNoteNo))
+                        var pdeNull = dbContext.PurchasingDocumentExpeditions.Include(item => item.Items).LastOrDefault(entity => entity.UnitPaymentOrderNo == detail.UnitPaymentOrderNo && entity.BankExpenditureNoteNo==null);
+                        if (pdeNull!=null)
                         {
                             // update pde
-                            pdeSPB.IsPaid = paidFlag;
-                            pdeSPB.BankExpenditureNoteNo = model.DocumentNo;
-                            pdeSPB.BankExpenditureNoteDate = model.Date;
-                            pdeSPB.AmountPaid = detail.AmountPaid;
-                            pdeSPB.SupplierPayment = detail.SupplierPayment;
+                            pdeNull.IsPaid = paidFlag;
+                            pdeNull.BankExpenditureNoteNo = model.DocumentNo;
+                            pdeNull.BankExpenditureNoteDate = model.Date;
+                            pdeNull.AmountPaid = detail.AmountPaid;
+                            pdeNull.SupplierPayment = detail.SupplierPayment;
 
-                            EntityExtension.FlagForUpdate(pdeSPB, username, USER_AGENT);
+                            EntityExtension.FlagForUpdate(pdeNull, username, USER_AGENT);
 
-                            dbContext.PurchasingDocumentExpeditions.Update(pdeSPB);
+                            dbContext.PurchasingDocumentExpeditions.Update(pdeNull);
                         }
                         else
                         {
@@ -850,22 +869,72 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
                         EntityExtension.FlagForDelete(detail, username, USER_AGENT);
                         dbContext.BankExpenditureNoteDetails.Update(detail);
 
-                        PurchasingDocumentExpedition pde = new PurchasingDocumentExpedition
+                        var expedition = dbContext.PurchasingDocumentExpeditions.Where(a => a.UnitPaymentOrderNo == detail.UnitPaymentOrderNo);
+                        if (expedition.Count() > 1)
                         {
-                            Id = (int)detail.UnitPaymentOrderId,
-                            IsPaid = false,
-                            BankExpenditureNoteNo = null,
-                            BankExpenditureNoteDate = null
-                        };
+                            var amount = expedition.Sum(a => a.SupplierPayment);
+                            var delExpedition = dbContext.PurchasingDocumentExpeditions.Where(a => a.UnitPaymentOrderNo == detail.UnitPaymentOrderNo && a.BankExpenditureNoteNo== bankExpenditureNote.DocumentNo).FirstOrDefault();
+                            var total = delExpedition.TotalPaid + delExpedition.Vat - delExpedition.IncomeTax;
+                            if (total > amount)
+                            {
+                                EntityExtension.FlagForDelete(delExpedition, username, USER_AGENT);
+                                dbContext.PurchasingDocumentExpeditions.Update(delExpedition);
+                            }
+                            else
+                            {
+                                var updateexp = dbContext.PurchasingDocumentExpeditions.LastOrDefault(a => a.UnitPaymentOrderNo == detail.UnitPaymentOrderNo );
+                                updateexp.IsPaid = false;
 
-                        EntityExtension.FlagForUpdate(pde, username, USER_AGENT);
-                        //dbContext.Attach(pde);
-                        dbContext.Entry(pde).Property(x => x.IsPaid).IsModified = true;
-                        dbContext.Entry(pde).Property(x => x.BankExpenditureNoteNo).IsModified = true;
-                        dbContext.Entry(pde).Property(x => x.BankExpenditureNoteDate).IsModified = true;
-                        dbContext.Entry(pde).Property(x => x.LastModifiedAgent).IsModified = true;
-                        dbContext.Entry(pde).Property(x => x.LastModifiedBy).IsModified = true;
-                        dbContext.Entry(pde).Property(x => x.LastModifiedUtc).IsModified = true;
+                                EntityExtension.FlagForUpdate(updateexp, username, USER_AGENT);
+                                dbContext.PurchasingDocumentExpeditions.Update(updateexp);
+
+                                EntityExtension.FlagForDelete(delExpedition, username, USER_AGENT);
+                                dbContext.PurchasingDocumentExpeditions.Update(delExpedition);
+
+                                //PurchasingDocumentExpedition pde = new PurchasingDocumentExpedition
+                                //{
+                                //    Id = (int)detail.UnitPaymentOrderId,
+                                //    IsPaid = false,
+                                //    BankExpenditureNoteNo = null,
+                                //    BankExpenditureNoteDate = null,
+                                //    SupplierPayment=0
+                                //};
+
+                                //EntityExtension.FlagForUpdate(pde, username, USER_AGENT);
+                                ////dbContext.Attach(pde);
+                                //dbContext.Entry(pde).Property(x => x.IsPaid).IsModified = true;
+                                //dbContext.Entry(pde).Property(x => x.BankExpenditureNoteNo).IsModified = true;
+                                //dbContext.Entry(pde).Property(x => x.BankExpenditureNoteDate).IsModified = true;
+                                //dbContext.Entry(pde).Property(x => x.LastModifiedAgent).IsModified = true;
+                                //dbContext.Entry(pde).Property(x => x.LastModifiedBy).IsModified = true;
+                                //dbContext.Entry(pde).Property(x => x.LastModifiedUtc).IsModified = true;
+                                //dbContext.Entry(pde).Property(x => x.SupplierPayment).IsModified = true;
+                            }
+                        }
+                        else
+                        {
+                            PurchasingDocumentExpedition pde = new PurchasingDocumentExpedition
+                            {
+                                Id = (int)detail.UnitPaymentOrderId,
+                                IsPaid = false,
+                                BankExpenditureNoteNo = null,
+                                BankExpenditureNoteDate = null,
+                                SupplierPayment = 0,
+                                AmountPaid = 0
+                            };
+
+                            EntityExtension.FlagForUpdate(pde, username, USER_AGENT);
+                            //dbContext.Attach(pde);
+                            dbContext.Entry(pde).Property(x => x.IsPaid).IsModified = true;
+                            dbContext.Entry(pde).Property(x => x.BankExpenditureNoteNo).IsModified = true;
+                            dbContext.Entry(pde).Property(x => x.BankExpenditureNoteDate).IsModified = true;
+                            dbContext.Entry(pde).Property(x => x.LastModifiedAgent).IsModified = true;
+                            dbContext.Entry(pde).Property(x => x.LastModifiedBy).IsModified = true;
+                            dbContext.Entry(pde).Property(x => x.LastModifiedUtc).IsModified = true;
+                            dbContext.Entry(pde).Property(x => x.SupplierPayment).IsModified = true;
+                            dbContext.Entry(pde).Property(x => x.AmountPaid).IsModified = true;
+                        }
+                        
                     }
 
                     EntityExtension.FlagForDelete(bankExpenditureNote, username, USER_AGENT);
@@ -1011,9 +1080,10 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
                          DivisionCode = b.DivisionCode,
                          TotalDPP = b.TotalPaid - b.Vat,
                          TotalPPN = b.Vat,
+                         //AmountPaid= (dbContext.BankExpenditureNoteDetails.Where(x => x.UnitPaymentOrderNo == b.UnitPaymentOrderNo).ToList().Count == 0 ? 0 : dbContext.BankExpenditureNoteDetails.Where(x => x.UnitPaymentOrderNo == b.UnitPaymentOrderNo).Sum(x => x.SupplierPayment)),
                          DifferenceNominal = (b.TotalPaid) - (b.AmountPaid + b.SupplierPayment)
                      });
-
+            #region comment
             //if (DateFrom == null || DateTo == null)
             //{
             //    Query = (from a in dbContext.BankExpenditureNotes
@@ -1088,11 +1158,12 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
             //             }
             //          );
             //}
-
+            #endregion
+            List<BankExpenditureNoteReportViewModel> datas = new List<BankExpenditureNoteReportViewModel>();
             Query = Query.Where(entity => entity.Date.AddHours(Offset) >= DateFrom.GetValueOrDefault() && entity.Date.AddHours(Offset) <= DateTo.GetValueOrDefault().AddDays(1).AddSeconds(-1));
             // override duplicate 
             Query = Query.GroupBy(
-                key => new { key.Id, key.BankName, key.CategoryName, key.Currency, key.Date, key.DivisionCode, key.DivisionName, key.DocumentNo, key.DPP, key.InvoiceNumber, key.PaymentMethod, key.SupplierCode, key.SupplierName, key.TotalDPP, key.TotalPaid, key.TotalPPN, key.VAT, key.UnitPaymentOrderNo, key.DifferenceNominal },
+                key => new { key.Id, key.BankName, key.CategoryName, key.Currency, key.Date, key.DivisionCode, key.DivisionName, key.DocumentNo, key.DPP, key.InvoiceNumber, key.PaymentMethod, key.SupplierCode, key.SupplierName, key.TotalDPP, key.TotalPaid, key.TotalPPN, key.VAT, key.UnitPaymentOrderNo, key.DifferenceNominal, key.AmountPaid },
                 value => value,
                 (key, value) => new BankExpenditureNoteReportViewModel
                 {
@@ -1114,8 +1185,10 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
                     DivisionCode = key.DivisionCode,
                     TotalDPP = key.TotalDPP,
                     TotalPPN = key.TotalPPN,
-                    DifferenceNominal = key.DifferenceNominal
+                    DifferenceNominal = key.DifferenceNominal,
+                    AmountPaid= key.AmountPaid
                 });
+
             if (!string.IsNullOrWhiteSpace(DocumentNo))
                 Query = Query.Where(entity => entity.DocumentNo == DocumentNo);
 
@@ -1134,7 +1207,35 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
             if (!string.IsNullOrWhiteSpace(DivisionCode))
                 Query = Query.Where(entity => entity.DivisionCode == DivisionCode);
 
-            Pageable<BankExpenditureNoteReportViewModel> pageable = new Pageable<BankExpenditureNoteReportViewModel>(Query, Page - 1, Size);
+            double paid = 0;
+            List<string> no = new List<string>();
+            foreach (var d in Query)
+            {
+                if (no.Count == 0)
+                {
+                    paid = d.TotalPaid;
+                    no.Add(d.UnitPaymentOrderNo);
+                    d.DifferenceNominal = d.DPP + d.TotalPPN- paid;
+                }
+                else
+                {
+                    var exist = no.Where(a => a == d.UnitPaymentOrderNo).FirstOrDefault();
+                    if (exist == null)
+                    {
+                        paid = d.TotalPaid;
+                        d.DifferenceNominal = d.DPP + d.TotalPPN - paid;
+                        no.Add(d.UnitPaymentOrderNo);
+                    }
+                    else
+                    {
+                        paid += d.TotalPaid;
+                        d.DifferenceNominal = d.DPP + d.TotalPPN - paid;
+                    }
+                }
+                datas.Add(d);
+            }
+
+            Pageable<BankExpenditureNoteReportViewModel> pageable = new Pageable<BankExpenditureNoteReportViewModel>(datas, Page - 1, Size);
             List<object> data = pageable.Data.ToList<object>();
 
             return new ReadResponse<object>(data, pageable.TotalCount, new Dictionary<string, string>());
@@ -1510,9 +1611,11 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
 
             cellHeaderBody.Phrase = new Phrase("PT. EFRATA RETAILINDO", normal_font);
             headerTable1.AddCell(cellHeaderBody);
-            cellHeaderBody.Phrase = new Phrase("Banaran, Grogol, Sukoharjo, Jawa Tengah", normal_font);
+            cellHeaderBody.Phrase = new Phrase("Jl. Merapi No.23 Blok E1, Desa/Kelurahan Banaran,", normal_font);
             headerTable1.AddCell(cellHeaderBody);
-            cellHeaderBody.Phrase = new Phrase("57552" + "Telp (+62 271)719911, (+62 21)2900977", normal_font);
+            cellHeaderBody.Phrase = new Phrase("Kec. Grogol, Kab. Sukoharjo, Provinsi Jawa Tengah", normal_font);
+            headerTable1.AddCell(cellHeaderBody);
+            cellHeaderBody.Phrase = new Phrase("Kode Pos: 57552, Telp: 02711740888", normal_font);
             headerTable1.AddCell(cellHeaderBody);
 
             cellHeader1.AddElement(headerTable1);
@@ -1576,10 +1679,10 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
             {
                 #region BodyNonIdr
 
-                PdfPTable bodyTable = new PdfPTable(8);
+                PdfPTable bodyTable = new PdfPTable(7);
                 PdfPCell bodyCell = new PdfPCell();
 
-                float[] widthsBody = new float[] { 5f, 10f, 10f, 10f, 8f, 7f, 15f, 7f };
+                float[] widthsBody = new float[] { 5f, 10f, 10f, 10f,  7f, 15f, 7f };
                 bodyTable.SetWidths(widthsBody);
                 bodyTable.WidthPercentage = 100;
 
@@ -1596,8 +1699,8 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
                 bodyCell.Phrase = new Phrase("Divisi", bold_font);
                 bodyTable.AddCell(bodyCell);
 
-                bodyCell.Phrase = new Phrase("Unit", bold_font);
-                bodyTable.AddCell(bodyCell);
+                //bodyCell.Phrase = new Phrase("Unit", bold_font);
+                //bodyTable.AddCell(bodyCell);
 
                 bodyCell.Phrase = new Phrase("Mata Uang", bold_font);
                 bodyTable.AddCell(bodyCell);
@@ -1677,9 +1780,9 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
                             bodyCell.Phrase = new Phrase(detail.DivisionName, normal_font);
                             bodyTable.AddCell(bodyCell);
 
-                            bodyCell.HorizontalAlignment = Element.ALIGN_CENTER;
-                            bodyCell.Phrase = new Phrase(item.UnitCode, normal_font);
-                            bodyTable.AddCell(bodyCell);
+                            //bodyCell.HorizontalAlignment = Element.ALIGN_CENTER;
+                            //bodyCell.Phrase = new Phrase(item.UnitCode, normal_font);
+                            //bodyTable.AddCell(bodyCell);
 
                             bodyCell.Phrase = new Phrase(detail.Currency, normal_font);
                             bodyTable.AddCell(bodyCell);
@@ -1746,9 +1849,9 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
                             bodyCell.Phrase = new Phrase(detail.DivisionName, normal_font);
                             bodyTable.AddCell(bodyCell);
 
-                            bodyCell.HorizontalAlignment = Element.ALIGN_CENTER;
-                            bodyCell.Phrase = new Phrase(unitSummary.UnitCode, normal_font);
-                            bodyTable.AddCell(bodyCell);
+                            //bodyCell.HorizontalAlignment = Element.ALIGN_CENTER;
+                            //bodyCell.Phrase = new Phrase(unitSummary.UnitCode, normal_font);
+                            //bodyTable.AddCell(bodyCell);
 
                             bodyCell.Phrase = new Phrase(detail.Currency, normal_font);
                             bodyTable.AddCell(bodyCell);
@@ -1776,7 +1879,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
 
                 }
 
-                bodyCell.Colspan = 4;
+                bodyCell.Colspan = 3;
                 bodyCell.Border = Rectangle.NO_BORDER;
                 bodyCell.Phrase = new Phrase("", normal_font);
                 bodyTable.AddCell(bodyCell);
@@ -1804,10 +1907,10 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
             {
                 sameCurrency = false;
                 #region BodyIdr
-                PdfPTable bodyTable = new PdfPTable(9);
+                PdfPTable bodyTable = new PdfPTable(8);
                 PdfPCell bodyCell = new PdfPCell();
 
-                float[] widthsBody = new float[] { 5f, 10f, 10f, 10f, 8f, 7f, 10f, 10f, 7f };
+                float[] widthsBody = new float[] { 5f, 10f, 10f, 10f,  7f, 10f, 10f, 7f };
                 bodyTable.SetWidths(widthsBody);
                 bodyTable.WidthPercentage = 100;
 
@@ -1824,8 +1927,8 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
                 bodyCell.Phrase = new Phrase("Divisi", bold_font);
                 bodyTable.AddCell(bodyCell);
 
-                bodyCell.Phrase = new Phrase("Unit", bold_font);
-                bodyTable.AddCell(bodyCell);
+                //bodyCell.Phrase = new Phrase("Unit", bold_font);
+                //bodyTable.AddCell(bodyCell);
 
                 bodyCell.Phrase = new Phrase("Mata Uang", bold_font);
                 bodyTable.AddCell(bodyCell);
@@ -1908,9 +2011,9 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
                             bodyCell.Phrase = new Phrase(detail.DivisionName, normal_font);
                             bodyTable.AddCell(bodyCell);
 
-                            bodyCell.HorizontalAlignment = Element.ALIGN_CENTER;
-                            bodyCell.Phrase = new Phrase(item.UnitCode, normal_font);
-                            bodyTable.AddCell(bodyCell);
+                            //bodyCell.HorizontalAlignment = Element.ALIGN_CENTER;
+                            //bodyCell.Phrase = new Phrase(item.UnitCode, normal_font);
+                            //bodyTable.AddCell(bodyCell);
 
                             bodyCell.Phrase = new Phrase(detail.Currency, normal_font);
                             bodyTable.AddCell(bodyCell);
@@ -1985,9 +2088,9 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
                             bodyCell.Phrase = new Phrase(detail.DivisionName, normal_font);
                             bodyTable.AddCell(bodyCell);
 
-                            bodyCell.HorizontalAlignment = Element.ALIGN_CENTER;
-                            bodyCell.Phrase = new Phrase(unitSummary.UnitCode, normal_font);
-                            bodyTable.AddCell(bodyCell);
+                            //bodyCell.HorizontalAlignment = Element.ALIGN_CENTER;
+                            //bodyCell.Phrase = new Phrase(unitSummary.UnitCode, normal_font);
+                            //bodyTable.AddCell(bodyCell);
 
                             bodyCell.Phrase = new Phrase(detail.Currency, normal_font);
                             bodyTable.AddCell(bodyCell);
@@ -2018,7 +2121,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
                     }
                 }
 
-                bodyCell.Colspan = 4;
+                bodyCell.Colspan = 3;
                 bodyCell.Border = Rectangle.NO_BORDER;
                 bodyCell.Phrase = new Phrase("", normal_font);
                 bodyTable.AddCell(bodyCell);
@@ -2123,7 +2226,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BankExpenditureNoteFacades
             footerTable.SetWidths(widthsFooter);
             footerTable.WidthPercentage = 100;
 
-            cellFooter.Phrase = new Phrase("Dikeluarkan dengan cek/BG No. : " + model.BGCheckNumber, normal_font);
+            cellFooter.Phrase = new Phrase("Dikeluarkan dengan Check : " + model.BGCheckNumber, normal_font);
             footerTable.AddCell(cellFooter);
 
             cellFooter.Phrase = new Phrase("", normal_font);

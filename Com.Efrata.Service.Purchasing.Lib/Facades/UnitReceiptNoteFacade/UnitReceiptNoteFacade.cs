@@ -826,7 +826,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.UnitReceiptNoteFacade
             string journalTransactionUri = "journal-transactions";
             var httpClient = (IHttpClientService)serviceProvider.GetService(typeof(IHttpClientService));
             var response = await httpClient.PostAsync($"{APIEndpoint.Finance}{journalTransactionUri}", new StringContent(JsonConvert.SerializeObject(journalTransactionToPost).ToString(), Encoding.UTF8, General.JsonMediaType));
-
+            var a = response.Content.ReadAsStringAsync();
             response.EnsureSuccessStatusCode();
         }
 

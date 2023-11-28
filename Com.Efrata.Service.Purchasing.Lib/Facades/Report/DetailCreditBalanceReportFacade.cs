@@ -473,7 +473,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.Report
 
         //    using (var package = new ExcelPackage())
         //    {
-        //        var company = "PT DAN LIRIS";
+        //        var company = "PT EFRATA GARMINDO UTAMA";
         //        var sTitle = isImport ? "IMPOR" : isForeignCurrency ? "LOKAL VALAS" : "LOKAL";
         //        var title = $"LAPORAN SALDO HUTANG (DETAIL) {sTitle}";
         //        var period = $"Periode sampai {dateTo.GetValueOrDefault().AddHours(_identityService.TimezoneOffset):dd/MM/yyyy}";
@@ -676,7 +676,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.Report
 
             using (var package = new ExcelPackage())
             {
-                var company = "PT DAN LIRIS";
+                var company = "PT EFRATA GARMINDO UTAMA";
                 var title = "LAPORAN SALDO HUTANG (DETAIL) LOKAL";
                 if (isForeignCurrency)
                     title = "LAPORAN SALDO HUTANG (DETAIL) LOKAL VALAS";

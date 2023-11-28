@@ -49,7 +49,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
                 //Paragraph title = new Paragraph(titleString, bold_font) { Alignment = Element.ALIGN_CENTER };
                 //document.Add(title);
 
-                //string companyNameString = "PT DAN LIRIS";
+                //string companyNameString = "PT EFRATA GARMINDO UTAMA";
                 //Paragraph companyName = new Paragraph(companyNameString, header_font) { Alignment = Element.ALIGN_LEFT };
                 //document.Add(companyName);
 
@@ -68,7 +68,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
                 cellHeaderContentRight.Phrase = new Phrase("");
                 tableHeader.AddCell(cellHeaderContentRight);
 
-                cellHeaderContentLeft.Phrase = new Phrase("Kel. Banaran, Kec. Grogol, Kab.Sukoharjo, Jawa Tengah" + "\n" + "57552" + "\n" + "Telp (+62 271)719911, (+62 21)2900977", small_normal_font);
+                cellHeaderContentLeft.Phrase = new Phrase("Jl. Merapi No.23 Blok E1, Desa/Kelurahan Banaran," + "\n" + "Kec. Grogol, Kab. Sukoharjo, Provinsi Jawa Tengah" + "\n" + "Kode Pos: 57552, Telp: 02711740888", small_normal_font);
                 tableHeader.AddCell(cellHeaderContentLeft);
 
                 cellHeaderContentCenter.Phrase = new Phrase(viewModel.correctionType, small_normal_font);

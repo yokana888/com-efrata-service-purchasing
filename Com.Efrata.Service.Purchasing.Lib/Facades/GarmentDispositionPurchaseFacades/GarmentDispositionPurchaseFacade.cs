@@ -95,7 +95,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentDispositionPurchaseFa
             string Year = Now.ToOffset(new TimeSpan(clientTimeZoneOffset, 0, 0)).ToString("yy");
             string Month = Now.ToOffset(new TimeSpan(clientTimeZoneOffset, 0, 0)).ToString("MM");
 
-            string no = $"{Year}-{Month}-GJ" ;
+            string no = $"{Year}-{Month}-EGU" ;
             int Padding = 3;
 
             var lastNo = await this.dbSet.Where(w => w.DispositionNo.StartsWith(no) && !w.IsDeleted).OrderByDescending(o => o.DispositionNo).FirstOrDefaultAsync();

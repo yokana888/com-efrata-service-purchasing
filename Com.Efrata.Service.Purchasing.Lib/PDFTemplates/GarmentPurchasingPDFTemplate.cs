@@ -105,14 +105,14 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
 
             //Jumlah dibayar ke Supplier
             double paidToSupp = dpp + ppn - pphRate;
-            //if (viewModel.IncomeTaxBy == "Dan Liris")
+            //if (viewModel.IncomeTaxBy == "Efrata Garmindo Utama")
             //{
             //    paidToSupp = dpp + ppn;
             //}
 
             double amount = dpp + ppn;
 
-            //if (viewModel.IncomeTaxBy == "Dan Liris")
+            //if (viewModel.IncomeTaxBy == "Efrata Garmindo Utama")
             //{
             //    amount = dpp + ppn + pphRate;
             //}
@@ -230,7 +230,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             tableIdentity.AddCell(cellLeftNoBorder);
 
             var pphDanliris = pphRate;
-            //if (viewModel.IncomeTaxBy == "Dan Liris")
+            //if (viewModel.IncomeTaxBy == "Efrata Garmindo Utama")
             //{
             //    pphDanliris = 0;
             //}
@@ -516,34 +516,34 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             #endregion
 
             #region beban
-            PdfPTable tableBeban = new PdfPTable(1);
-            tableBeban.SetWidths(new float[] { 5f });
-            cellLeftNoBorder.Phrase = new Phrase("Beban Unit :", bold_font3); ;
-            tableBeban.AddCell(cellLeftNoBorder);
+            //PdfPTable tableBeban = new PdfPTable(1);
+            //tableBeban.SetWidths(new float[] { 5f });
+            //cellLeftNoBorder.Phrase = new Phrase("Beban Unit :", bold_font3); ;
+            //tableBeban.AddCell(cellLeftNoBorder);
 
-            var AmountPerUnit = viewModel.Items.SelectMany(s => s.Details)
-                .GroupBy(
-                key => new { key.UnitId, key.UnitName, key.UnitCode },
-                val => val,
-                (key, val) => new { Key = key, Value = val}
-                ).ToList();
-            foreach(var perUnit in AmountPerUnit)
-            {
-                var sumPerUnit = perUnit.Value.Sum(t =>
-                (t.PaidPrice) +
-                (viewModel.Items.Where(a => a.Id == t.GarmentDispositionPurchaseItemId).FirstOrDefault().IsPayVat? t.PaidPrice * Convert.ToDouble(viewModel.Items.Where(a => a.Id == t.GarmentDispositionPurchaseItemId).First().VatRate) / 100 : 0) -
-                (t.PaidPrice * (viewModel.Items.Where(a => a.Id == t.GarmentDispositionPurchaseItemId).FirstOrDefault()?.IncomeTaxRate / 100)))?.ToString("N", new CultureInfo("id-ID"));
-                cellLeftNoBorder.Phrase = new Phrase($"- {perUnit.Key.UnitName} = {sumPerUnit}", bold_font3);
-                tableBeban.AddCell(cellLeftNoBorder);
-            }
-            PdfPCell cellBeban = new PdfPCell(tableBeban); // dont remove
-            tableBeban.ExtendLastRow = false;
-            document.Add(tableBeban);
+            //var AmountPerUnit = viewModel.Items.SelectMany(s => s.Details)
+            //    .GroupBy(
+            //    key => new { key.UnitId, key.UnitName, key.UnitCode },
+            //    val => val,
+            //    (key, val) => new { Key = key, Value = val}
+            //    ).ToList();
+            //foreach(var perUnit in AmountPerUnit)
+            //{
+            //    var sumPerUnit = perUnit.Value.Sum(t =>
+            //    (t.PaidPrice) +
+            //    (viewModel.Items.Where(a => a.Id == t.GarmentDispositionPurchaseItemId).FirstOrDefault().IsPayVat? t.PaidPrice * Convert.ToDouble(viewModel.Items.Where(a => a.Id == t.GarmentDispositionPurchaseItemId).First().VatRate) / 100 : 0) -
+            //    (t.PaidPrice * (viewModel.Items.Where(a => a.Id == t.GarmentDispositionPurchaseItemId).FirstOrDefault()?.IncomeTaxRate / 100)))?.ToString("N", new CultureInfo("id-ID"));
+            //    cellLeftNoBorder.Phrase = new Phrase($"- {perUnit.Key.UnitName} = {sumPerUnit}", bold_font3);
+            //    tableBeban.AddCell(cellLeftNoBorder);
+            //}
+            //PdfPCell cellBeban = new PdfPCell(tableBeban); // dont remove
+            //tableBeban.ExtendLastRow = false;
+            //document.Add(tableBeban);
             #endregion
 
             #region signature
             PdfPTable tableSignature = new PdfPTable(5);
-            tableSignature.SetWidths(new float[] { 4f, 4f, 4f, 4f,4.5f });
+            tableSignature.SetWidths(new float[] { 5f, 5f, 4f, 4f, 4f });
 
             PdfPCell cellSignatureContent = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
 
@@ -558,26 +558,46 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             tableSignature.AddCell(cellSignatureContent);
 
             cellSignatureContent.Colspan = 2;
-            cellSignatureContent.Phrase = new Phrase("Menyetujui,", bold_font3);
+            cellSignatureContent.Phrase = new Phrase("Disetujui,", bold_font3);
             tableSignature.AddCell(cellSignatureContent);
             cellSignatureContent.Phrase = new Phrase("Mengetahui,", bold_font3);
             cellSignatureContent.Colspan = 2;
             tableSignature.AddCell(cellSignatureContent);
 
             cellSignatureContent.Colspan = 0;
-            cellSignatureContent.Phrase = new Phrase("Hormat Kami,", bold_font3);
+            cellSignatureContent.Phrase = new Phrase("Dibuat,", bold_font3);
             tableSignature.AddCell(cellSignatureContent);
 
-            cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n(   Johanes Tjahjadi    )\n Direktur Keuangan", bold_font3);
-            tableSignature.AddCell(cellSignatureContent);
-            cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n(      Verifikasi      )", bold_font3);
-            tableSignature.AddCell(cellSignatureContent);
-            cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n(   Kabag Pembelian    )", bold_font3);
-            tableSignature.AddCell(cellSignatureContent);
-            cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n(   Kasie Pembelian    )", bold_font3);
-            tableSignature.AddCell(cellSignatureContent);
-            cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n(     "+userName+"     )", bold_font3);
-            tableSignature.AddCell(cellSignatureContent);
+            if (AmountPDF > 3000000)
+            {
+                cellSignatureContent.Colspan = 0;
+                cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n(Direktur Akt & Keu)", bold_font3);
+                tableSignature.AddCell(cellSignatureContent);
+                cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n(Manager Akt & Keu)", bold_font3);
+                tableSignature.AddCell(cellSignatureContent);
+                cellSignatureContent.Colspan = 0;
+                cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n(General Manager)", bold_font3);
+                tableSignature.AddCell(cellSignatureContent);
+                cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n(Manager Pembelian)", bold_font3);
+                tableSignature.AddCell(cellSignatureContent);
+                cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n(     Staff     )", bold_font3);
+                tableSignature.AddCell(cellSignatureContent);
+            }
+            else
+            {
+                cellSignatureContent.Colspan = 2;
+                cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n( Manager Akt & Keu )", bold_font3);
+                tableSignature.AddCell(cellSignatureContent);
+                cellSignatureContent.Colspan = 0;
+                cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n(   General Manager    )", bold_font3);
+                tableSignature.AddCell(cellSignatureContent);
+                cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n(   Manager Pembelian    )", bold_font3);
+                tableSignature.AddCell(cellSignatureContent);
+                cellSignatureContent.Colspan = 0;
+                cellSignatureContent.Phrase = new Phrase("\n\n\n\n\n\n\n(     Staff     )", bold_font3);
+                tableSignature.AddCell(cellSignatureContent);
+            }
+
 
             //PdfPCell cellSignatureContentDir = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER,VerticalAlignment=Element.ALIGN_TOP };
 

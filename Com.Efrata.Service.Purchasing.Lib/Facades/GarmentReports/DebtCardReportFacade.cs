@@ -142,7 +142,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
             var query = getQuery(month, year, suppliercode, suppliername, currencyCode, paymentMethod, offset);
             DataTable result = new DataTable();
             ExcelPackage package = new ExcelPackage();
-            string kop1 = "PT. DAN LIRIS";
+            string kop1 = "PT. EFRATA GARMINDO UTAMA";
             string kop2 = string.Format("DETAIL REKAP SALDO HUTANG - SUPPLIER {0} ", suppliername);
             string kop3 = string.Format("Periode Bulan {0} {1}", Month, year);
             string kop4 = string.Format("Mata Uang {0}",  currencyName);

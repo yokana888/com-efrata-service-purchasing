@@ -111,7 +111,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BudgetCashflowService.PdfGen
 
         private void SetTitle(Document document, int divisionId, DateTimeOffset dueDate)
         {
-            var company = "PT DAN LIRIS";
+            var company = "PT EFRATA GARMINDO UTAMA";
             var title = "LAPORAN BUDGET CASHFLOW";
             var divisionName = "SEMUA DIVISI";
 
@@ -4933,7 +4933,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.BudgetCashflowService.PdfGen
                 PdfPCell cellHeader = new PdfPCell() { Border = Rectangle.NO_BORDER, PaddingTop = 1, PaddingBottom = 1 };
 
 
-                cellHeaderCS4.Phrase = new Phrase("PT DAN LIRIS", header_font);
+                cellHeaderCS4.Phrase = new Phrase("PT EFRATA GARMINDO UTAMA", header_font);
                 cellHeaderCS4.HorizontalAlignment = Element.ALIGN_CENTER;
                 headerTable.AddCell(cellHeaderCS4);
 
