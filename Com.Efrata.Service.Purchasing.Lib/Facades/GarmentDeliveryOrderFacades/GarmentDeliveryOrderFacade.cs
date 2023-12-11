@@ -199,11 +199,11 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentDeliveryOrderFacades
                 try
                 {
                     EntityExtension.FlagForCreate(m, user, USER_AGENT);
-                    var lastPaymentBill = GeneratePaymentBillNo();
+                    //var lastPaymentBill = GeneratePaymentBillNo();
                     m.IsClosed = false;
                     m.IsCorrection = false;
                     m.IsCustoms = false;
-                    m.PaymentBill = string.Concat(lastPaymentBill.format, (lastPaymentBill.counterId++).ToString("D3"));
+                    m.PaymentBill = "-";//string.Concat(lastPaymentBill.format, (lastPaymentBill.counterId++).ToString("D3"));
                     m.CustomsCategory = "Non Fasilitas";
                     foreach (var item in m.Items)
                     {
