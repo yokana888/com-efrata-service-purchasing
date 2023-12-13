@@ -2166,7 +2166,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentPurchaseRequestFacade
                 Models = Models.Where(m => m.ShipmentDate >= shipmentDateFrom && m.ShipmentDate <= shipmentDateTo);
             }
 
-            string[] stringKeywords = new string[3];
+            string[] stringKeywords = new string[4];
 
             if (tags != null)
             {
@@ -2193,6 +2193,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentPurchaseRequestFacade
                 .Where(m =>
                     (string.IsNullOrWhiteSpace(stringKeywords[0]) || m.UnitName.ToLower().Contains(stringKeywords[0])) &&
                     (string.IsNullOrWhiteSpace(stringKeywords[1]) || m.BuyerName.ToLower().Contains(stringKeywords[1])) &&
+                    (string.IsNullOrWhiteSpace(stringKeywords[3]) || m.PRNo.ToLower().Contains(stringKeywords[3])) &&
                     m.IsUsed == false &&
                     m.IsValidated == true
                     )
