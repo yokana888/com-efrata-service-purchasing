@@ -620,7 +620,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
             {
                 cellSignatureContent.Phrase = new Phrase("Pembeli\n\n\n\n\n\n\n(  " + viewModel.CreatedBy + "  )", bold_font);
                 tableSignature.AddCell(cellSignatureContent);
-                cellSignatureContent.Phrase = new Phrase("Manager\n\n\n\n\n\n\n(                         )", bold_font);
+                cellSignatureContent.Phrase = new Phrase("Manager\n\n\n\n\n\n\n( Bambang / Reski Taufik )", bold_font);
                 tableSignature.AddCell(cellSignatureContent);
             }
 
