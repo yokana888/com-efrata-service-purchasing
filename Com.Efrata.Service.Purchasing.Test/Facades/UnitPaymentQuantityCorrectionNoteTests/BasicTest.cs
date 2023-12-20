@@ -203,7 +203,7 @@ namespace Com.Efrata.Service.Purchasing.Test.Facades.UnitPaymentQuantityCorrecti
             var serviceProvider = GetServiceProvider(GetCurrentMethod(), dbContext).Object;
             UnitPaymentQuantityCorrectionNoteFacade facade = new UnitPaymentQuantityCorrectionNoteFacade(serviceProvider, dbContext);
             var modelLocalSupplier = await _dataUtil(facade, dbContext, serviceProvider).GetNewData();
-            modelLocalSupplier.DivisionName = "GARMENT";
+            modelLocalSupplier.DivisionName = "EFRATA";
             var ResponseImportSupplier = await facade.Create(modelLocalSupplier, USERNAME, 7);
             Assert.NotEqual(0, ResponseImportSupplier);
         }

@@ -124,7 +124,7 @@ namespace Com.Efrata.Service.Purchasing.Test.Facades.PurchasingDispositionTests
             Assert.NotEqual(0, ResponseImportSupplier);
 
             var modelDivisionGarment = await _dataUtil(facade, GetCurrentMethod()).GetNewData();
-            modelDivisionGarment.DivisionName = "GARMENT";
+            modelDivisionGarment.DivisionName = "EFRATA";
             var ResponseDivisionGarment= await facade.Create(modelDivisionGarment, USERNAME, 7);
             Assert.NotEqual(0, ResponseLocalSupplier);
         }

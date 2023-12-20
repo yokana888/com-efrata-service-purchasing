@@ -130,7 +130,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.VBRequestPOExternal
 
             if (elementInvoice != null)
             {
-                Division = new DivisionDto("", "0", "GARMENT");
+                Division = new DivisionDto("", "0", "EFRATA");
                 UseVat = elementInvoice.UseVat;
                 UseIncomeTax = elementInvoice.UseIncomeTax;
                 IncomeTax = new IncomeTaxDto(elementInvoice.IncomeTaxId, elementInvoice.IncomeTaxName, elementInvoice.IncomeTaxRate);

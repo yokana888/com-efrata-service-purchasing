@@ -132,7 +132,7 @@ namespace Com.Efrata.Service.Purchasing.Test.Facades.VBRequestPOExternal
 
             //Act
             VBRequestPOExternalService service = new VBRequestPOExternalService(dbContext, serviceProviderMock.Object);
-            var result = service.ReadPOExternal("PO700100001", "GARMENT", "IDR");
+            var result = service.ReadPOExternal("PO700100001", "EFRATA", "IDR");
 
             //Assert
             Assert.NotNull(result);
@@ -187,7 +187,7 @@ namespace Com.Efrata.Service.Purchasing.Test.Facades.VBRequestPOExternal
 
             //Act
             VBRequestPOExternalService service = new VBRequestPOExternalService(dbContext, serviceProviderMock.Object);
-            var result = service.ReadSPB("P", "GARMENT", new List<long>(), "IDR", "UMUM");
+            var result = service.ReadSPB("P", "EFRATA", new List<long>(), "IDR", "UMUM");
 
             //Assert
             Assert.NotNull(result);
@@ -212,7 +212,7 @@ namespace Com.Efrata.Service.Purchasing.Test.Facades.VBRequestPOExternal
 
             //Act
             VBRequestPOExternalService service = new VBRequestPOExternalService(dbContext, serviceProviderMock.Object);
-            var result = service.ReadSPB("P", "GARMENT", new List<long> { 1L, 2L, 3L }, "IDR", "UMUM");
+            var result = service.ReadSPB("P", "EFRATA", new List<long> { 1L, 2L, 3L }, "IDR", "UMUM");
 
             //Assert
             Assert.NotNull(result);
@@ -237,7 +237,7 @@ namespace Com.Efrata.Service.Purchasing.Test.Facades.VBRequestPOExternal
 
             //Act
             VBRequestPOExternalService service = new VBRequestPOExternalService(dbContext, serviceProviderMock.Object);
-            var result = service.ReadSPB("P", "GARMENT", new List<long> { 1L, 2L, 3L }, "IDR", "GARMENT");
+            var result = service.ReadSPB("P", "EFRATA", new List<long> { 1L, 2L, 3L }, "IDR", "EFRATA");
 
             //Assert
             Assert.NotNull(result);
@@ -282,7 +282,7 @@ namespace Com.Efrata.Service.Purchasing.Test.Facades.VBRequestPOExternal
 
         //    //Act
         //    VBRequestPOExternalService service = new VBRequestPOExternalService(dbContext, serviceProviderMock.Object);
-        //    var result = service.UpdateSPB("GARMENT", 1);
+        //    var result = service.UpdateSPB("EFRATA", 1);
 
         //    //Assert
         //    Assert.NotEqual(0, result);
@@ -306,7 +306,7 @@ namespace Com.Efrata.Service.Purchasing.Test.Facades.VBRequestPOExternal
             //Act
             VBRequestPOExternalService service = new VBRequestPOExternalService(dbContext, serviceProviderMock.Object);
             var result = service.UpdateSPB("", 1);
-            var result2 = service.UpdateSPB("GARMENT", 1);
+            var result2 = service.UpdateSPB("EFRATA", 1);
 
             //Assert
             Assert.NotEqual(0, result);

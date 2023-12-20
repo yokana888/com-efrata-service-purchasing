@@ -134,7 +134,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.UnitPaymentCorrectionNoteFac
             }
             string divisionName = model.DivisionName;
             string division_name = "T";
-            if (divisionName.ToUpper() == "GARMENT")
+            if (divisionName.ToUpper() == "EFRATA")
             {
                 division_name = "G";
             }

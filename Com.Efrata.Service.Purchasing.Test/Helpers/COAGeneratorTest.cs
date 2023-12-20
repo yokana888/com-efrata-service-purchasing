@@ -131,42 +131,42 @@ namespace Com.Efrata.Service.Purchasing.Test.Helpers
         [Fact]
         public void Should_Success_Get_COA_IncomeTaxGarmentC1A()
         {
-            var result = COAGenerator.GetIncomeTaxCOA("Final", "GARMENT", "C1A");
+            var result = COAGenerator.GetIncomeTaxCOA("Final", "EFRATA", "C1A");
             Assert.NotNull(result);
         }
 
         [Fact]
         public void Should_Success_Get_COA_IncomeTaxGarmentC1B()
         {
-            var result = COAGenerator.GetIncomeTaxCOA("PASAL21", "GARMENT", "C1B");
+            var result = COAGenerator.GetIncomeTaxCOA("PASAL21", "EFRATA", "C1B");
             Assert.NotNull(result);
         }
 
         [Fact]
         public void Should_Success_Get_COA_IncomeTaxGarmentC2A()
         {
-            var result = COAGenerator.GetIncomeTaxCOA("PASAL23", "GARMENT", "EFR");
+            var result = COAGenerator.GetIncomeTaxCOA("PASAL23", "EFRATA", "EFR");
             Assert.NotNull(result);
         }
 
         [Fact]
         public void Should_Success_Get_COA_IncomeTaxGarmentC2B()
         {
-            var result = COAGenerator.GetIncomeTaxCOA("PASAL26", "GARMENT", "C2B");
+            var result = COAGenerator.GetIncomeTaxCOA("PASAL26", "EFRATA", "C2B");
             Assert.NotNull(result);
         }
 
         [Fact]
         public void Should_Success_Get_COA_IncomeTaxGarmentC2C()
         {
-            var result = COAGenerator.GetIncomeTaxCOA("PASAL26", "GARMENT", "C2C");
+            var result = COAGenerator.GetIncomeTaxCOA("PASAL26", "EFRATA", "C2C");
             Assert.NotNull(result);
         }
 
         [Fact]
         public void Should_Success_Get_COA_IncomeTaxGarmentOther()
         {
-            var result = COAGenerator.GetIncomeTaxCOA("PASAL26", "GARMENT", "other");
+            var result = COAGenerator.GetIncomeTaxCOA("PASAL26", "EFRATA", "other");
             Assert.NotNull(result);
         }
         
