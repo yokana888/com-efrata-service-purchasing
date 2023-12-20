@@ -209,7 +209,7 @@ namespace Com.Efrata.Service.Purchasing.Test.DataUtils.BankExpenditureNoteDataUt
                 UnitPaymentOrderId = purchasingDocumentExpedition.Id,
                 UnitPaymentOrderNo = purchasingDocumentExpedition.UnitPaymentOrderNo,
                 DivisionCode = purchasingDocumentExpedition.DivisionCode,
-                DivisionName = "GARMENT",
+                DivisionName = "EFRATA",
                 Currency = purchasingDocumentExpedition.Currency,
                 DueDate = purchasingDocumentExpedition.DueDate,
                 InvoiceNo = purchasingDocumentExpedition.InvoiceNo,

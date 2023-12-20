@@ -351,7 +351,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades
             string Month = model.Date.ToOffset(new TimeSpan(clientTimeZoneOffset, 0, 0)).ToString("MM");
             string Supplier = isImport ? "NKI" : "NKL";
             string TG = "";
-            if (model.DivisionName.ToUpper().Equals("GARMENT"))
+            if (model.DivisionName.ToUpper().Equals("EFRATA"))
             {
                 TG = "G-";
             }

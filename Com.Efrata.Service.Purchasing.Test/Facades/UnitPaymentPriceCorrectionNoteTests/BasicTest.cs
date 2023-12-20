@@ -193,7 +193,7 @@ namespace Com.Efrata.Service.Purchasing.Test.Facades.UnitPaymentPriceCorrectionN
             var serviceProvider = GetServiceProvider(GetCurrentMethod()).Object;
             UnitPaymentPriceCorrectionNoteFacade facade = new UnitPaymentPriceCorrectionNoteFacade(serviceProvider, _dbContext(GetCurrentMethod()));
             var modelLocalSupplier = await _dataUtil(facade, GetCurrentMethod(), serviceProvider).GetNewData();
-            modelLocalSupplier.DivisionName = "GARMENT";
+            modelLocalSupplier.DivisionName = "EFRATA";
             var ResponseLocalSupplier = await facade.Create(modelLocalSupplier, false, USERNAME, 7);
             Assert.NotEqual(0, ResponseLocalSupplier);
         }

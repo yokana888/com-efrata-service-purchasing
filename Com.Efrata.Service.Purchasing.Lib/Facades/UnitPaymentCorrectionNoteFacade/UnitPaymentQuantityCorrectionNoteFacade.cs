@@ -210,7 +210,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.UnitPaymentCorrectionNoteFac
             {
                 supplier_imp = "NRL";
             }
-            if (divisionName.ToUpper() == "GARMENT")
+            if (divisionName.ToUpper() == "EFRATA")
             {
                 division_name = 'G';
             }

@@ -106,7 +106,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.VBRequestPOExternal
         {
             var result = new List<SPBDto>();
 
-            if (!string.IsNullOrEmpty(division) && division.ToUpper() == "GARMENT")
+            if (!string.IsNullOrEmpty(division) && division.ToUpper() == "EFRATA")
             {
                 if (epoIds.Count == 0)
                 {
