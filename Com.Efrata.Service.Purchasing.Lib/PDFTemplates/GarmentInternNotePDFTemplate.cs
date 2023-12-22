@@ -366,11 +366,15 @@ namespace Com.Efrata.Service.Purchasing.Lib.PDFTemplates
 
             PdfPCell cellSignatureContent = new PdfPCell() { Border = Rectangle.TOP_BORDER | Rectangle.LEFT_BORDER | Rectangle.BOTTOM_BORDER | Rectangle.RIGHT_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
 
-            cellSignatureContent.Phrase = new Phrase("Staff Pembelian\n\n\n\n\n\n\n(  " + "Nama & Tanggal" + "  )", bold_font);
+            cellSignatureContent.Phrase = new Phrase("Purchasing\n\n\n\n\n\n\n(                   )", bold_font);
             tableSignature.AddCell(cellSignatureContent);
-            cellSignatureContent.Phrase = new Phrase("Pimpinan Pembelian\n\n\n\n\n\n\n(  " + "Nama & Tanggal" + "  )", bold_font);
+            cellSignatureContent.Phrase = new Phrase("Manager Purchasing\n\n\n\n\n\n\n(                   )", bold_font);
             tableSignature.AddCell(cellSignatureContent);
-            cellSignatureContent.Phrase = new Phrase("Verifikasi\n\n\n\n\n\n\n(  " + "Nama & Tanggal" + "  )", bold_font);
+            cellSignatureContent.Phrase = new Phrase("Controller\n\n\n\n\n\n\n(                   )", bold_font);
+            tableSignature.AddCell(cellSignatureContent);
+            cellSignatureContent.Phrase = new Phrase("Manager Akt & Keu\n\n\n\n\n\n\n(                   )", bold_font);
+            tableSignature.AddCell(cellSignatureContent);
+            cellSignatureContent.Phrase = new Phrase("Anggaran\n\n\n\n\n\n\n(                   )", bold_font);
             tableSignature.AddCell(cellSignatureContent);
 
 
