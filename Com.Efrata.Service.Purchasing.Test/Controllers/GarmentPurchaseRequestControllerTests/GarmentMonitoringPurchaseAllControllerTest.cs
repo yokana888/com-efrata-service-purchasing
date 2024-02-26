@@ -107,10 +107,10 @@ namespace Com.Efrata.Service.Purchasing.Test.Controllers.GarmentPurchaseRequestC
 
 			controller.ControllerContext.HttpContext.Request.Headers["x-timezone-offset"] = "0";
 			//Act
-			IActionResult response = controller.GetReport(null, null, null, null, null, null, null, null, null, null, null, null, null, null, 1, 25, "{}");
+			var response = controller.GetReport(null, null, null, null, null, null, null, null, null, null, null, null, null, null, 1, 25, "{}");
 
 			//Assert
-			Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+			Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response.Result));
 		}
 
 		[Fact]
