@@ -34,10 +34,10 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
             this.dbSet = dbContext.Set<GarmentDeliveryOrder>();
         }
 
-        public Tuple<List<AccountingStockReportViewModel>, int> GetStockReport(int offset, string unitcode, string tipebarang, int page, int size, string Order, DateTime? dateFrom, DateTime? dateTo)
+        public Tuple<List<AccountingStockReportViewModel>, int> GetStockReport(int offset, string unitcode, string planPo, string tipebarang, int page, int size, string Order, DateTime? dateFrom, DateTime? dateTo)
         {
             
-            List<AccountingStockReportViewModel> Query = GetStockQuery(tipebarang, unitcode, dateFrom, dateTo, offset);
+            List<AccountingStockReportViewModel> Query = GetStockQuery(tipebarang, unitcode, planPo, dateFrom, dateTo, offset);
             //Query = Query.Where(x => (x.BeginningBalanceQty != 0) || (x.BeginningBalancePrice != 0) || (x.EndingBalancePrice > 0) || (x.EndingBalanceQty > 0) || (x.ExpendKon1APrice > 0) || (x.ExpendKon1AQty > 0) ||
             //(x.ExpendKon1BPrice > 0) || (x.ExpendKon1BQty > 0) || (x.ExpendKon2APrice > 0) || (x.ExpendKon2AQty > 0) || (x.ExpendKon2BPrice > 0) || (x.ExpendKon2BQty > 0) || (x.ExpendKon2CPrice > 0) || (x.ExpendKon2CQty > 0) ||
             //(x.ExpendProcessPrice > 0) || (x.ExpendProcessQty > 0) || (x.ExpendRestPrice > 0) || (x.ExpendRestQty > 0) || (x.ExpendReturPrice > 0) || (x.ExpendReturQty > 0) || (x.ExpendSamplePrice > 0) || (x.ExpendSampleQty > 0) ||
@@ -51,7 +51,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
             //int TotalData = Data.Count();
             return Tuple.Create(Data, TotalData);
         }
-        public List<AccountingStockReportViewModel> GetStockQuery(string ctg, string unitcode, DateTime? datefrom, DateTime? dateto, int offset)
+        public List<AccountingStockReportViewModel> GetStockQuery(string ctg, string unitcode, string planPo, DateTime? datefrom, DateTime? dateto, int offset)
         {
             DateTime DateFrom = datefrom == null ? new DateTime(1970, 1, 1) : (DateTime)datefrom;
             DateTime DateTo = dateto == null ? DateTime.Now : (DateTime)dateto;
@@ -89,6 +89,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
                                 && c.CreatedUtc.Year <= DateTo.Date.Year
                                 && a.UnitCode == (string.IsNullOrWhiteSpace(unitcode) ? a.UnitCode : unitcode)
                                 && categories1.Contains(b.ProductName)
+                                && b.POSerialNumber == (string.IsNullOrWhiteSpace(planPo) ? b.POSerialNumber : planPo)
                                 select new AccountingStockTempViewModel
                                 {
                                     ProductCode = b.ProductCode.Trim(),
@@ -269,6 +270,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
                               && b.CreatedUtc.AddHours(offset).Date < DateFrom.Date
                               && b.UnitCode == (string.IsNullOrWhiteSpace(unitcode) ? b.UnitCode : unitcode)
                               && categories1.Contains(a.ProductName)
+                              && a.POSerialNumber == (string.IsNullOrWhiteSpace(planPo) ? a.POSerialNumber : planPo)
                             select new AccountingStockTempViewModel
                             {
                                 ProductCode = a.ProductCode.Trim(),
@@ -395,6 +397,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
                                && 
                                b.UnitSenderCode == (string.IsNullOrWhiteSpace(unitcode) ? b.UnitSenderCode : unitcode)
                                && categories1.Contains(a.ProductName)
+                               && a.POSerialNumber == (string.IsNullOrWhiteSpace(planPo) ? a.POSerialNumber : planPo)
                             select new AccountingStockTempViewModel
                             {
                                 ProductCode = a.ProductCode.Trim(),
@@ -520,6 +523,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
                              && g.CreatedUtc.AddHours(offset).Date < DateFrom.Date
                              && a.UnitCode == (string.IsNullOrWhiteSpace(unitcode) ? a.UnitCode : unitcode)
                              && categories1.Contains(b.ProductName)
+                             && b.POSerialNumber == (string.IsNullOrWhiteSpace(planPo) ? b.POSerialNumber : planPo)
                              select new AccountingStockTempViewModel
                              {
                                  ProductCode = b.ProductCode.Trim(),
@@ -700,6 +704,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
                             && b.CreatedUtc.AddHours(offset).Date <= DateTo.Date
                             && b.UnitCode == (string.IsNullOrWhiteSpace(unitcode) ? b.UnitCode : unitcode)
                             && categories1.Contains(a.ProductName)
+                            && a.POSerialNumber == (string.IsNullOrWhiteSpace(planPo) ? a.POSerialNumber : planPo)
                           select new AccountingStockTempViewModel
                         {
                             ProductCode = a.ProductCode.Trim(),
@@ -714,19 +719,19 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
                             ReceiptCorrectionQty = 0,
                             ReceiptPurchaseQty = b.URNType == "PEMBELIAN" ? Math.Round(a.ReceiptQuantity * a.Conversion, 2, MidpointRounding.AwayFromZero) : 0,
                             ReceiptProcessQty = b.URNType == "PROSES" ? Math.Round(a.ReceiptQuantity * a.Conversion, 2, MidpointRounding.AwayFromZero) : 0,
-                            ReceiptKon2AQty = b.URNType == "GUDANG LAIN" && (/*b.UId == null ?*/ /*b.UENNo.Contains("C2A")*/ dd.UnitSenderCode == "C2A" ) ? Math.Round(a.ReceiptQuantity * a.Conversion, 2, MidpointRounding.AwayFromZero) : 0,
-                            ReceiptKon2BQty = b.URNType == "GUDANG LAIN" && (/*b.UId == null ?*/ /*b.UENNo.Contains("C2B")*/ dd.UnitSenderCode == "C2B") ? Math.Round(a.ReceiptQuantity * a.Conversion, 2, MidpointRounding.AwayFromZero) : 0,
-                            ReceiptKon2CQty = b.URNType == "GUDANG LAIN" && (/*b.UId == null ?*/ /*b.UENNo.Contains("C2C")*/ dd.UnitSenderCode == "C2C") ? Math.Round(a.ReceiptQuantity * a.Conversion, 2, MidpointRounding.AwayFromZero) : 0,
-                            ReceiptKon1AQty = b.URNType == "GUDANG LAIN" && (/*b.UId == null ?*/ /*b.UENNo.Contains("C1A")*/ dd.UnitSenderCode == "C1A") ? Math.Round(a.ReceiptQuantity * a.Conversion, 2, MidpointRounding.AwayFromZero) : 0,
-                            ReceiptKon1BQty = b.URNType == "GUDANG LAIN" && (/*b.UId == null ?*/ /*b.UENNo.Contains("C1B")*/ dd.UnitSenderCode == "C1B") ? Math.Round(a.ReceiptQuantity * a.Conversion, 2, MidpointRounding.AwayFromZero) : 0,
+                            //ReceiptKon2AQty = b.URNType == "GUDANG LAIN" && (/*b.UId == null ?*/ /*b.UENNo.Contains("C2A")*/ dd.UnitSenderCode == "C2A" ) ? Math.Round(a.ReceiptQuantity * a.Conversion, 2, MidpointRounding.AwayFromZero) : 0,
+                            //ReceiptKon2BQty = b.URNType == "GUDANG LAIN" && (/*b.UId == null ?*/ /*b.UENNo.Contains("C2B")*/ dd.UnitSenderCode == "C2B") ? Math.Round(a.ReceiptQuantity * a.Conversion, 2, MidpointRounding.AwayFromZero) : 0,
+                            //ReceiptKon2CQty = b.URNType == "GUDANG LAIN" && (/*b.UId == null ?*/ /*b.UENNo.Contains("C2C")*/ dd.UnitSenderCode == "C2C") ? Math.Round(a.ReceiptQuantity * a.Conversion, 2, MidpointRounding.AwayFromZero) : 0,
+                            //ReceiptKon1AQty = b.URNType == "GUDANG LAIN" && (/*b.UId == null ?*/ /*b.UENNo.Contains("C1A")*/ dd.UnitSenderCode == "C1A") ? Math.Round(a.ReceiptQuantity * a.Conversion, 2, MidpointRounding.AwayFromZero) : 0,
+                            //ReceiptKon1BQty = b.URNType == "GUDANG LAIN" && (/*b.UId == null ?*/ /*b.UENNo.Contains("C1B")*/ dd.UnitSenderCode == "C1B") ? Math.Round(a.ReceiptQuantity * a.Conversion, 2, MidpointRounding.AwayFromZero) : 0,
                             ReceiptCorrectionPrice = 0,
                             ReceiptPurchasePrice = b.URNType == "PEMBELIAN" ? Math.Round(((a.PricePerDealUnit / (a.Conversion == 0 ? 1 : a.Conversion)) * (decimal)a.DOCurrencyRate) * (a.ReceiptQuantity * a.Conversion), 2, MidpointRounding.AwayFromZero) : 0,
                             ReceiptProcessPrice = b.URNType == "PROSES" ? Math.Round(((a.PricePerDealUnit / (a.Conversion == 0 ? 1 : a.Conversion)) * (decimal)a.DOCurrencyRate) * (a.ReceiptQuantity * a.Conversion), 2, MidpointRounding.AwayFromZero) : 0,
-                            ReceiptKon2APrice = b.URNType == "GUDANG LAIN" && (/*b.UId == null ?*/ /*b.UENNo.Contains("C2A")*/ dd.UnitSenderCode == "C2A") ? Math.Round(((a.PricePerDealUnit / (a.Conversion == 0 ? 1 : a.Conversion)) * (decimal)a.DOCurrencyRate) * (a.ReceiptQuantity * a.Conversion), 2, MidpointRounding.AwayFromZero) : 0,
-                            ReceiptKon2BPrice = b.URNType == "GUDANG LAIN" && (/*b.UId == null ?*/ /*b.UENNo.Contains("C2B")*/ dd.UnitSenderCode == "C2B") ? Math.Round(((a.PricePerDealUnit / (a.Conversion == 0 ? 1 : a.Conversion)) * (decimal)a.DOCurrencyRate) * (a.ReceiptQuantity * a.Conversion), 2, MidpointRounding.AwayFromZero) : 0,
-                            ReceiptKon2CPrice = b.URNType == "GUDANG LAIN" && (/*b.UId == null ?*/ /*b.UENNo.Contains("C2C")*/ dd.UnitSenderCode == "C2C") ? Math.Round(((a.PricePerDealUnit / (a.Conversion == 0 ? 1 : a.Conversion)) * (decimal)a.DOCurrencyRate) * (a.ReceiptQuantity * a.Conversion), 2, MidpointRounding.AwayFromZero) : 0,
-                            ReceiptKon1APrice = b.URNType == "GUDANG LAIN" && (/*b.UId == null ?*/ /*b.UENNo.Contains("C1A")*/ dd.UnitSenderCode == "C1A") ? Math.Round(((a.PricePerDealUnit / (a.Conversion == 0 ? 1 : a.Conversion)) * (decimal)a.DOCurrencyRate) * (a.ReceiptQuantity * a.Conversion), 2, MidpointRounding.AwayFromZero) : 0,
-                            ReceiptKon1BPrice = b.URNType == "GUDANG LAIN" && (/*b.UId == null ?*/ /*b.UENNo.Contains("C1B")*/ dd.UnitSenderCode == "C1B") ? Math.Round(((a.PricePerDealUnit / (a.Conversion == 0 ? 1 : a.Conversion)) * (decimal)a.DOCurrencyRate) * (a.ReceiptQuantity * a.Conversion), 2, MidpointRounding.AwayFromZero) : 0,
+                            //ReceiptKon2APrice = b.URNType == "GUDANG LAIN" && (/*b.UId == null ?*/ /*b.UENNo.Contains("C2A")*/ dd.UnitSenderCode == "C2A") ? Math.Round(((a.PricePerDealUnit / (a.Conversion == 0 ? 1 : a.Conversion)) * (decimal)a.DOCurrencyRate) * (a.ReceiptQuantity * a.Conversion), 2, MidpointRounding.AwayFromZero) : 0,
+                            //ReceiptKon2BPrice = b.URNType == "GUDANG LAIN" && (/*b.UId == null ?*/ /*b.UENNo.Contains("C2B")*/ dd.UnitSenderCode == "C2B") ? Math.Round(((a.PricePerDealUnit / (a.Conversion == 0 ? 1 : a.Conversion)) * (decimal)a.DOCurrencyRate) * (a.ReceiptQuantity * a.Conversion), 2, MidpointRounding.AwayFromZero) : 0,
+                            //ReceiptKon2CPrice = b.URNType == "GUDANG LAIN" && (/*b.UId == null ?*/ /*b.UENNo.Contains("C2C")*/ dd.UnitSenderCode == "C2C") ? Math.Round(((a.PricePerDealUnit / (a.Conversion == 0 ? 1 : a.Conversion)) * (decimal)a.DOCurrencyRate) * (a.ReceiptQuantity * a.Conversion), 2, MidpointRounding.AwayFromZero) : 0,
+                            //ReceiptKon1APrice = b.URNType == "GUDANG LAIN" && (/*b.UId == null ?*/ /*b.UENNo.Contains("C1A")*/ dd.UnitSenderCode == "C1A") ? Math.Round(((a.PricePerDealUnit / (a.Conversion == 0 ? 1 : a.Conversion)) * (decimal)a.DOCurrencyRate) * (a.ReceiptQuantity * a.Conversion), 2, MidpointRounding.AwayFromZero) : 0,
+                            //ReceiptKon1BPrice = b.URNType == "GUDANG LAIN" && (/*b.UId == null ?*/ /*b.UENNo.Contains("C1B")*/ dd.UnitSenderCode == "C1B") ? Math.Round(((a.PricePerDealUnit / (a.Conversion == 0 ? 1 : a.Conversion)) * (decimal)a.DOCurrencyRate) * (a.ReceiptQuantity * a.Conversion), 2, MidpointRounding.AwayFromZero) : 0,
                             ExpendReturQty = 0,
                             ExpendRestQty = 0,
                             ExpendProcessQty = 0,
@@ -823,6 +828,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
                              && b.CreatedUtc.AddHours(offset).Date <= DateTo.Date
                              && b.UnitSenderCode == (string.IsNullOrWhiteSpace(unitcode) ? b.UnitSenderCode : unitcode)
                              && categories1.Contains(a.ProductName)
+                             && a.POSerialNumber == (string.IsNullOrWhiteSpace(planPo) ? a.POSerialNumber : planPo)
                           select new AccountingStockTempViewModel
                          {
                              ProductCode = a.ProductCode.Trim(),
@@ -854,11 +860,11 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
                              ExpendRestQty = b.ExpenditureType == "SISA" ? Math.Round((a.UomUnit == "YARD" && ctg == "BB" ? a.Quantity * 0.9144 : a.Quantity), 2) : 0,
                              ExpendProcessQty = b.ExpenditureType == "PROSES" ? Math.Round((a.UomUnit == "YARD" && ctg == "BB" ? a.Quantity * 0.9144 : a.Quantity), 2) : 0,
                              ExpendSampleQty = b.ExpenditureType == "SAMPLE" ? Math.Round((a.UomUnit == "YARD" && ctg == "BB" ? a.Quantity * 0.9144 : a.Quantity), 2) : 0,
-                             ExpendKon2AQty = (b.ExpenditureType == "GUDANG LAIN" || b.ExpenditureType == "TRANSFER") && b.UnitRequestName == "CENTRAL 2A" ? Math.Round((a.UomUnit == "YARD" && ctg == "BB" ? a.Quantity * 0.9144 : a.Quantity), 2) : 0,
-                             ExpendKon2BQty = (b.ExpenditureType == "GUDANG LAIN" || b.ExpenditureType == "TRANSFER") && b.UnitRequestName == "CENTRAL 2B" ? Math.Round((a.UomUnit == "YARD" && ctg == "BB" ? a.Quantity * 0.9144 : a.Quantity), 2) : 0,
-                             ExpendKon2CQty = (b.ExpenditureType == "GUDANG LAIN" || b.ExpenditureType == "TRANSFER") && b.UnitRequestName == "CENTRAL 2C/EX. K4" ? Math.Round((a.UomUnit == "YARD" && ctg == "BB" ? a.Quantity * 0.9144 : a.Quantity), 2) : 0,
-                             ExpendKon1AQty = (b.ExpenditureType == "GUDANG LAIN" || b.ExpenditureType == "TRANSFER") && b.UnitRequestName == "CENTRAL 1A/EX. K3" ? Math.Round((a.UomUnit == "YARD" && ctg == "BB" ? a.Quantity * 0.9144 : a.Quantity), 2) : 0,
-                             ExpendKon1BQty = (b.ExpenditureType == "GUDANG LAIN" || b.ExpenditureType == "TRANSFER") && b.UnitRequestName == "CENTRAL 1B" ? Math.Round((a.UomUnit == "YARD" && ctg == "BB" ? a.Quantity * 0.9144 : a.Quantity), 2) : 0,
+                             //ExpendKon2AQty = (b.ExpenditureType == "GUDANG LAIN" || b.ExpenditureType == "TRANSFER") && b.UnitRequestName == "CENTRAL 2A" ? Math.Round((a.UomUnit == "YARD" && ctg == "BB" ? a.Quantity * 0.9144 : a.Quantity), 2) : 0,
+                             //ExpendKon2BQty = (b.ExpenditureType == "GUDANG LAIN" || b.ExpenditureType == "TRANSFER") && b.UnitRequestName == "CENTRAL 2B" ? Math.Round((a.UomUnit == "YARD" && ctg == "BB" ? a.Quantity * 0.9144 : a.Quantity), 2) : 0,
+                             //ExpendKon2CQty = (b.ExpenditureType == "GUDANG LAIN" || b.ExpenditureType == "TRANSFER") && b.UnitRequestName == "CENTRAL 2C/EX. K4" ? Math.Round((a.UomUnit == "YARD" && ctg == "BB" ? a.Quantity * 0.9144 : a.Quantity), 2) : 0,
+                             //ExpendKon1AQty = (b.ExpenditureType == "GUDANG LAIN" || b.ExpenditureType == "TRANSFER") && b.UnitRequestName == "CENTRAL 1A/EX. K3" ? Math.Round((a.UomUnit == "YARD" && ctg == "BB" ? a.Quantity * 0.9144 : a.Quantity), 2) : 0,
+                             //ExpendKon1BQty = (b.ExpenditureType == "GUDANG LAIN" || b.ExpenditureType == "TRANSFER") && b.UnitRequestName == "CENTRAL 1B" ? Math.Round((a.UomUnit == "YARD" && ctg == "BB" ? a.Quantity * 0.9144 : a.Quantity), 2) : 0,
                              //ExpendReturPrice = b.ExpenditureType == "EXTERNAL" ? (a.UomUnit == "YARD" && ctg == "BB" ? Convert.ToDecimal(a.Quantity * 0.9144) : Convert.ToDecimal(a.Quantity * (urnitem != null ? (double)urnitem.Conversion : 1)) * (decimal)a.PricePerDealUnit * Convert.ToDecimal(a.DOCurrencyRate)) : 0,
                              ExpendReturPrice = b.ExpenditureType == "EXTERNAL" ? (a.UomUnit == "YARD" && ctg == "BB" ? Convert.ToDecimal(a.Quantity * 0.9144) : (a.UomUnit != "PCS" && ctg != "BB") ? Convert.ToDecimal(a.Quantity * (urnitem != null ? (double)urnitem.Conversion : 1)) : Convert.ToDecimal(a.Quantity)) * (decimal)(a.PricePerDealUnit / (double)(a.Conversion == 0 ? 1 : a.Conversion)) * Convert.ToDecimal(a.DOCurrencyRate) : 0,
                               //ExpendRestPrice = b.ExpenditureType == "SISA" ? (a.UomUnit == "YARD" && ctg == "BB" ? a.Quantity * 0.9144 : a.Quantity) * (a.PricePerDealUnit / (double)(a.Conversion == 0 ? 1 : a.Conversion)) * (double)a.DOCurrencyRate : 0,
@@ -872,11 +878,11 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
                               ExpendRestPrice = b.ExpenditureType == "SISA" ? (a.UomUnit == "YARD" && ctg == "BB" ? a.Quantity * 0.9144 : a.Quantity) * (a.PricePerDealUnit / (double)(a.Conversion == 0 ? 1 : a.Conversion)) * (double)a.DOCurrencyRate : 0,
                               ExpendProcessPrice = b.ExpenditureType == "PROSES" ? Math.Round((a.UomUnit == "YARD" && ctg == "BB" ? a.Quantity * 0.9144 : a.Quantity) * (a.PricePerDealUnit / (double)(a.Conversion == 0 ? 1 : a.Conversion)) * (double)a.DOCurrencyRate, 2) : 0,
                               ExpendSamplePrice = b.ExpenditureType == "SAMPLE" ? Math.Round((a.UomUnit == "YARD" && ctg == "BB" ? a.Quantity * 0.9144 : a.Quantity) * (a.PricePerDealUnit / (double)(a.Conversion == 0 ? 1 : a.Conversion)) * (double)a.DOCurrencyRate, 2) : 0,
-                              ExpendKon2APrice = (b.ExpenditureType == "GUDANG LAIN" || b.ExpenditureType == "TRANSFER") && b.UnitRequestName == "CENTRAL 2A" ? Math.Round((a.UomUnit == "YARD" && ctg == "BB" ? a.Quantity * 0.9144 : a.Quantity) * (a.PricePerDealUnit / (double)(a.Conversion == 0 ? 1 : a.Conversion)) * (double)a.DOCurrencyRate, 2) : 0,
-                              ExpendKon2BPrice = (b.ExpenditureType == "GUDANG LAIN" || b.ExpenditureType == "TRANSFER") && b.UnitRequestName == "CENTRAL 2B" ? Math.Round((a.UomUnit == "YARD" && ctg == "BB" ? a.Quantity * 0.9144 : a.Quantity) * (a.PricePerDealUnit / (double)(a.Conversion == 0 ? 1 : a.Conversion)) * (double)a.DOCurrencyRate, 2) : 0,
-                              ExpendKon2CPrice = (b.ExpenditureType == "GUDANG LAIN" || b.ExpenditureType == "TRANSFER") && b.UnitRequestName == "CENTRAL 2C/EX. K4" ? Math.Round((a.UomUnit == "YARD" && ctg == "BB" ? a.Quantity * 0.9144 : a.Quantity) * (a.PricePerDealUnit / (double)(a.Conversion == 0 ? 1 : a.Conversion)) * (double)a.DOCurrencyRate, 2) : 0,
-                              ExpendKon1APrice = (b.ExpenditureType == "GUDANG LAIN" || b.ExpenditureType == "TRANSFER") && b.UnitRequestName == "CENTRAL 1A/EX. K3" ? Math.Round((a.UomUnit == "YARD" && ctg == "BB" ? a.Quantity * 0.9144 : a.Quantity) * (a.PricePerDealUnit / (double)(a.Conversion == 0 ? 1 : a.Conversion)) * (double)a.DOCurrencyRate, 2) : 0,
-                              ExpendKon1BPrice = (b.ExpenditureType == "GUDANG LAIN" || b.ExpenditureType == "TRANSFER") && b.UnitRequestName == "CENTRAL 1B" ? Math.Round((a.UomUnit == "YARD" && ctg == "BB" ? a.Quantity * 0.9144 : a.Quantity) * (a.PricePerDealUnit / (double)(a.Conversion == 0 ? 1 : a.Conversion)) * (double)a.DOCurrencyRate, 2) : 0,
+                              //ExpendKon2APrice = (b.ExpenditureType == "GUDANG LAIN" || b.ExpenditureType == "TRANSFER") && b.UnitRequestName == "CENTRAL 2A" ? Math.Round((a.UomUnit == "YARD" && ctg == "BB" ? a.Quantity * 0.9144 : a.Quantity) * (a.PricePerDealUnit / (double)(a.Conversion == 0 ? 1 : a.Conversion)) * (double)a.DOCurrencyRate, 2) : 0,
+                              //ExpendKon2BPrice = (b.ExpenditureType == "GUDANG LAIN" || b.ExpenditureType == "TRANSFER") && b.UnitRequestName == "CENTRAL 2B" ? Math.Round((a.UomUnit == "YARD" && ctg == "BB" ? a.Quantity * 0.9144 : a.Quantity) * (a.PricePerDealUnit / (double)(a.Conversion == 0 ? 1 : a.Conversion)) * (double)a.DOCurrencyRate, 2) : 0,
+                              //ExpendKon2CPrice = (b.ExpenditureType == "GUDANG LAIN" || b.ExpenditureType == "TRANSFER") && b.UnitRequestName == "CENTRAL 2C/EX. K4" ? Math.Round((a.UomUnit == "YARD" && ctg == "BB" ? a.Quantity * 0.9144 : a.Quantity) * (a.PricePerDealUnit / (double)(a.Conversion == 0 ? 1 : a.Conversion)) * (double)a.DOCurrencyRate, 2) : 0,
+                              //ExpendKon1APrice = (b.ExpenditureType == "GUDANG LAIN" || b.ExpenditureType == "TRANSFER") && b.UnitRequestName == "CENTRAL 1A/EX. K3" ? Math.Round((a.UomUnit == "YARD" && ctg == "BB" ? a.Quantity * 0.9144 : a.Quantity) * (a.PricePerDealUnit / (double)(a.Conversion == 0 ? 1 : a.Conversion)) * (double)a.DOCurrencyRate, 2) : 0,
+                              //ExpendKon1BPrice = (b.ExpenditureType == "GUDANG LAIN" || b.ExpenditureType == "TRANSFER") && b.UnitRequestName == "CENTRAL 1B" ? Math.Round((a.UomUnit == "YARD" && ctg == "BB" ? a.Quantity * 0.9144 : a.Quantity) * (a.PricePerDealUnit / (double)(a.Conversion == 0 ? 1 : a.Conversion)) * (double)a.DOCurrencyRate, 2) : 0,
                               EndingBalanceQty = 0,
                               EndingBalancePrice = 0,
                               ExpendTransferQty = b.ExpenditureType == "TRANSFER" ? Math.Round((a.UomUnit == "YARD" && ctg == "BB" ? a.Quantity * 0.9144 : a.Quantity), 2) : 0,
@@ -956,6 +962,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
                            && g.CreatedUtc.AddHours(offset).Date <= DateTo.Date
                            && a.UnitCode == (string.IsNullOrWhiteSpace(unitcode) ? a.UnitCode : unitcode)
                            && categories1.Contains(b.ProductName)
+                           && b.POSerialNumber == (string.IsNullOrWhiteSpace(planPo) ? b.POSerialNumber : planPo)
                            select new AccountingStockTempViewModel
                            {
                                ProductCode = b.ProductCode.Trim(),
@@ -1353,9 +1360,9 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
             return stockReportViewModels;
 
         }
-        public MemoryStream GenerateExcelAStockReport(string ctg, string categoryname, string unitcode, string unitname, DateTime? datefrom, DateTime? dateto, int offset)
+        public MemoryStream GenerateExcelAStockReport(string ctg, string categoryname, string planPo, string unitcode, string unitname, DateTime? datefrom, DateTime? dateto, int offset)
         {
-            var Query = GetStockQuery(ctg, unitcode, datefrom, dateto, offset);
+            var Query = GetStockQuery(ctg, unitcode, planPo, datefrom, dateto, offset);
             //Query = Query.Where(x => (x.BeginningBalanceQty != 0) || (x.BeginningBalancePrice != 0) || (x.EndingBalancePrice > 0) || (x.EndingBalanceQty > 0) || (x.ExpendKon1APrice > 0) || (x.ExpendKon1AQty > 0) ||
             //(x.ExpendKon1BPrice > 0) || (x.ExpendKon1BQty > 0) || (x.ExpendKon2APrice > 0) || (x.ExpendKon2AQty > 0) || (x.ExpendKon2BPrice > 0) || (x.ExpendKon2BQty > 0) || (x.ExpendKon2CPrice > 0) || (x.ExpendKon2CQty > 0) ||
             //(x.ExpendProcessPrice > 0) || (x.ExpendProcessQty > 0) || (x.ExpendRestPrice > 0) || (x.ExpendRestQty > 0) || (x.ExpendReturPrice > 0) || (x.ExpendReturQty > 0) || (x.ExpendSamplePrice > 0) || (x.ExpendSampleQty > 0) ||
@@ -1373,16 +1380,16 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
             double PEMBELIANPriceTotal = Query.Sum(x => Convert.ToDouble(x.ReceiptPurchasePrice));
             double PROSESQtyTotal = Query.Sum(x => Convert.ToDouble(x.ReceiptProcessQty));
             double PROSESPriceTotal = Query.Sum(x => Convert.ToDouble(x.ReceiptProcessPrice));
-            double Konfeksi2AQtyTotal = Query.Sum(x => Convert.ToDouble(x.ReceiptKon2AQty));
-            double Konfeksi2APriceTotal = Query.Sum(x => Convert.ToDouble(x.ReceiptKon2APrice));
-            double KONFEKSI2BQtyTotal = Query.Sum(x => Convert.ToDouble(x.ReceiptKon2BQty));
-            double KONFEKSI2BPriceTotal = Query.Sum(x => Convert.ToDouble(x.ReceiptKon2BPrice));
-            double KONFEKSI2CQtyTotal = Query.Sum(x => Convert.ToDouble(x.ReceiptKon2CQty));
-            double KONFEKSI2CPriceTotal = Query.Sum(x => Convert.ToDouble(x.ReceiptKon2CPrice));
-            double KONFEKSI1BQtyTotal = Query.Sum(x => Convert.ToDouble(x.ReceiptKon1BQty));
-            double KONFEKSI1BPriceTotal = Query.Sum(x => Convert.ToDouble(x.ReceiptKon1BPrice));
-            double KONFEKSI1AQtyTotal = Query.Sum(x => Convert.ToDouble(x.ReceiptKon1AQty));
-            double KONFEKSI1APriceTotal = Query.Sum(x => Convert.ToDouble(x.ReceiptKon1APrice));
+            //double Konfeksi2AQtyTotal = Query.Sum(x => Convert.ToDouble(x.ReceiptKon2AQty));
+            //double Konfeksi2APriceTotal = Query.Sum(x => Convert.ToDouble(x.ReceiptKon2APrice));
+            //double KONFEKSI2BQtyTotal = Query.Sum(x => Convert.ToDouble(x.ReceiptKon2BQty));
+            //double KONFEKSI2BPriceTotal = Query.Sum(x => Convert.ToDouble(x.ReceiptKon2BPrice));
+            //double KONFEKSI2CQtyTotal = Query.Sum(x => Convert.ToDouble(x.ReceiptKon2CQty));
+            //double KONFEKSI2CPriceTotal = Query.Sum(x => Convert.ToDouble(x.ReceiptKon2CPrice));
+            //double KONFEKSI1BQtyTotal = Query.Sum(x => Convert.ToDouble(x.ReceiptKon1BQty));
+            //double KONFEKSI1BPriceTotal = Query.Sum(x => Convert.ToDouble(x.ReceiptKon1BPrice));
+            //double KONFEKSI1AQtyTotal = Query.Sum(x => Convert.ToDouble(x.ReceiptKon1AQty));
+            //double KONFEKSI1APriceTotal = Query.Sum(x => Convert.ToDouble(x.ReceiptKon1APrice));
             #endregion
             #region Pengeluaran
             double? ReturQtyTotal = Query.Sum(x => Convert.ToDouble(x.ExpendReturQty));
@@ -1393,16 +1400,16 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
             double? ExpendPROSESPriceTotal = Query.Sum(x => Convert.ToDouble(x.ExpendProcessPrice));
             double? SAMPLEQtyTotal = Query.Sum(x => Convert.ToDouble(x.ExpendSampleQty));
             double? SAMPLEPriceTotal = Query.Sum(x => Convert.ToDouble(x.ExpendSamplePrice));
-            double? ExpendKONFEKSI2AQtyTotal = Query.Sum(x => Convert.ToDouble(x.ExpendKon2AQty));
-            double? ExpendKonfeksi2APriceTotal = Query.Sum(x => Convert.ToDouble(x.ExpendKon2APrice));
-            double? ExpendKONFEKSI2BQtyTotal = Query.Sum(x => Convert.ToDouble(x.ExpendKon2BQty));
-            double? ExpendKONFEKSI2BPriceTotal = Query.Sum(x => Convert.ToDouble(x.ExpendKon2BPrice));
-            double? ExpendKONFEKSI2CQtyTotal = Query.Sum(x => Convert.ToDouble(x.ExpendKon2CQty));
-            double? ExpendKONFEKSI2CPriceTotal = Query.Sum(x => Convert.ToDouble(x.ExpendKon2CPrice));
-            double? ExpendKONFEKSI1BQtyTotal = Query.Sum(x => Convert.ToDouble(x.ExpendKon1BQty));
-            double? ExpendKONFEKSI1BPriceTotal = Query.Sum(x => Convert.ToDouble(x.ExpendKon1BPrice));
-            double? ExpendKONFEKSI1AQtyTotal = Query.Sum(x => Convert.ToDouble(x.ExpendKon1AQty));
-            double? ExpendKONFEKSI1APriceTotal = Query.Sum(x => Convert.ToDouble(x.ExpendKon1APrice));
+            //double? ExpendKONFEKSI2AQtyTotal = Query.Sum(x => Convert.ToDouble(x.ExpendKon2AQty));
+            //double? ExpendKonfeksi2APriceTotal = Query.Sum(x => Convert.ToDouble(x.ExpendKon2APrice));
+            //double? ExpendKONFEKSI2BQtyTotal = Query.Sum(x => Convert.ToDouble(x.ExpendKon2BQty));
+            //double? ExpendKONFEKSI2BPriceTotal = Query.Sum(x => Convert.ToDouble(x.ExpendKon2BPrice));
+            //double? ExpendKONFEKSI2CQtyTotal = Query.Sum(x => Convert.ToDouble(x.ExpendKon2CQty));
+            //double? ExpendKONFEKSI2CPriceTotal = Query.Sum(x => Convert.ToDouble(x.ExpendKon2CPrice));
+            //double? ExpendKONFEKSI1BQtyTotal = Query.Sum(x => Convert.ToDouble(x.ExpendKon1BQty));
+            //double? ExpendKONFEKSI1BPriceTotal = Query.Sum(x => Convert.ToDouble(x.ExpendKon1BPrice));
+            //double? ExpendKONFEKSI1AQtyTotal = Query.Sum(x => Convert.ToDouble(x.ExpendKon1AQty));
+            //double? ExpendKONFEKSI1APriceTotal = Query.Sum(x => Convert.ToDouble(x.ExpendKon1APrice));
             double? ExpendOTHERPriceTotal = Query.Sum(x => Convert.ToDouble(x.ExpendOtherPrice));
             double? ExpendOTHERQtyTotal = Query.Sum(x => Convert.ToDouble(x.ExpendOtherQty));
             double? ExpendSUBCONPriceTotal = Query.Sum(x => Convert.ToDouble(x.ExpendSubconPrice));
@@ -1413,13 +1420,13 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
             double? EndingQty = Query.Sum(x => Convert.ToDouble(x.EndingBalanceQty));
             double? EndingTotal = Query.Sum(x => Convert.ToDouble(x.EndingBalancePrice));
             DataTable result = new DataTable();
-            var headers = new string[] { "No", "Kode", "No RO", "PlanPO", "No Artikel", "Nama Barang", "Buyer", "Saldo Awal", "Saldo Awal1", "Saldo Awal2", "P E M A S U K A N", "P E M B E L I A N1", "P E M B E L I A N2", "P E M B E L I A N3", "P E M B E L I A N4", "P E M B E L I A N5", "P E M B E L I A N6", "P E M B E L I A N7", "P E M B E L I A N8", "P E M B E L I A N9", "P E M B E L I A N10", "P E M B E L I A N11", "P E M B E L I A N12", "P E M B E L I A N13", "P E M B E L I A N14", "P E M B E L I A N15", "P E N G E L U A R A N", "P E N G E L U A R A N1", "P E N G E L U A R A N2", "P E N G E L U A R A N3", "P E N G E L U A R A N4", "P E N G E L U A R A N5", "P E N G E L U A R A N6", "P E N G E L U A R A N7", "P E N G E L U A R A N8", "P E N G E L U A R A N9", "P E N G E L U A R A N10", "P E N G E L U A R A N11", "P E N G E L U A R A N12", "P E N G E L U A R A N13", "P E N G E L U A R A N14", "P E N G E L U A R A N15", "P E N G E L U A R A N16", "P E N G E L U A R A N17", "Saldo Akhir", "Saldo Akhir 1" };
+            var headers = new string[] { "No", "Kode", "No RO", "PlanPO", "No Artikel", "Nama Barang", "Buyer", "Saldo Awal", "Saldo Awal1", "Saldo Awal2", "P E M A S U K A N", "P E M B E L I A N1", "P E M B E L I A N2", "P E M B E L I A N3", "P E M B E L I A N4", "P E M B E L I A N5", "P E M B E L I A N6", /*"P E M B E L I A N7", "P E M B E L I A N8", "P E M B E L I A N9", "P E M B E L I A N10", "P E M B E L I A N11", "P E M B E L I A N12", "P E M B E L I A N13", "P E M B E L I A N14", "P E M B E L I A N15",*/ "P E N G E L U A R A N", "P E N G E L U A R A N1", "P E N G E L U A R A N2", "P E N G E L U A R A N3", "P E N G E L U A R A N4", "P E N G E L U A R A N5", "P E N G E L U A R A N6",/* "P E N G E L U A R A N7", "P E N G E L U A R A N8", "P E N G E L U A R A N9", "P E N G E L U A R A N10", "P E N G E L U A R A N11", "P E N G E L U A R A N12", "P E N G E L U A R A N13", "P E N G E L U A R A N14", "P E N G E L U A R A N15", "P E N G E L U A R A N16", "P E N G E L U A R A N17",*/ "Saldo Akhir", "Saldo Akhir 1" };
             if (unitcode == "SMP1")
             {
                 headers= new string[] { "No", "Kode", "No RO", "PlanPO", "No Artikel", "Nama Barang", "Buyer", "Saldo Awal", "Saldo Awal1", "Saldo Awal2", "P E M A S U K A N", "P E M B E L I A N1", "P E M B E L I A N2", "P E M B E L I A N3", "P E M B E L I A N4", "P E M B E L I A N5", "P E M B E L I A N6", "P E M B E L I A N7", "P E M B E L I A N8", "P E M B E L I A N9", "P E M B E L I A N10", "P E M B E L I A N11", "P E M B E L I A N12", "P E M B E L I A N13", "P E M B E L I A N14", "P E M B E L I A N15", "P E N G E L U A R A N", "P E N G E L U A R A N1", "P E N G E L U A R A N2", "P E N G E L U A R A N3", "P E N G E L U A R A N4", "P E N G E L U A R A N5", "P E N G E L U A R A N6", "P E N G E L U A R A N7", "P E N G E L U A R A N8", "P E N G E L U A R A N9", "P E N G E L U A R A N10", "P E N G E L U A R A N11", "P E N G E L U A R A N12", "P E N G E L U A R A N13", "P E N G E L U A R A N14", "P E N G E L U A R A N15", "P E N G E L U A R A N16", "P E N G E L U A R A N17", "P E N G E L U A R A N18", "P E N G E L U A R A N19", "Saldo Akhir", "Saldo Akhir 1" };
             }
-            var headers2 = new string[] { "Koreksi", "Pembelian", "Proses", "KONFEKSI 2A", "KONFEKSI 2B", "KONFEKSI 2C/EX.K4", "KONFEKSI 1A/EX.K3",  "KONFEKSI 1B", "Retur", "Sisa", "Proses", "Sample", "KONFEKSI 2A", "KONFEKSI 2B", "KONFEKSI 2C/EX.K4", "KONFEKSI 1A/EX. K3", "KONFEKSI 1B" };
-            var subheaders = new string[] { "Jumlah", "Sat", "Rp", "Qty", "Rp", "Qty", "Rp", "Qty", "Rp", "Qty", "Rp", "Qty", "Rp", "Qty", "Rp", "Qty", "Rp", "Qty", "Rp", "Qty", "Rp", "Qty", "Rp", "Qty", "Rp", "Qty", "Rp", "Qty", "Rp", "Qty", "Rp", "Qty", "Rp", "Qty", "Rp", "Qty", "Rp", "Qty", "Rp", "Qty", "Rp" };
+            var headers2 = new string[] { "Koreksi", "Pembelian", "Proses", /*"KONFEKSI 2A", "KONFEKSI 2B", "KONFEKSI 2C/EX.K4", "KONFEKSI 1A/EX.K3",  "KONFEKSI 1B",*/ "Retur", "Sisa", "Proses", "Sample"/*, "KONFEKSI 2A", "KONFEKSI 2B", "KONFEKSI 2C/EX.K4", "KONFEKSI 1A/EX. K3", "KONFEKSI 1B"*/ };
+            var subheaders = new string[] { "Jumlah", "Sat", "Rp", "Qty", "Rp", "Qty", "Rp", "Qty", "Rp", "Qty", "Rp", "Qty", "Rp", "Qty", "Rp", "Qty", "Rp", "Qty", "Rp", "Qty", "Rp"/*, "Qty", "Rp", "Qty", "Rp", "Qty", "Rp", "Qty", "Rp", "Qty", "Rp", "Qty", "Rp", "Qty", "Rp", "Qty", "Rp", "Qty", "Rp", "Qty", "Rp" */};
             for (int i = 0; i < 7; i++)
             {
                 result.Columns.Add(new DataColumn() { ColumnName = headers[i], DataType = typeof(string) });
@@ -1437,16 +1444,16 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
                 {
                     var ReceiptPurchaseQty = unitcode == "C2A" ? item.ReceiptPurchaseQty + item.ReceiptKon2AQty : unitcode == "C2B" ? item.ReceiptPurchaseQty + item.ReceiptKon2BQty : unitcode == "C2C" ? item.ReceiptPurchaseQty + item.ReceiptKon2CQty : unitcode == "C1B" ? item.ReceiptPurchaseQty + item.ReceiptKon1BQty : unitcode == "C1A" ? item.ReceiptPurchaseQty + item.ReceiptKon1AQty : item.ReceiptPurchaseQty + item.ReceiptKon2AQty + item.ReceiptKon2BQty + item.ReceiptKon2CQty + item.ReceiptKon1BQty + item.ReceiptKon1AQty;
                     var ReceiptPurchasePrice = unitcode == "C2A" ? item.ReceiptPurchasePrice + item.ReceiptKon2APrice : unitcode == "C2B" ? item.ReceiptPurchasePrice + item.ReceiptKon2BPrice : unitcode == "C2C" ? item.ReceiptPurchasePrice + item.ReceiptKon2CPrice : unitcode == "C1B" ? item.ReceiptPurchasePrice + item.ReceiptKon1BPrice : unitcode == "C1A" ? item.ReceiptPurchasePrice + item.ReceiptKon1APrice : item.ReceiptPurchasePrice + item.ReceiptKon2APrice + item.ReceiptKon2BPrice + item.ReceiptKon2CPrice + item.ReceiptKon1BPrice + item.ReceiptKon1APrice;
-                    var ReceiptKon2AQty = unitcode == "C2A" ? 0 : item.ReceiptKon2AQty;
-                    var ReceiptKon2APrice = unitcode == "C2A" ? 0 : item.ReceiptKon2APrice;
-                    var ReceiptKon2BPrice = unitcode == "C2B" ? 0 : item.ReceiptKon2BPrice;
-                    var ReceiptKon2BQty = unitcode == "C2B" ? 0 : item.ReceiptKon2BQty;
-                    var ReceiptKon2CPrice = unitcode == "C2C" ? 0 : item.ReceiptKon2CPrice;
-                    var ReceiptKon2CQty = unitcode == "C2C" ? 0 : item.ReceiptKon2CQty;
-                    var ReceiptKon1BPrice = unitcode == "C1B" ? 0 : item.ReceiptKon1BPrice;
-                    var ReceiptKon1BQty = unitcode == "C1B" ? 0 : item.ReceiptKon1BQty;
-                    var ReceiptKon1AQty = unitcode == "C1A" ? 0 : item.ReceiptKon1AQty;
-                    var ReceiptKon1APrice = unitcode == "C1A" ? 0 : item.ReceiptKon1APrice;
+                    //var ReceiptKon2AQty = unitcode == "C2A" ? 0 : item.ReceiptKon2AQty;
+                    //var ReceiptKon2APrice = unitcode == "C2A" ? 0 : item.ReceiptKon2APrice;
+                    //var ReceiptKon2BPrice = unitcode == "C2B" ? 0 : item.ReceiptKon2BPrice;
+                    //var ReceiptKon2BQty = unitcode == "C2B" ? 0 : item.ReceiptKon2BQty;
+                    //var ReceiptKon2CPrice = unitcode == "C2C" ? 0 : item.ReceiptKon2CPrice;
+                    //var ReceiptKon2CQty = unitcode == "C2C" ? 0 : item.ReceiptKon2CQty;
+                    //var ReceiptKon1BPrice = unitcode == "C1B" ? 0 : item.ReceiptKon1BPrice;
+                    //var ReceiptKon1BQty = unitcode == "C1B" ? 0 : item.ReceiptKon1BQty;
+                    //var ReceiptKon1AQty = unitcode == "C1A" ? 0 : item.ReceiptKon1AQty;
+                    //var ReceiptKon1APrice = unitcode == "C1A" ? 0 : item.ReceiptKon1APrice;
                     var ReceiptCorrection = item.ReceiptCorrectionPrice;
 
                     result.Rows.Add(index++, item.ProductCode, item.RO, item.PlanPo, item.NoArticle, item.ProductName, item.Buyer,
@@ -1458,16 +1465,16 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
                         Convert.ToDouble(ReceiptPurchasePrice),
                         Convert.ToDouble(item.ReceiptProcessQty),
                         Convert.ToDouble(item.ReceiptProcessPrice),
-                        Convert.ToDouble(ReceiptKon2AQty),
-                        Convert.ToDouble(ReceiptKon2APrice),
-                        Convert.ToDouble(ReceiptKon2BQty),
-                        Convert.ToDouble(ReceiptKon2BPrice),
-                        Convert.ToDouble(ReceiptKon2CQty),
-                        Convert.ToDouble(ReceiptKon2CPrice),
-                        Convert.ToDouble(ReceiptKon1AQty),
-                        Convert.ToDouble(ReceiptKon1APrice),
-                        Convert.ToDouble(ReceiptKon1BQty),
-                        Convert.ToDouble(ReceiptKon1BPrice),
+                        //Convert.ToDouble(ReceiptKon2AQty),
+                        //Convert.ToDouble(ReceiptKon2APrice),
+                        //Convert.ToDouble(ReceiptKon2BQty),
+                        //Convert.ToDouble(ReceiptKon2BPrice),
+                        //Convert.ToDouble(ReceiptKon2CQty),
+                        //Convert.ToDouble(ReceiptKon2CPrice),
+                        //Convert.ToDouble(ReceiptKon1AQty),
+                        //Convert.ToDouble(ReceiptKon1APrice),
+                        //Convert.ToDouble(ReceiptKon1BQty),
+                        //Convert.ToDouble(ReceiptKon1BPrice),
                         Convert.ToDouble(item.ExpendReturQty),
                         item.ExpendReturPrice,
                         item.ExpendRestQty,
@@ -1476,16 +1483,16 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
                         item.ExpendProcessPrice,
                         item.ExpendSampleQty,
                         item.ExpendSamplePrice,
-                        item.ExpendKon2AQty,
-                        item.ExpendKon2APrice,
-                        item.ExpendKon2BQty,
-                        item.ExpendKon2BPrice,
-                        item.ExpendKon2CQty,
-                        item.ExpendKon2CPrice,
-                        item.ExpendKon1AQty,
-                        item.ExpendKon1APrice,
-                        item.ExpendKon1BQty,
-                        item.ExpendKon1BPrice,
+                        //item.ExpendKon2AQty,
+                        //item.ExpendKon2APrice,
+                        //item.ExpendKon2BQty,
+                        //item.ExpendKon2BPrice,
+                        //item.ExpendKon2CQty,
+                        //item.ExpendKon2CPrice,
+                        //item.ExpendKon1AQty,
+                        //item.ExpendKon1APrice,
+                        //item.ExpendKon1BQty,
+                        //item.ExpendKon1BPrice,
                         Convert.ToDouble(item.EndingBalanceQty),
                         Convert.ToDouble(item.EndingBalancePrice));
                 }
@@ -1556,7 +1563,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
             var sheet = package.Workbook.Worksheets.Add("Data");
             DateTime DateFrom = datefrom == null ? new DateTime(1970, 1, 1) : (DateTime)datefrom;
             DateTime DateTo = dateto == null ? DateTime.Now : (DateTime)dateto;
-            var col1 = (char)('A' + result.Columns.Count);
+            var col1 =('G');
             string tglawal = DateFrom.ToString("dd MMM yyyy", new CultureInfo("id-ID"));
             string tglakhir = DateTo.ToString("dd MMM yyyy", new CultureInfo("id-ID"));
             //CultureInfo Id = new CultureInfo("id-ID");
@@ -1581,16 +1588,16 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
             sheet.Cells["H4:J5"].Merge = true;
             sheet.Cells["H4:J5"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Medium);
             sheet.Cells["K4"].Value = headers[10];
-            sheet.Cells["K4:Z4"].Merge = true;
-            sheet.Cells["K4:Z4"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Medium);
+            sheet.Cells["K4:P4"].Merge = true;
+            sheet.Cells["K4:P4"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Medium);
             if (unitcode != "SMP1")
             {
-                sheet.Cells["AA4"].Value = headers[26];
-                sheet.Cells["AA4:AR4"].Merge = true;
-                sheet.Cells["AA4:AR4"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Medium);
-                sheet.Cells["AS4"].Value = headers[44];
-                sheet.Cells["AS4:AT5"].Merge = true;
-                sheet.Cells["AS4:AT5"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Medium);
+                sheet.Cells["Q4"].Value = headers[17];
+                sheet.Cells["Q4:X4"].Merge = true;
+                sheet.Cells["Q4:X4"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Medium);
+                sheet.Cells["Y4"].Value = headers[24];
+                sheet.Cells["Y4:Z5"].Merge = true;
+                sheet.Cells["Y4:Z5"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Medium);
             }
             else
             {
@@ -1623,40 +1630,40 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
             sheet.Cells["W5"].Value = headers2[6];
             sheet.Cells["W5:X5"].Merge = true;
             sheet.Cells["W5:X5"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Medium);
-            sheet.Cells["Y5"].Value = headers2[7];
-            sheet.Cells["Y5:Z5"].Merge = true;
-            sheet.Cells["Y5:Z5"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Medium);
+            //sheet.Cells["Y5"].Value = headers2[7];
+            //sheet.Cells["Y5:Z5"].Merge = true;
+            //sheet.Cells["Y5:Z5"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Medium);
 
-            sheet.Cells["AA5"].Value = headers2[8];
-            sheet.Cells["AA5:AB5"].Merge = true;
-            sheet.Cells["AA5:AB5"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Medium);
-            sheet.Cells["AC5"].Value = headers2[9];
-            sheet.Cells["AC5:AD5"].Merge = true;
-            sheet.Cells["AC5:AD5"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Medium);
+            //sheet.Cells["AA5"].Value = headers2[8];
+            //sheet.Cells["AA5:AB5"].Merge = true;
+            //sheet.Cells["AA5:AB5"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Medium);
+            //sheet.Cells["AC5"].Value = headers2[9];
+            //sheet.Cells["AC5:AD5"].Merge = true;
+            //sheet.Cells["AC5:AD5"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Medium);
 
             if (unitcode != "SMP1")
             {
-                sheet.Cells["AE5"].Value = headers2[10];
-                sheet.Cells["AE5:AF5"].Merge = true;
-                sheet.Cells["AE5:AF5"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Medium);
-                sheet.Cells["AG5"].Value = headers2[11];
-                sheet.Cells["AG5:AH5"].Merge = true;
-                sheet.Cells["AG5:AH5"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Medium);
-                sheet.Cells["AI5"].Value = headers2[12];
-                sheet.Cells["AI5:AJ5"].Merge = true;
-                sheet.Cells["AI5:AJ5"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Medium);
-                sheet.Cells["AK5"].Value = headers2[13];
-                sheet.Cells["AK5:AL5"].Merge = true;
-                sheet.Cells["AK5:AL5"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Medium);
-                sheet.Cells["AM5"].Value = headers2[14];
-                sheet.Cells["AM5:AN5"].Merge = true;
-                sheet.Cells["AM5:AN5"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Medium);
-                sheet.Cells["AO5"].Value = headers2[15];
-                sheet.Cells["AO5:AP5"].Merge = true;
-                sheet.Cells["AO5:AP5"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Medium);
-                sheet.Cells["AQ5"].Value = headers2[16];
-                sheet.Cells["AQ5:AR5"].Merge = true;
-                sheet.Cells["AQ5:AR5"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Medium);
+                //sheet.Cells["AE5"].Value = headers2[10];
+                //sheet.Cells["AE5:AF5"].Merge = true;
+                //sheet.Cells["AE5:AF5"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Medium);
+                //sheet.Cells["AG5"].Value = headers2[11];
+                //sheet.Cells["AG5:AH5"].Merge = true;
+                //sheet.Cells["AG5:AH5"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Medium);
+                //sheet.Cells["AI5"].Value = headers2[12];
+                //sheet.Cells["AI5:AJ5"].Merge = true;
+                //sheet.Cells["AI5:AJ5"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Medium);
+                //sheet.Cells["AK5"].Value = headers2[13];
+                //sheet.Cells["AK5:AL5"].Merge = true;
+                //sheet.Cells["AK5:AL5"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Medium);
+                //sheet.Cells["AM5"].Value = headers2[14];
+                //sheet.Cells["AM5:AN5"].Merge = true;
+                //sheet.Cells["AM5:AN5"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Medium);
+                //sheet.Cells["AO5"].Value = headers2[15];
+                //sheet.Cells["AO5:AP5"].Merge = true;
+                //sheet.Cells["AO5:AP5"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Medium);
+                //sheet.Cells["AQ5"].Value = headers2[16];
+                //sheet.Cells["AQ5:AR5"].Merge = true;
+                //sheet.Cells["AQ5:AR5"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Medium);
             }
             else
             {
@@ -1703,7 +1710,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
             }
 
             
-            for (var i = 19; unitcode!="SMP1" ? i < 39 : i < 41; i++)
+            for (var i = 19; unitcode!="SMP1" ? i < 19 : i < 31; i++)
             {
                 var col = (char)('A' + i - 19);
                 sheet.Cells[$"A{col}6"].Value = subheaders[i];
@@ -1738,70 +1745,80 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
             sheet.Cells[$"O{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
             sheet.Cells[$"P{7 + result.Rows.Count}"].Value = PROSESPriceTotal;
             sheet.Cells[$"P{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-            sheet.Cells[$"Q{7 + result.Rows.Count}"].Value = Konfeksi2AQtyTotal;
-            sheet.Cells[$"Q{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-            sheet.Cells[$"R{7 + result.Rows.Count}"].Value = Konfeksi2APriceTotal;
-            sheet.Cells[$"R{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-            sheet.Cells[$"S{7 + result.Rows.Count}"].Value = KONFEKSI2BQtyTotal;
-            sheet.Cells[$"S{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-            sheet.Cells[$"T{7 + result.Rows.Count}"].Value = KONFEKSI2BPriceTotal;
-            sheet.Cells[$"T{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-            sheet.Cells[$"U{7 + result.Rows.Count}"].Value = KONFEKSI2CQtyTotal;
-            sheet.Cells[$"U{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-            sheet.Cells[$"V{7 + result.Rows.Count}"].Value = KONFEKSI2CPriceTotal;
-            sheet.Cells[$"V{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-            sheet.Cells[$"W{7 + result.Rows.Count}"].Value = KONFEKSI1AQtyTotal;
-            sheet.Cells[$"W{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-            sheet.Cells[$"X{7 + result.Rows.Count}"].Value = KONFEKSI1APriceTotal;
-            sheet.Cells[$"X{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-            sheet.Cells[$"Y{7 + result.Rows.Count}"].Value = KONFEKSI1BQtyTotal;
-            sheet.Cells[$"Y{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-            sheet.Cells[$"Z{7 + result.Rows.Count}"].Value = KONFEKSI1BPriceTotal;
-            sheet.Cells[$"Z{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
 
-            sheet.Cells[$"AA{7 + result.Rows.Count}"].Value = ReturQtyTotal;
-            sheet.Cells[$"AA{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-            sheet.Cells[$"AB{7 + result.Rows.Count}"].Value = ReturJumlahTotal;
-            sheet.Cells[$"AB{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-            sheet.Cells[$"AC{7 + result.Rows.Count}"].Value = SisaQtyTotal;
-            sheet.Cells[$"AC{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-            sheet.Cells[$"AD{7 + result.Rows.Count}"].Value = SisaPriceTotal;
-            sheet.Cells[$"AD{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+            sheet.Cells[$"Q{7 + result.Rows.Count}"].Value = ReturQtyTotal;
+            sheet.Cells[$"Q{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+            sheet.Cells[$"R{7 + result.Rows.Count}"].Value = ReturJumlahTotal;
+            sheet.Cells[$"R{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+            sheet.Cells[$"S{7 + result.Rows.Count}"].Value = SisaQtyTotal;
+            sheet.Cells[$"S{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+            sheet.Cells[$"T{7 + result.Rows.Count}"].Value = SisaPriceTotal;
+            sheet.Cells[$"T{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+
+            //sheet.Cells[$"Q{7 + result.Rows.Count}"].Value = Konfeksi2AQtyTotal;
+            //sheet.Cells[$"Q{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+            //sheet.Cells[$"R{7 + result.Rows.Count}"].Value = Konfeksi2APriceTotal;
+            //sheet.Cells[$"R{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+            //sheet.Cells[$"S{7 + result.Rows.Count}"].Value = KONFEKSI2BQtyTotal;
+            //sheet.Cells[$"S{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+            //sheet.Cells[$"T{7 + result.Rows.Count}"].Value = KONFEKSI2BPriceTotal;
+            //sheet.Cells[$"T{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+            //sheet.Cells[$"U{7 + result.Rows.Count}"].Value = KONFEKSI2CQtyTotal;
+            //sheet.Cells[$"U{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+            //sheet.Cells[$"V{7 + result.Rows.Count}"].Value = KONFEKSI2CPriceTotal;
+            //sheet.Cells[$"V{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+            //sheet.Cells[$"W{7 + result.Rows.Count}"].Value = KONFEKSI1AQtyTotal;
+            //sheet.Cells[$"W{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+            //sheet.Cells[$"X{7 + result.Rows.Count}"].Value = KONFEKSI1APriceTotal;
+            //sheet.Cells[$"X{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+            //sheet.Cells[$"Y{7 + result.Rows.Count}"].Value = KONFEKSI1BQtyTotal;
+            //sheet.Cells[$"Y{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+            //sheet.Cells[$"Z{7 + result.Rows.Count}"].Value = KONFEKSI1BPriceTotal;
+            //sheet.Cells[$"Z{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+
+            //sheet.Cells[$"AA{7 + result.Rows.Count}"].Value = ReturQtyTotal;
+            //sheet.Cells[$"AA{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+            //sheet.Cells[$"AB{7 + result.Rows.Count}"].Value = ReturJumlahTotal;
+            //sheet.Cells[$"AB{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+            //sheet.Cells[$"AC{7 + result.Rows.Count}"].Value = SisaQtyTotal;
+            //sheet.Cells[$"AC{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+            //sheet.Cells[$"AD{7 + result.Rows.Count}"].Value = SisaPriceTotal;
+            //sheet.Cells[$"AD{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
 
             if (unitcode != "SMP1")
             {
-                sheet.Cells[$"AE{7 + result.Rows.Count}"].Value = ExpendPROSESQtyTotal;
-                sheet.Cells[$"AE{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-                sheet.Cells[$"AF{7 + result.Rows.Count}"].Value = ExpendPROSESPriceTotal;
-                sheet.Cells[$"AF{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-                sheet.Cells[$"AG{7 + result.Rows.Count}"].Value = SAMPLEQtyTotal;
-                sheet.Cells[$"AG{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-                sheet.Cells[$"AH{7 + result.Rows.Count}"].Value = SAMPLEPriceTotal;
-                sheet.Cells[$"AH{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-                sheet.Cells[$"AI{7 + result.Rows.Count}"].Value = ExpendKONFEKSI2AQtyTotal;
-                sheet.Cells[$"AI{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-                sheet.Cells[$"AJ{7 + result.Rows.Count}"].Value = ExpendKonfeksi2APriceTotal;
-                sheet.Cells[$"AJ{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-                sheet.Cells[$"AK{7 + result.Rows.Count}"].Value = ExpendKONFEKSI2BQtyTotal;
-                sheet.Cells[$"AK{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-                sheet.Cells[$"AL{7 + result.Rows.Count}"].Value = ExpendKONFEKSI2BPriceTotal;
-                sheet.Cells[$"AL{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-                sheet.Cells[$"AM{7 + result.Rows.Count}"].Value = ExpendKONFEKSI2CQtyTotal;
-                sheet.Cells[$"AM{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-                sheet.Cells[$"AN{7 + result.Rows.Count}"].Value = ExpendKONFEKSI2CPriceTotal;
-                sheet.Cells[$"AN{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-                sheet.Cells[$"AO{7 + result.Rows.Count}"].Value = ExpendKONFEKSI1AQtyTotal;
-                sheet.Cells[$"AO{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-                sheet.Cells[$"AP{7 + result.Rows.Count}"].Value = ExpendKONFEKSI1APriceTotal;
-                sheet.Cells[$"AP{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-                sheet.Cells[$"AQ{7 + result.Rows.Count}"].Value = ExpendKONFEKSI1BQtyTotal;
-                sheet.Cells[$"AQ{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-                sheet.Cells[$"AR{7 + result.Rows.Count}"].Value = ExpendKONFEKSI1BPriceTotal;
-                sheet.Cells[$"AR{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-                sheet.Cells[$"AS{7 + result.Rows.Count}"].Value = EndingQty;
-                sheet.Cells[$"AS{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-                sheet.Cells[$"AT{7 + result.Rows.Count}"].Value = EndingTotal;
-                sheet.Cells[$"AT{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                sheet.Cells[$"U{7 + result.Rows.Count}"].Value = ExpendPROSESQtyTotal;
+                sheet.Cells[$"U{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                sheet.Cells[$"V{7 + result.Rows.Count}"].Value = ExpendPROSESPriceTotal;
+                sheet.Cells[$"V{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                sheet.Cells[$"W{7 + result.Rows.Count}"].Value = SAMPLEQtyTotal;
+                sheet.Cells[$"W{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                sheet.Cells[$"X{7 + result.Rows.Count}"].Value = SAMPLEPriceTotal;
+                sheet.Cells[$"X{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                //sheet.Cells[$"AI{7 + result.Rows.Count}"].Value = ExpendKONFEKSI2AQtyTotal;
+                //sheet.Cells[$"AI{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                //sheet.Cells[$"AJ{7 + result.Rows.Count}"].Value = ExpendKonfeksi2APriceTotal;
+                //sheet.Cells[$"AJ{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                //sheet.Cells[$"AK{7 + result.Rows.Count}"].Value = ExpendKONFEKSI2BQtyTotal;
+                //sheet.Cells[$"AK{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                //sheet.Cells[$"AL{7 + result.Rows.Count}"].Value = ExpendKONFEKSI2BPriceTotal;
+                //sheet.Cells[$"AL{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                //sheet.Cells[$"AM{7 + result.Rows.Count}"].Value = ExpendKONFEKSI2CQtyTotal;
+                //sheet.Cells[$"AM{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                //sheet.Cells[$"AN{7 + result.Rows.Count}"].Value = ExpendKONFEKSI2CPriceTotal;
+                //sheet.Cells[$"AN{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                //sheet.Cells[$"AO{7 + result.Rows.Count}"].Value = ExpendKONFEKSI1AQtyTotal;
+                //sheet.Cells[$"AO{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                //sheet.Cells[$"AP{7 + result.Rows.Count}"].Value = ExpendKONFEKSI1APriceTotal;
+                //sheet.Cells[$"AP{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                //sheet.Cells[$"AQ{7 + result.Rows.Count}"].Value = ExpendKONFEKSI1BQtyTotal;
+                //sheet.Cells[$"AQ{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                //sheet.Cells[$"AR{7 + result.Rows.Count}"].Value = ExpendKONFEKSI1BPriceTotal;
+                //sheet.Cells[$"AR{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                sheet.Cells[$"Y{7 + result.Rows.Count}"].Value = EndingQty;
+                sheet.Cells[$"Y{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                sheet.Cells[$"Z{7 + result.Rows.Count}"].Value = EndingTotal;
+                sheet.Cells[$"Z{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
             }
             else
             {
@@ -1818,26 +1835,26 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
                 sheet.Cells[$"AJ{7 + result.Rows.Count}"].Value = ExpendOTHERPriceTotal;
                 sheet.Cells[$"AJ{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
 
-                sheet.Cells[$"AK{7 + result.Rows.Count}"].Value = ExpendKONFEKSI2AQtyTotal;
-                sheet.Cells[$"AK{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-                sheet.Cells[$"AL{7 + result.Rows.Count}"].Value = ExpendKonfeksi2APriceTotal;
-                sheet.Cells[$"AL{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-                sheet.Cells[$"AM{7 + result.Rows.Count}"].Value = ExpendKONFEKSI2BQtyTotal;
-                sheet.Cells[$"AM{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-                sheet.Cells[$"AN{7 + result.Rows.Count}"].Value = ExpendKONFEKSI2BPriceTotal;
-                sheet.Cells[$"AN{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-                sheet.Cells[$"AO{7 + result.Rows.Count}"].Value = ExpendKONFEKSI2CQtyTotal;
-                sheet.Cells[$"AO{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-                sheet.Cells[$"AP{7 + result.Rows.Count}"].Value = ExpendKONFEKSI2CPriceTotal;
-                sheet.Cells[$"AP{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-                sheet.Cells[$"AQ{7 + result.Rows.Count}"].Value = ExpendKONFEKSI1AQtyTotal;
-                sheet.Cells[$"AQ{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-                sheet.Cells[$"AR{7 + result.Rows.Count}"].Value = ExpendKONFEKSI1APriceTotal;
-                sheet.Cells[$"AR{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-                sheet.Cells[$"AS{7 + result.Rows.Count}"].Value = ExpendKONFEKSI1BQtyTotal;
-                sheet.Cells[$"AS{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
-                sheet.Cells[$"AT{7 + result.Rows.Count}"].Value = ExpendKONFEKSI1BPriceTotal;
-                sheet.Cells[$"AT{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                //sheet.Cells[$"AK{7 + result.Rows.Count}"].Value = ExpendKONFEKSI2AQtyTotal;
+                //sheet.Cells[$"AK{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                //sheet.Cells[$"AL{7 + result.Rows.Count}"].Value = ExpendKonfeksi2APriceTotal;
+                //sheet.Cells[$"AL{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                //sheet.Cells[$"AM{7 + result.Rows.Count}"].Value = ExpendKONFEKSI2BQtyTotal;
+                //sheet.Cells[$"AM{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                //sheet.Cells[$"AN{7 + result.Rows.Count}"].Value = ExpendKONFEKSI2BPriceTotal;
+                //sheet.Cells[$"AN{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                //sheet.Cells[$"AO{7 + result.Rows.Count}"].Value = ExpendKONFEKSI2CQtyTotal;
+                //sheet.Cells[$"AO{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                //sheet.Cells[$"AP{7 + result.Rows.Count}"].Value = ExpendKONFEKSI2CPriceTotal;
+                //sheet.Cells[$"AP{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                //sheet.Cells[$"AQ{7 + result.Rows.Count}"].Value = ExpendKONFEKSI1AQtyTotal;
+                //sheet.Cells[$"AQ{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                //sheet.Cells[$"AR{7 + result.Rows.Count}"].Value = ExpendKONFEKSI1APriceTotal;
+                //sheet.Cells[$"AR{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                //sheet.Cells[$"AS{7 + result.Rows.Count}"].Value = ExpendKONFEKSI1BQtyTotal;
+                //sheet.Cells[$"AS{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                //sheet.Cells[$"AT{7 + result.Rows.Count}"].Value = ExpendKONFEKSI1BPriceTotal;
+                //sheet.Cells[$"AT{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
                 sheet.Cells[$"AU{7 + result.Rows.Count}"].Value = EndingQty;
                 sheet.Cells[$"AU{7 + result.Rows.Count}"].Style.Border.BorderAround(ExcelBorderStyle.Medium);
                 sheet.Cells[$"AV{7 + result.Rows.Count}"].Value = EndingTotal;
@@ -1845,7 +1862,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
             }
 
 
-            var widths = new int[] { 5, 10, 20, 15, 7, 20, 20, 10, 7, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 };
+            var widths = new int[] { 5, 10, 20, 15, 7, 20, 20, 10, 7, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10/*, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 */};
             foreach (var i in Enumerable.Range(0, headers.Length))
             {
                 sheet.Column(i + 1).Width = widths[i];
