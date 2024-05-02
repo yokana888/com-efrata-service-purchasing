@@ -43,7 +43,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
 
             //var categories1 = ctg == "BB" ? categories.Where(x => x.CodeRequirement == "BB").Select(x => x.Name).ToArray() : ctg == "BP" ? categories.Where(x => x.CodeRequirement == "BP").Select(x => x.Name).ToArray() : ctg == "BE" ? categories.Where(x => x.CodeRequirement == "BE").Select(x => x.Name).ToArray() : categories.Select(x=>x.Name).ToArray();
 
-            var categories1 = categories.Select(x => x.Name).ToArray();
+            var categories1 = categories.Select(x => x.Name).Distinct().ToArray();
 
             var lastdate = dbContext.GarmentStockOpnames.OrderByDescending(x => x.Date).Select(x => x.Date).FirstOrDefault();
 
@@ -481,12 +481,12 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
 
             List<GarmentStockReportViewModel> stock1 = new List<GarmentStockReportViewModel>();
 
-            var PrdoctCodes = string.Join(",", stock.Select(x => x.ProductCode).Distinct().ToList());
+            //var PrdoctCodes = string.Join(",", stock.Select(x => x.ProductCode).Distinct().ToList());
 
-            var Codes = GetProductCode(PrdoctCodes);
+            //var Codes = GetProductCode(PrdoctCodes);
 
             stock1 = (from i in stock
-                      join b in Codes on i.ProductCode equals b.Code into produtcodes
+                      join b in categories on i.ProductCode equals b.Code into produtcodes
                       from bb in produtcodes.DefaultIfEmpty()
                       select new GarmentStockReportViewModel
                       {
@@ -501,7 +501,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
                           PaymentMethod = i.PaymentMethod,
                           PlanPo = i.PlanPo,
                           ProductCode = i.ProductCode,
-                          ProductRemark = ctg == "BB" ? string.Concat((bb == null ? "-" : bb.Composition), "", (bb == null ? "-" : bb.Width), "", (bb == null ? "-" : bb.Const), "", (bb == null ? "-" : bb.Yarn)) : bb.Name,
+                          ProductRemark = ctg == "BB" ? string.Concat((bb == null ? "-" : bb.Composition), "", (bb == null ? "-" : bb.Width), "", (bb == null ? "-" : bb.Const), "", (bb == null ? "-" : bb.Yarn)) : bb == null ? "-" : bb.Name,
                           ReceiptCorrectionQty = i.ReceiptCorrectionQty,
                           ReceiptQty = i.ReceiptQty,
                           ReceiptUom = i.ReceiptUom,
@@ -764,12 +764,12 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
 
         }
 
-        private List<GarmentCategoryViewModel> GetProductCategories(int page, int size, string order, string filter)
+        private List<GarmentProductViewModel> GetProductCategories(int page, int size, string order, string filter)
         {
             IHttpClientService httpClient = (IHttpClientService)this.serviceProvider.GetService(typeof(IHttpClientService));
 
 
-            var garmentSupplierUri = APIEndpoint.Core + $"master/garment-categories";
+            var garmentSupplierUri = APIEndpoint.Core + $"master/garment-categories/join-by-product";
             string queryUri = "?page=" + page + "&size=" + size + "&order=" + order + "&filter=" + filter;
             string uri = garmentSupplierUri + queryUri;
             var httpResponse = httpClient.GetAsync($"{uri}").Result;
@@ -779,21 +779,21 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
                 var content = httpResponse.Content.ReadAsStringAsync().Result;
                 Dictionary<string, object> result = JsonConvert.DeserializeObject<Dictionary<string, object>>(content);
 
-                List<GarmentCategoryViewModel> viewModel;
+                List<GarmentProductViewModel> viewModel;
                 if (result.GetValueOrDefault("data") == null)
                 {
-                    viewModel = new List<GarmentCategoryViewModel>();
+                    viewModel = new List<GarmentProductViewModel>();
                 }
                 else
                 {
-                    viewModel = JsonConvert.DeserializeObject<List<GarmentCategoryViewModel>>(result.GetValueOrDefault("data").ToString());
+                    viewModel = JsonConvert.DeserializeObject<List<GarmentProductViewModel>>(result.GetValueOrDefault("data").ToString());
 
                 }
                 return viewModel;
             }
             else
             {
-                List<GarmentCategoryViewModel> viewModel = new List<GarmentCategoryViewModel>();
+                List<GarmentProductViewModel> viewModel = new List<GarmentProductViewModel>();
                 return viewModel;
             }
 
