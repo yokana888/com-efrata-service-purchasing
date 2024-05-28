@@ -629,7 +629,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentDeliveryOrderFacades
                 {
                     foreach(var detail in item.Details)
                     {
-                        data.TotalAmount += detail.ReceiptQuantity * detail.PricePerDealUnit;
+                        data.TotalAmount += detail.DOQuantity * detail.PricePerDealUnit;
                     }
                 }
             }
