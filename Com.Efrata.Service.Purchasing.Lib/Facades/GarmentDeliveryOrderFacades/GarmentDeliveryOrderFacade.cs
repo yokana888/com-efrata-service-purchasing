@@ -622,6 +622,18 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentDeliveryOrderFacades
                     );
             }
 
+            foreach(var data in Query)
+            {
+                data.TotalAmount = 0;
+                foreach(var item in data.Items)
+                {
+                    foreach(var detail in item.Details)
+                    {
+                        data.TotalAmount += detail.ReceiptQuantity * detail.PricePerDealUnit;
+                    }
+                }
+            }
+
             return Query;
         }
 
