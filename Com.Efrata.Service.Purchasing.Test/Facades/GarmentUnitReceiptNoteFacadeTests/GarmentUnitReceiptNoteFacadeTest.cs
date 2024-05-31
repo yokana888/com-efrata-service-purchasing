@@ -1950,10 +1950,10 @@ namespace Com.Efrata.Service.Purchasing.Test.Facades.GarmentUnitReceiptNoteFacad
             var stockreport = new AccountingStockReportFacade(serviceProvider, dbContext);
             //var Response = stockreport.GetStockReport(7, dataUrn1.UnitCode, null, 1, 25, "{}", new DateTime(2019, 12, 26), new DateTime(2019, 12, 27));
             //var Response = stockreport.GetStockReport("BB", null, null, null, 7);
-            var Response = stockreport.GetStockReport(7, null, "BB", 1, 25, "{}", null, null);
-            var Response3 = stockreport.GetStockReport(7, null, "BB", 1, 25, "{}", new DateTime(2019, 12, 25), DateTime.Now);
-            var Response4 = stockreport.GetStockReport(7, null, null, 1, 25, "{}", new DateTime(2019, 12, 25), DateTime.Now);
-            var Response2 = stockreport.GetStockReport(7, null, "BP", 1, 25, "{}", null, null);
+            var Response = stockreport.GetStockReport(7, null, "BB", "", 1, 25, "{}", null, null);
+            var Response3 = stockreport.GetStockReport(7, null, "BB", "", 1, 25, "{}", new DateTime(2019, 12, 25), DateTime.Now);
+            var Response4 = stockreport.GetStockReport(7, null, null, "", 1, 25, "{}", new DateTime(2019, 12, 25), DateTime.Now);
+            var Response2 = stockreport.GetStockReport(7, null, "BP", "", 1, 25, "{}", null, null);
             Assert.NotNull(Response.Item1);
             Assert.NotNull(Response2.Item1);
         }
@@ -2037,7 +2037,7 @@ namespace Com.Efrata.Service.Purchasing.Test.Facades.GarmentUnitReceiptNoteFacad
             var dataRC = await dataUtilRC.GetNewData(dataUrn1);
             await facadeRC.Create(dataRC.GarmentReceiptCorrection, USERNAME);
             var stockreport = new AccountingStockReportFacade(serviceProviderMock.Object, dbContext);
-            var Response = stockreport.GetStockReport(7, dataUrn1.UnitCode, "BB", 1, 25, "{}", new DateTime(2010, 12, 26), DateTime.Now);
+            var Response = stockreport.GetStockReport(7, dataUrn1.UnitCode, "BB", "", 1, 25, "{}", new DateTime(2010, 12, 26), DateTime.Now);
             //var Response2 = stockreport.GetStockReport(7, dataUrn2.UnitCode, "BP", 1, 25, "{}", new DateTime(2010, 12, 26), DateTime.Now);
             //Assert.NotNull(Response.Item1);
             Assert.NotNull(Response.Item1);
@@ -2124,7 +2124,7 @@ namespace Com.Efrata.Service.Purchasing.Test.Facades.GarmentUnitReceiptNoteFacad
             var dataRC = await dataUtilRC.GetNewData(dataUrn1);
             await facadeRC.Create(dataRC.GarmentReceiptCorrection, USERNAME);
             var stockreport = new AccountingStockReportFacade(serviceProviderMock.Object, dbContext);
-            var Response = stockreport.GetStockReport(7, dataUrn1.UnitCode, "BB", 1, 25, "{}", new DateTime(2010, 12, 26), DateTime.Now);
+            var Response = stockreport.GetStockReport(7, dataUrn1.UnitCode, "BB", "", 1, 25, "{}", new DateTime(2010, 12, 26), DateTime.Now);
             //var Response2 = stockreport.GetStockReport(7, dataUrn2.UnitCode, "BP", 1, 25, "{}", new DateTime(2010, 12, 26), DateTime.Now);
             //Assert.NotNull(Response.Item1);
             Assert.NotNull(Response.Item1);
@@ -2211,7 +2211,7 @@ namespace Com.Efrata.Service.Purchasing.Test.Facades.GarmentUnitReceiptNoteFacad
             var dataRC = await dataUtilRC.GetNewData(dataUrn1);
             await facadeRC.Create(dataRC.GarmentReceiptCorrection, USERNAME);
             var stockreport = new AccountingStockReportFacade(serviceProviderMock.Object, dbContext);
-            var Response = stockreport.GetStockReport(7, null, "BB", 1, 25, "{}", null, null);
+            var Response = stockreport.GetStockReport(7, null, "BB", "", 1, 25, "{}", null, null);
             //var Response2 = stockreport.GetStockReport(7, dataUrn2.UnitCode, "BP", 1, 25, "{}", new DateTime(2010, 12, 26), DateTime.Now);
             //Assert.NotNull(Response.Item1);
             Assert.NotNull(Response.Item1);
@@ -2289,7 +2289,7 @@ namespace Com.Efrata.Service.Purchasing.Test.Facades.GarmentUnitReceiptNoteFacad
             var stockreport = new AccountingStockReportFacade(serviceProvider, dbContext);
             //var Response = stockreport.GetStockReport(7, dataUrn1.UnitCode, null, 1, 25, "{}", new DateTime(2019, 12, 26), new DateTime(2019, 12, 27));
             //var Response = stockreport.GetStockReport("BB", null, null, null, 7);
-            var Response = stockreport.GenerateExcelAStockReport("BB", null, null, null, null, null, 7);
+            var Response = stockreport.GenerateExcelAStockReport("BB", null, "", null, null, null, null, 7);
             Assert.IsType<System.IO.MemoryStream>(Response);
         }
         [Fact]
@@ -2361,7 +2361,7 @@ namespace Com.Efrata.Service.Purchasing.Test.Facades.GarmentUnitReceiptNoteFacad
             await facadeRC.Create(dataRC.GarmentReceiptCorrection, USERNAME);
             var stockreport = new AccountingStockReportFacade(serviceProvider, dbContext);
             //var Response = stockreport.GenerateExcelAStockReport(null, dataUrn1.UnitCode, new DateTime(2019, 12, 26), new DateTime(2019, 12, 27), 7);
-            var Response = stockreport.GenerateExcelAStockReport("BB", "BAHAN BAKU", "EFR", "KONFEKSI 2A", new DateTime(2010, 12, 26), DateTime.Now, 7);
+            var Response = stockreport.GenerateExcelAStockReport("BB", "BAHAN BAKU", "", "EFR", "KONFEKSI 2A", new DateTime(2010, 12, 26), DateTime.Now, 7);
             Assert.IsType<System.IO.MemoryStream>(Response);
         }
         [Fact]
@@ -2433,7 +2433,7 @@ namespace Com.Efrata.Service.Purchasing.Test.Facades.GarmentUnitReceiptNoteFacad
             await facadeRC.Create(dataRC.GarmentReceiptCorrection, USERNAME);
             var stockreport = new AccountingStockReportFacade(serviceProvider, dbContext);
             //var Response = stockreport.GenerateExcelAStockReport(null, dataUrn1.UnitCode, new DateTime(2019, 12, 26), new DateTime(2019, 12, 27), 7);
-            var Response = stockreport.GenerateExcelAStockReport("BB", "BAHAN BAKU", "C2B", "KONFEKSI 2B", null, null, 7);
+            var Response = stockreport.GenerateExcelAStockReport("BB", "BAHAN BAKU", "", "C2B", "KONFEKSI 2B", null, null, 7);
             Assert.IsType<System.IO.MemoryStream>(Response);
         }
         [Fact]
@@ -2505,7 +2505,7 @@ namespace Com.Efrata.Service.Purchasing.Test.Facades.GarmentUnitReceiptNoteFacad
             await facadeRC.Create(dataRC.GarmentReceiptCorrection, USERNAME);
             var stockreport = new AccountingStockReportFacade(serviceProvider, dbContext);
             //var Response = stockreport.GenerateExcelAStockReport(null, dataUrn1.UnitCode, new DateTime(2019, 12, 26), new DateTime(2019, 12, 27), 7);
-            var Response = stockreport.GenerateExcelAStockReport("BB", "BAHAN BAKU", "C2C", "KONFEKSI 2C", new DateTime(2010, 12, 26), DateTime.Now, 7);
+            var Response = stockreport.GenerateExcelAStockReport("BB", "BAHAN BAKU","", "C2C", "KONFEKSI 2C", new DateTime(2010, 12, 26), DateTime.Now, 7);
             Assert.IsType<System.IO.MemoryStream>(Response);
         }
         [Fact]
@@ -2577,7 +2577,7 @@ namespace Com.Efrata.Service.Purchasing.Test.Facades.GarmentUnitReceiptNoteFacad
             await facadeRC.Create(dataRC.GarmentReceiptCorrection, USERNAME);
             var stockreport = new AccountingStockReportFacade(serviceProvider, dbContext);
             //var Response = stockreport.GenerateExcelAStockReport(null, dataUrn1.UnitCode, new DateTime(2019, 12, 26), new DateTime(2019, 12, 27), 7);
-            var Response = stockreport.GenerateExcelAStockReport("BB", "BAHAN BAKU", "C1B", "KONFEKSI 1B", new DateTime(2010, 12, 26), DateTime.Now, 7);
+            var Response = stockreport.GenerateExcelAStockReport("BB", "BAHAN BAKU", "", "C1B", "KONFEKSI 1B", new DateTime(2010, 12, 26), DateTime.Now, 7);
             Assert.IsType<System.IO.MemoryStream>(Response);
         }
 
@@ -2650,7 +2650,7 @@ namespace Com.Efrata.Service.Purchasing.Test.Facades.GarmentUnitReceiptNoteFacad
             await facadeRC.Create(dataRC.GarmentReceiptCorrection, USERNAME);
             var stockreport = new AccountingStockReportFacade(serviceProvider, dbContext);
             //var Response = stockreport.GenerateExcelAStockReport(null, dataUrn1.UnitCode, new DateTime(2019, 12, 26), new DateTime(2019, 12, 27), 7);
-            var Response = stockreport.GenerateExcelAStockReport("BB", "BAHAN BAKU", "SMP1", "SAMPLE", new DateTime(2010, 12, 26), DateTime.Now, 7);
+            var Response = stockreport.GenerateExcelAStockReport("BB", "BAHAN BAKU", "", "SMP1", "SAMPLE", new DateTime(2010, 12, 26), DateTime.Now, 7);
             Assert.IsType<System.IO.MemoryStream>(Response);
         }
         /*[Fact]

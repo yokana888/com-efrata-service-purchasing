@@ -476,7 +476,7 @@ namespace Com.Efrata.Service.Purchasing.Test.DataUtils.GarmentDeliveryOrderDataU
 
             foreach (var item in datas.Items)
             {
-                gdo.Items = gdo.Items.Concat(new[] { new GarmentDeliveryOrderItem
+                gdo.Items = (List<GarmentDeliveryOrderItem>)gdo.Items.Concat(new[] { new GarmentDeliveryOrderItem
                 {
                     EPOId = datas.Id,
                     EPONo = datas.EPONo,
@@ -580,7 +580,7 @@ namespace Com.Efrata.Service.Purchasing.Test.DataUtils.GarmentDeliveryOrderDataU
 
             foreach (var item in datas.Items)
             {
-                gdo.Items = gdo.Items.Concat(new[] { new GarmentDeliveryOrderItem
+                gdo.Items = (List<GarmentDeliveryOrderItem>)gdo.Items.Concat(new[] { new GarmentDeliveryOrderItem
                 {
                     EPOId = datas.Id,
                     EPONo = datas.EPONo,

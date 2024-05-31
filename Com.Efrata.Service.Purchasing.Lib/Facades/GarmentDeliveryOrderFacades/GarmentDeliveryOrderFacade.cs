@@ -51,47 +51,48 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentDeliveryOrderFacades
 
         public Tuple<List<GarmentDeliveryOrder>, int, Dictionary<string, string>> Read(int Page = 1, int Size = 25, string Order = "{}", string Keyword = null, string Filter = "{}")
         {
-            //IQueryable<GarmentDeliveryOrder> Query = this.dbSet.Include(m => m.Items);
-            IQueryable<GarmentDeliveryOrder> Query = this.dbSet.AsNoTracking().Include(x => x.Items).ThenInclude(x => x.Details)
-                .Select(x => new GarmentDeliveryOrder
-                {
-                    Id = x.Id,
-                    DONo = x.DONo,
-                    DODate = x.DODate,
-                    ArrivalDate = x.ArrivalDate,
-                    BillNo = x.BillNo,
-                    PaymentBill = x.PaymentBill,
-                    SupplierId = x.SupplierId,
-                    SupplierCode = x.SupplierCode,
-                    SupplierName = x.SupplierName,
-                    CreatedBy = x.CreatedBy,
-                    IsClosed = x.IsClosed,
-                    IsCustoms = x.IsCustoms,
-                    IsInvoice = x.IsInvoice,
-                    LastModifiedUtc = x.LastModifiedUtc,
-                    Items = x.Items.Select(y => new GarmentDeliveryOrderItem
-                    {
-                        Id = y.Id,
-                        EPOId = y.EPOId,
-                        EPONo = y.EPONo,
-                        CurrencyId = y.CurrencyId,
-                        CurrencyCode = y.CurrencyCode,
-                        PaymentDueDays = y.PaymentDueDays,
-                        Details = y.Details.Select(z => new GarmentDeliveryOrderDetail
-                        {
-                            Id = z.Id,
-                            DOQuantity = z.DOQuantity,
-                        }),
-                    }),
-
-                });
-
+            //IQueryable<GarmentDeliveryOrder> Query = this.dbSet;
+            IQueryable<GarmentDeliveryOrder> Query = this.dbSet.Include(x => x.Items).ThenInclude(x => x.Details);
+       
             List<string> searchAttributes = new List<string>()
             {
-                "DONo", "BillNo", "PaymentBill","SupplierName"//, "Items.EPONo"
+                "DONo", "BillNo", "PaymentBill","SupplierName", "Items.EPONo"
             };
 
             Query = QueryHelper<GarmentDeliveryOrder>.ConfigureSearch(Query, searchAttributes, Keyword);
+
+            Query = Query.Select(x => new GarmentDeliveryOrder
+            {
+                Id = x.Id,
+                DONo = x.DONo,
+                DODate = x.DODate,
+                ArrivalDate = x.ArrivalDate,
+                BillNo = x.BillNo,
+                PaymentBill = x.PaymentBill,
+                SupplierId = x.SupplierId,
+                SupplierCode = x.SupplierCode,
+                SupplierName = x.SupplierName,
+                CreatedBy = x.CreatedBy,
+                IsClosed = x.IsClosed,
+                IsCustoms = x.IsCustoms,
+                IsInvoice = x.IsInvoice,
+                LastModifiedUtc = x.LastModifiedUtc,
+                Items = x.Items.Select(y => new GarmentDeliveryOrderItem
+                {
+                    Id = y.Id,
+                    EPOId = y.EPOId,
+                    EPONo = y.EPONo,
+                    CurrencyId = y.CurrencyId,
+                    CurrencyCode = y.CurrencyCode,
+                    PaymentDueDays = y.PaymentDueDays,
+                    Details = y.Details.Select(z => new GarmentDeliveryOrderDetail
+                    {
+                        Id = z.Id,
+                        DOQuantity = z.DOQuantity,
+                    }),
+                }),
+
+            });
 
             Dictionary<string, string> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(Filter);
             Query = QueryHelper<GarmentDeliveryOrder>.ConfigureFilter(Query, FilterDictionary);
