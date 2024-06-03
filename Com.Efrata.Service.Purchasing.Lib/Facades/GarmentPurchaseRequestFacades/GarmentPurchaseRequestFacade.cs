@@ -1156,6 +1156,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentPurchaseRequestFacade
             result.Columns.Add(new DataColumn() { ColumnName = "Dibuat PO Internal", DataType = typeof(String) });
             result.Columns.Add(new DataColumn() { ColumnName = "NO RO", DataType = typeof(String) });
             result.Columns.Add(new DataColumn() { ColumnName = "Artikel", DataType = typeof(String) });
+            result.Columns.Add(new DataColumn() { ColumnName = "Jenis", DataType = typeof(String) });
             result.Columns.Add(new DataColumn() { ColumnName = "Kode Buyer", DataType = typeof(String) });
             result.Columns.Add(new DataColumn() { ColumnName = "Nama Buyer", DataType = typeof(String) });
             result.Columns.Add(new DataColumn() { ColumnName = "Shipment GMT", DataType = typeof(String) });
@@ -1227,7 +1228,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentPurchaseRequestFacade
 
 
             if (Query.ToArray().Count() == 0)
-                result.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 0, "", "", "", "", "", "","","","","", "", "", 0, 0, "", 0,0, 0, 0, "", "", 0, "", "", "", "", 0, "", "", "", "", "", "", "", 0, "", "", "", "", "", "", "", "", "", "", "", "", "", 0, "", "", "", "", "", ""); // to allow column name to be generated properly for empty data as template
+                result.Rows.Add("", "", "", "", "", "", "", "", "", "","", "", "", "", "", "", "", "", "", "", 0, "", "", "", "", "", "","","","","", "", "", 0, 0, "", 0,0, 0, 0, "", "", 0, "", "", "", "", 0, "", "", "", "", "", "", "", 0, "", "", "", "", "", "", "", "", "", "", "", "", "", 0, "", "", "", "", "", ""); // to allow column name to be generated properly for empty data as template
             else
             {
                 int index = 0;
@@ -1235,7 +1236,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentPurchaseRequestFacade
                 {
                     index++;
 
-                    result.Rows.Add(index, item.prNo, item.prDate, item.unitName, item.poSerialNumber, item.useInternalPO, item.ro, item.article, item.buyerCode, item.buyerName, item.shipmentDate, item.poextNo, item.poExtDate, item.deliveryDate, item.useVat, item.useIncomeTax, item.incomeTaxRate, 
+                    result.Rows.Add(index, item.prNo, item.prDate, item.unitName, item.poSerialNumber, item.useInternalPO, item.ro, item.article,item.codeRequirement, item.buyerCode, item.buyerName, item.shipmentDate, item.poextNo, item.poExtDate, item.deliveryDate, item.useVat, item.useIncomeTax, item.incomeTaxRate, 
                         item.paymentMethod, item.paymentType, 
                         item.paymentDueDays, item.supplierCode, item.supplierName, item.SupplierImport, item.status, item.productCode, item.productName,item.consts,item.yarn,item.width,item.composition, item.prProductRemark, item.poProductRemark, item.poDefaultQty, item.poDealQty,
                         item.poDealUomUnit, item.prBudgetPrice, item.poPricePerDealUnit, item.TotalNominalPO,item.prBudgetPrice * item.poDefaultQty, item.poCurrencyCode, item.poCurrencyRate, item.TotalNominalRp, item.ipoDate, item.doNo,
@@ -1274,7 +1275,27 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentPurchaseRequestFacade
 			}
 			return result;
 		}
-		private async Task<List<MonitoringPurchaseAllUserViewModel>> GetMonitoringPurchaseByUserReportQuery(string epono, string unit, string roNo, string article, string poSerialNumber, string username, string doNo, string ipoStatus, string supplier, string status, DateTime? dateFrom, DateTime? dateTo, DateTimeOffset? dateFromEx, DateTimeOffset? dateToEx, int offset, int page, int size)
+
+        private async Task<List<GarmentCategoryViewModel>> GetGarmentCategory()
+        {
+            var http = serviceProvider.GetService<IHttpClientService>();
+
+            List<GarmentCategoryViewModel> result = new List<GarmentCategoryViewModel>();
+            var Uri = APIEndpoint.Core + $"master/garment-categories?size=10000";
+
+            var httpResponse = await http.GetAsync(Uri);
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var contentString = await httpResponse.Content.ReadAsStringAsync();
+                Dictionary<string, object> content = JsonConvert.DeserializeObject<Dictionary<string, object>>(contentString);
+                var dataString = content.GetValueOrDefault("data").ToString();
+                var data = JsonConvert.DeserializeObject<List<GarmentCategoryViewModel>>(dataString);
+                result = data;
+            }
+            return result;
+        }
+
+        private async Task<List<MonitoringPurchaseAllUserViewModel>> GetMonitoringPurchaseByUserReportQuery(string epono, string unit, string roNo, string article, string poSerialNumber, string username, string doNo, string ipoStatus, string supplier, string status, DateTime? dateFrom, DateTime? dateTo, DateTimeOffset? dateFromEx, DateTimeOffset? dateToEx, int offset, int page, int size)
         {
 
 
@@ -1464,7 +1485,8 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentPurchaseRequestFacade
 			}
 			listCode.Distinct();
 			var products = await GetProducts(listCode);
-			foreach (var item in queryResult)
+            var garmentCategory = await GetGarmentCategory();
+            foreach (var item in queryResult)
 			{
 
 
@@ -1642,7 +1664,8 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentPurchaseRequestFacade
 				item.consts = products.Where(s => s.Code == item.productCode).Select(s => s.Const).FirstOrDefault();
 				item.composition = products.Where(s => s.Code == item.productCode).Select(s => s.Composition).FirstOrDefault();
 				item.Total = TotalCountReport;
-			}
+                item.codeRequirement = garmentCategory.Where(x => x.Name.Trim() == item.productName.Trim()).Select(x => x.CodeRequirement).FirstOrDefault();
+            }
 			return listEPO;
             //return listEPO.AsQueryable();
 
