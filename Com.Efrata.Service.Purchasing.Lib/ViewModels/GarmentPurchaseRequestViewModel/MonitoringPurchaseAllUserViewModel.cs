@@ -93,7 +93,7 @@ namespace Com.Efrata.Service.Purchasing.Lib.ViewModels.GarmentPurchaseRequestVie
 		public string SupplierImport { get; set; }
 
 		public int Total { get; set; }
+        public string codeRequirement { get; set; }
 
-
-	}
+    }
 }
