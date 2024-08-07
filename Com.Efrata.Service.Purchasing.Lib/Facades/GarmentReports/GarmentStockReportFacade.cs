@@ -484,66 +484,66 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
             //var PrdoctCodes = string.Join(",", stock.Select(x => x.ProductCode).Distinct().ToList());
 
             //var Codes = GetProductCode(PrdoctCodes);
+            //var azz = categories.Where(x => x.Code == "").ToList();
+            //stock1 = (from i in stock
+            //          join b in categories on i.ProductCode equals b.Code into produtcodes
+            //          from bb in produtcodes.DefaultIfEmpty()
+            //          select new GarmentStockReportViewModel
+            //          {
+            //              BeginningBalanceQty = i.BeginningBalanceQty,
+            //              BeginningBalanceUom = i.BeginningBalanceUom,
+            //              Buyer = i.Buyer,
+            //              EndingBalanceQty = i.EndingBalanceQty,
+            //              EndingUom = i.EndingUom,
+            //              ExpandUom = i.ExpandUom,
+            //              ExpendQty = decimal.ToDouble(i.ExpendQty),
+            //              //NoArticle = i.NoArticle,
+            //              PaymentMethod = i.PaymentMethod,
+            //              PlanPo = i.PlanPo,
+            //              ProductCode = i.ProductCode,
+            //              ProductRemark = ctg == "BB" ? string.Concat((bb == null ? "-" : bb.Composition), "", (bb == null ? "-" : bb.Width), "", (bb == null ? "-" : bb.Const), "", (bb == null ? "-" : bb.Yarn)) : bb == null ? "-" : bb.Name,
+            //              ReceiptCorrectionQty = i.ReceiptCorrectionQty,
+            //              ReceiptQty = i.ReceiptQty,
+            //              ReceiptUom = i.ReceiptUom,
+            //              RO = i.RO
+            //          }).ToList();
 
-            stock1 = (from i in stock
-                      join b in categories on i.ProductCode equals b.Code into produtcodes
-                      from bb in produtcodes.DefaultIfEmpty()
-                      select new GarmentStockReportViewModel
-                      {
-                          BeginningBalanceQty = i.BeginningBalanceQty,
-                          BeginningBalanceUom = i.BeginningBalanceUom,
-                          Buyer = i.Buyer,
-                          EndingBalanceQty = i.EndingBalanceQty,
-                          EndingUom = i.EndingUom,
-                          ExpandUom = i.ExpandUom,
-                          ExpendQty = decimal.ToDouble(i.ExpendQty),
-                          //NoArticle = i.NoArticle,
-                          PaymentMethod = i.PaymentMethod,
-                          PlanPo = i.PlanPo,
-                          ProductCode = i.ProductCode,
-                          ProductRemark = ctg == "BB" ? string.Concat((bb == null ? "-" : bb.Composition), "", (bb == null ? "-" : bb.Width), "", (bb == null ? "-" : bb.Const), "", (bb == null ? "-" : bb.Yarn)) : bb == null ? "-" : bb.Name,
-                          ReceiptCorrectionQty = i.ReceiptCorrectionQty,
-                          ReceiptQty = i.ReceiptQty,
-                          ReceiptUom = i.ReceiptUom,
-                          RO = i.RO
-                      }).ToList();
+            foreach (var i in stock)
+            {
+                //var BeginningBalanceQty = i.BeginningBalanceQty > 0 ? i.BeginningBalanceQty : 0;
+                //var EndingBalanceQty = i.EndingBalanceQty > 0 ? i.EndingBalanceQty : 0;
+                var remark = ctg == "BB" ? categories.FirstOrDefault(x => x.Code == i.ProductCode) : new GarmentProductViewModel();
 
-            //foreach (var i in stock)
-            //{
-            //    //var BeginningBalanceQty = i.BeginningBalanceQty > 0 ? i.BeginningBalanceQty : 0;
-            //    //var EndingBalanceQty = i.EndingBalanceQty > 0 ? i.EndingBalanceQty : 0;
-            //    var remark = Codes.FirstOrDefault(x => x.Code == i.ProductCode);
+                var Composition = remark == null ? "-" : remark.Composition;
+                var Width = remark == null ? "-" : remark.Width;
+                var Const = remark == null ? "-" : remark.Const;
+                var Yarn = remark == null ? "-" : remark.Yarn;
 
-            //    var Composition = remark == null ? "-" : remark.Composition;
-            //    var Width = remark == null ? "-" : remark.Width;
-            //    var Const = remark == null ? "-" : remark.Const;
-            //    var Yarn = remark == null ? "-" : remark.Yarn;
+                stock1.Add(new GarmentStockReportViewModel
+                {
+                    BeginningBalanceQty = i.BeginningBalanceQty,
+                    BeginningBalanceUom = i.BeginningBalanceUom,
+                    Buyer = i.Buyer,
+                    EndingBalanceQty = i.EndingBalanceQty,
+                    EndingUom = i.EndingUom,
+                    ExpandUom = i.ExpandUom,
+                    ExpendQty = decimal.ToDouble(i.ExpendQty),
+                    NoArticle = i.NoArticle,
+                    PaymentMethod = i.PaymentMethod,
+                    PlanPo = i.PlanPo,
+                    ProductCode = i.ProductCode,
+                    ProductRemark = ctg == "BB" ? string.Concat(Composition, "", Width, "", Const, "", Yarn) : remark.Name,
+                    ReceiptCorrectionQty = i.ReceiptCorrectionQty,
+                    ReceiptQty = i.ReceiptQty,
+                    ReceiptUom = i.ReceiptUom,
+                    RO = i.RO
 
-            //    stock1.Add(new GarmentStockReportViewModel
-            //    {
-            //        BeginningBalanceQty = i.BeginningBalanceQty,
-            //        BeginningBalanceUom = i.BeginningBalanceUom,
-            //        Buyer = i.Buyer,
-            //        EndingBalanceQty = i.EndingBalanceQty,
-            //        EndingUom = i.EndingUom,
-            //        ExpandUom = i.ExpandUom,
-            //        ExpendQty = decimal.ToDouble(i.ExpendQty),
-            //        NoArticle = i.NoArticle,
-            //        PaymentMethod = i.PaymentMethod,
-            //        PlanPo = i.PlanPo,
-            //        ProductCode = i.ProductCode,
-            //        ProductRemark = ctg == "BB" ? string.Concat(Composition, "", Width, "", Const, "", Yarn) : remark.Name,
-            //        ReceiptCorrectionQty = i.ReceiptCorrectionQty,
-            //        ReceiptQty = i.ReceiptQty,
-            //        ReceiptUom = i.ReceiptUom,
-            //        RO = i.RO
-
-            //    });
+                });
 
 
-            //}
+                }
 
-            stock1 = stock1.Where(x => (x.ProductCode != "EMB001") && (x.ProductCode != "WSH001") && (x.ProductCode != "PRC001") && (x.ProductCode != "APL001") && (x.ProductCode != "QLT001") && (x.ProductCode != "SMT001") && (x.ProductCode != "GMT001") && (x.ProductCode != "PRN001") && (x.ProductCode != "SMP001")).ToList(); ;
+                stock1 = stock1.Where(x => (x.ProductCode != "EMB001") && (x.ProductCode != "WSH001") && (x.ProductCode != "PRC001") && (x.ProductCode != "APL001") && (x.ProductCode != "QLT001") && (x.ProductCode != "SMT001") && (x.ProductCode != "GMT001") && (x.ProductCode != "PRN001") && (x.ProductCode != "SMP001")).ToList(); ;
             stock1 = stock1.Where(x => (x.BeginningBalanceQty != 0) || (x.EndingBalanceQty != 0) || (x.ReceiptCorrectionQty != 0) || (x.ReceiptQty != 0) || (x.ExpendQty != 0)).ToList();
 
             decimal TotalReceiptQty = 0;

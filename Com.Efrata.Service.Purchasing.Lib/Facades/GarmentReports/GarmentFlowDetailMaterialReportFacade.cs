@@ -38,7 +38,8 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
 			IHttpClientService httpClient = (IHttpClientService)this.serviceProvider.GetService(typeof(IHttpClientService));
 			if (httpClient != null)
 			{
-				var garmentSupplierUri = APIEndpoint.Core + $"master/garment-categories";
+				//var garmentSupplierUri = APIEndpoint.Core + $"master/garment-categories";
+				var garmentSupplierUri = APIEndpoint.Core + $"master/garment-categories/join-by-product";
 				string queryUri = "?page=" + page + "&size=" + size + "&order=" + order + "&filter=" + filter;
 				string uri = garmentSupplierUri + queryUri;
 				var response = httpClient.GetAsync($"{uri}").Result.Content.ReadAsStringAsync();
@@ -55,12 +56,14 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
 
 		public IQueryable<GarmentFlowDetailMaterialViewModel> GetQuery(string category, string productcode, string unit, DateTimeOffset? DateFrom, DateTimeOffset? DateTo, int offset)
 		{
-			//DateTimeOffset dateFrom = DateFrom == null ? new DateTime(1970, 1, 1) : (DateTimeOffset)DateFrom;
-			//DateTimeOffset dateTo = DateTo == null ? new DateTime(2100, 1, 1) : (DateTimeOffset)DateTo;
+            //DateTimeOffset dateFrom = DateFrom == null ? new DateTime(1970, 1, 1) : (DateTimeOffset)DateFrom;
+            //DateTimeOffset dateTo = DateTo == null ? new DateTime(2100, 1, 1) : (DateTimeOffset)DateTo;
 
-			var categories = GetProductCodes(1, int.MaxValue, "{}", "{}");
+            string filter = (string.IsNullOrWhiteSpace(category) ? "{}" : "{" + "'" + "CodeRequirement" + "'" + ":" + "'" + category + "'" + "}");
 
-			var categories1 = category == null || category=="undefined" || category =="" ? categories.Select(x => x.Name).ToArray():category == "BB" ? categories.Where(x => x.CodeRequirement == "BB").Select(x => x.Name).ToArray() : category == "BP" ? categories.Where(x => x.CodeRequirement == "BP").Select(x => x.Name).ToArray() : categories.Where(x => x.CodeRequirement == "BE").Select(x => x.Name).ToArray();
+            var categories = GetProductCodes(1, int.MaxValue, "{}", filter);
+
+			var categories1 =  categories.Select(x => x.Name).ToHashSet();
 
 			if(unit == "SMP1")
 			{
