@@ -80,7 +80,7 @@ namespace Com.Efrata.Service.Purchasing.WebApi.Controllers.v1.GarmentReports
                 //DateTime DateFrom = dateFrom == null ? new DateTime(1970, 1, 1) : Convert.ToDateTime(dateFrom);
                 //DateTime DateTo = dateTo == null ? DateTime.Now : Convert.ToDateTime(dateTo);
 
-                MemoryStream xls = _facade.GenerateExcelStockReport(category, categoryname, unitname, planPo, unitcode, dateFrom, dateTo, offset);
+                MemoryStream xls = _facade.GenerateExcelStockReport(category, categoryname, unitname, unitcode, planPo, dateFrom, dateTo, offset);
 
 
                 string filename =   String.Format("Laporan Stock Gudang  - {0}.xlsx", DateTime.UtcNow.ToString("ddMMyyyy"));
