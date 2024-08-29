@@ -1615,11 +1615,11 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
             //Data = Data.Where(x => (x.BeginningBalanceQty > 0) || (x.EndingBalanceQty > 0) || (x.ReceiptCorrectionQty > 0) || (x.ReceiptQty > 0) || (x.ExpendQty > 0)).ToList();
             //Data = Data.OrderBy(x => x.ProductCode).ThenBy(x => x.PlanPo).ToList();
 
-            Pageable<GarmentStockByProductReportViewModel> pageable = new Pageable<GarmentStockByProductReportViewModel>(Query, page - 1, size);
-            List<GarmentStockByProductReportViewModel> Data = pageable.Data.ToList();
-            int TotalData = pageable.TotalCount;
+            //Pageable<GarmentStockByProductReportViewModel> pageable = new Pageable<GarmentStockByProductReportViewModel>(Query, page - 1, size);
+            //List<GarmentStockByProductReportViewModel> Data = pageable.Data.ToList();
+            int TotalData = Query.Count();
             //int TotalData = Data.Count();
-            return Tuple.Create(Data, TotalData);
+            return Tuple.Create(Query, TotalData);
         }
 
     }
