@@ -56,14 +56,14 @@ namespace Com.Efrata.Service.Purchasing.WebApi.Controllers.v1.GarmentReports
                     statusCode = General.OK_STATUS_CODE
                 });
             }
-                catch (Exception e)
-                {
-                    Dictionary<string, object> Result =
-                        new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message + "\n" + e.StackTrace)
-                        .Fail();
-                    return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
-                }
+            catch (Exception e)
+            {
+                Dictionary<string, object> Result =
+                    new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message + "\n" + e.StackTrace)
+                    .Fail();
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
             }
+        }
 
         [HttpGet("download")]
         public IActionResult GetXls(DateTime? dateFrom, DateTime? dateTo, string category, string categoryname, string unitname, string unitcode, string planPo)
@@ -94,6 +94,39 @@ namespace Com.Efrata.Service.Purchasing.WebApi.Controllers.v1.GarmentReports
             {
                 Dictionary<string, object> Result =
                     new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
+                    .Fail();
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
+        }
+
+        [HttpGet("by-product")]
+        public IActionResult GetReportGarmentStockByProduct(string productCode, int page = 1, int size = 25, string Order = "{}")
+        {
+            try
+            {
+                identityService.Username = User.Claims.Single(p => p.Type.Equals("username")).Value;
+                identityService.TimezoneOffset = int.Parse(Request.Headers["x-timezone-offset"].First());
+                identityService.Token = Request.Headers["Authorization"].First().Replace("Bearer ", "");
+
+                int offset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                string accept = Request.Headers["Accept"];
+
+                var data = _facade.GetStockByProduct(offset, productCode, page, size, Order);
+
+
+
+                return Ok(new
+                {
+                    apiVersion = ApiVersion,
+                    data = data,
+                    message = General.OK_MESSAGE,
+                    statusCode = General.OK_STATUS_CODE
+                });
+            }
+            catch (Exception e)
+            {
+                Dictionary<string, object> Result =
+                    new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message + "\n" + e.StackTrace)
                     .Fail();
                 return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
             }
