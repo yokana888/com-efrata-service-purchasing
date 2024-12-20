@@ -144,7 +144,7 @@ namespace Com.Efrata.Service.Purchasing.WebApi.Controllers.v1.GarmentReports
                 int offset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
                 string accept = Request.Headers["Accept"];
 
-                var data = _facade.GetStockByProduct(offset, productCode, page, size, Order);
+                var data = _facade.GetStockByProductNonFabric(offset, productCode, page, size, Order);
 
 
 
