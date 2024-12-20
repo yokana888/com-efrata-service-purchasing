@@ -1627,14 +1627,14 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
             DateTime DateFrom = new DateTime(1970, 1, 1);
             DateTime DateTo = DateTime.Now;
 
-            var filterMaterial = new Dictionary<string, bool>
-            {
-                { "CodeRequirement == \"BB\"", false }
-            };
+            //var filterMaterial = new Dictionary<string, bool>
+            //{
+            //    { "CodeRequirement != \"BB\"", true }
+            //};
 
-            var categories = GetProductCategories(1, int.MaxValue, "{}", JsonConvert.SerializeObject(filterMaterial));
+            //var categories = GetProductCategories(1, int.MaxValue, "{}", JsonConvert.SerializeObject(filterMaterial));
 
-            var categories1 = categories.Select(x => x.Name).Distinct().ToArray();
+            //var categories1 = categories.Select(x => x.Name).Distinct().ToArray();
 
             var lastdate = dbContext.GarmentStockOpnames.OrderByDescending(x => x.Date).Select(x => x.Date).FirstOrDefault();
 
@@ -1649,7 +1649,8 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
                                 where a.Date.Date == lastdate.Date
                                 && c.CreatedUtc.Year <= DateTo.Date.Year
                                 && a.IsDeleted == false && b.IsDeleted == false
-                                && categories1.Contains(b.ProductName)
+                                && b.ProductName != "FABRIC"
+                                //&& categories1.Contains(b.ProductName)
                                 && b.ProductCode == (string.IsNullOrWhiteSpace(productCode) ? b.ProductCode : productCode)
                                 select new GarmentStockByProductReportViewModelTemp
                                 {
@@ -1714,7 +1715,8 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
                           && b.CreatedUtc.AddHours(offset).Date >= DateFrom.Date
                           && b.CreatedUtc.AddHours(offset).Date <= DateTo.Date
                           && a.ProductCode == (string.IsNullOrWhiteSpace(productCode) ? a.ProductCode : productCode)
-                          && categories1.Contains(a.ProductName)
+                          //&& categories1.Contains(a.ProductName)
+                          && a.ProductName != "FABRIC"
                           select new GarmentStockByProductReportViewModelTemp
                           {
                               Buyer = prs != null ? prs.BuyerCode.Trim() : "-",
@@ -1778,7 +1780,8 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
                           && b.CreatedUtc.AddHours(offset).Date >= DateFrom.Date
                           && b.CreatedUtc.AddHours(offset).Date <= DateTo.Date
                           && a.ProductCode == (string.IsNullOrWhiteSpace(productCode) ? a.ProductCode : productCode)
-                          && categories1.Contains(a.ProductName)
+                          // && categories1.Contains(a.ProductName)
+                          && a.ProductName != "FABRIC"
                           select new GarmentStockByProductReportViewModelTemp
                           {
                               Buyer = a.BuyerCode == null ? "-" : a.BuyerCode.Trim(),
@@ -1842,7 +1845,8 @@ namespace Com.Efrata.Service.Purchasing.Lib.Facades.GarmentReports
                            && g.CreatedUtc.AddHours(offset).Date >= DateFrom.Date
                            && g.CreatedUtc.AddHours(offset).Date <= DateTo.Date
                            && b.ProductCode == (string.IsNullOrWhiteSpace(productCode) ? b.ProductCode : productCode)
-                           && categories1.Contains(b.ProductName)
+                           //&& categories1.Contains(b.ProductName)
+                           && b.ProductName != "FABRIC"
                            select new GarmentStockByProductReportViewModelTemp
                            {
                                Buyer = prs != null ? prs.BuyerCode : "-",
